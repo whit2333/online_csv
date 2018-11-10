@@ -219,7 +219,7 @@ void good_coin_counter2(int RunNumber = 6018, int nevents = -1) {
   j_current_run["random background"] = double(random_bg);
   j_current_run["pion counts"] = int(*pion_count);
   j_current_run["pi/K ratio"] = pi_K_ratio;
-  j_current_run["kaon ounts"] = kaon_counts;
+  j_current_run["kaon counts"] = kaon_counts;
   j_current_run["pion bg sub. counts"] =
       double(double(*pion_count) -
              random_bg * double(*pion_count) / (double(*coin_counts)));

@@ -84,6 +84,7 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
 
   // Detector tree 
   ROOT::RDataFrame d("T", rootfile);
+
   // HMS Scaler tree
   ROOT::RDataFrame d_sh("TSH", rootfile);
   //int N_scaler_events = *(d_sh.Count());
@@ -127,10 +128,13 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
 
   auto h_beta_0 = d_spec_cuts.Histo1D({"h_beta_0", "h_beta_0", 150, 0, 1.5}, "H.gtr.beta");
 
-  auto bcm4b_charge   = d_sh.Max("H.BCM4B.scalerChargeCut");
-  auto el_real_scaler = d_sh.Max("H.hEL_REAL.scaler");
-  auto time_1MHz      = d_sh.Max("H.1MHz.scalerTime");
+  auto bcm4b_charge        = d_sh.Max("H.BCM4B.scalerChargeCut");
+  auto el_real_scaler      = d_sh.Max("H.hEL_REAL.scaler");
+  auto time_1MHz           = d_sh.Max("H.1MHz.scalerTime");
+  auto hTRIG1_ROC1_npassed = d_sh.Max("H.hTRIG1_ROC1.npassed");
+  auto H_hTRIG1_scaler     = d_sh.Max("H.hTRIG1.scaler");
 
+  //{(hTRIG1_ROC1.npassed / H.hTRIG1.scaler)*100.0:%3.4f}
   //H.hEL_REAL.scaler/H.1MHz.scalerTime)/1000
   auto total_charge = bcm4b_charge;
 
@@ -145,9 +149,11 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
   // End lazy eval
   // -------------------------------------
 
-  double good_total_charge = *bcm4b_charge /1000.0; // mC
+  double good_total_charge = *bcm4b_charge / 1000.0; // mC
+  double hms_live_time = double(*hTRIG1_ROC1_npassed) / double(*H_hTRIG1_scaler);
 
-  double hms_scaler_yield = ((*el_real_scaler) / good_total_charge);
+  double hms_scaler_yield     = ((*el_real_scaler) / good_total_charge);
+  double hms_scaler_yield_unc = (std::sqrt(*el_real_scaler) / good_total_charge);
 
   double hms_e_yield      = (*c_e_yield_raw) / (*total_charge);
   double hms_e_yield2     = (*c_e_yield) / (*total_charge);
@@ -166,6 +172,7 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
     input_file >> jruns;
   }
   std::string run_str                = std::to_string(RunNumber);
+  jruns[run_str]["hms e raw counts"] = double(hms_live_time);
   jruns[run_str]["hms e raw counts"] = int(*c_T2_yield_raw + *c_T6_yield_raw);
   jruns[run_str]["hms e counts"]     = int(*c_T2_yield + *c_T6_yield);
   jruns[run_str]["ps cor. hms e raw counts"] = int((*c_T2_yield_raw)*singles_ps_value + (*c_T6_yield_raw));
@@ -173,8 +180,11 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
   jruns[run_str]["charge bcm4b 2u cut"]     = good_total_charge;
   jruns[run_str]["hms e raw yield"] = double((*c_T2_yield_raw)*singles_ps_value + (*c_T6_yield_raw))/good_total_charge;
   jruns[run_str]["hms e yield"]     = double((*c_T2_yield)*singles_ps_value + (*c_T6_yield))/good_total_charge;
-  jruns[run_str]["hms ps4 factor"]     = singles_ps_value;
-  jruns[run_str]["hms scaler yield"]     = hms_scaler_yield;
+  jruns[run_str]["hms e yield unc."]     = double(std::sqrt(*c_T2_yield)*singles_ps_value + std::sqrt(*c_T6_yield))/good_total_charge;
+  jruns[run_str]["hms ps4 factor"]        = singles_ps_value;
+  jruns[run_str]["hms scaler yield"]      = hms_scaler_yield;
+  jruns[run_str]["hms scaler yield unc."] = hms_scaler_yield_unc;
+  jruns[run_str]["hms live time"]         = hms_live_time;
 
   std::ofstream json_output_file("db2/run_count_list.json");
   json_output_file << std::setw(4) << jruns << "\n";
@@ -230,7 +240,10 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
   h_beta_0->DrawCopy();
 
   c->cd(3);
+  gPad->SetLogy(true);
   h_event_type->DrawCopy();
+  h_event_type_2->SetLineColor(2);
+  h_event_type_2->DrawCopy("same");
 
   c->cd(4);
   //h_coin_time->DrawCopy();

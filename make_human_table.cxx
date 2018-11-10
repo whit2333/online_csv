@@ -37,10 +37,10 @@ void make_human_table() {
     runs.push_back(std::stoi(it.key()));
     fmt::print(" {:<5} ", std::stoi(it.key()));
     fmt::print(" {:^5} ", runjs["target"]["target_label"].get<std::string>());
-    fmt::print(" {:>5.3f} ", runjs["spectrometers"]["hms_momentum"].get<double>());
-    fmt::print(" {:>4.2f} ", runjs["spectrometers"]["hms_angle"].get<double>());
-    fmt::print(" {:>5.3f} ", runjs["spectrometers"]["shms_momentum"].get<double>());
-    fmt::print(" {:>4.2f} ", runjs["spectrometers"]["shms_angle"].get<double>());
+    fmt::print(" {:>7.3f} ", runjs["spectrometers"]["hms_momentum"].get<double>());
+    fmt::print(" {:>7.2f} ", runjs["spectrometers"]["hms_angle"].get<double>());
+    fmt::print(" {:>7.3f} ", runjs["spectrometers"]["shms_momentum"].get<double>());
+    fmt::print(" {:>7.2f} ", runjs["spectrometers"]["shms_angle"].get<double>());
     if (runjs.find("start_time") != runjs.end()) {
       fmt::print(" {:21} ", runjs["start_time"].get<std::string>());
       fmt::print(" {:21} ", runjs["end_time"].get<std::string>());
@@ -55,10 +55,28 @@ void make_human_table() {
       double pi_yield = j2[it.key()]["pion bg sub. counts"].get<double>();
       fmt::print(" {:>5.0f} ", pi_yield);
       fmt::print(" {:>5.1f} ", pi_yield / total_charge);
+
       int n_events = j2[it.key()]["total trigger events"].get<int>();
       fmt::print(" {:>9d} ", n_events);
-    }
 
+      //double live_time = j2[it.key()]["live time"].get<int>();
+    }
     std::cout << "\n";
   }
+
+  // print header
+  fmt::print(" {:<5} ", "Run");
+  fmt::print(" {:^5} ", "Target");
+  fmt::print(" {:^7} ", "P_hms");
+  fmt::print(" {:^7} ", "th_hms");
+  fmt::print(" {:^7} ", "P_shms");
+  fmt::print(" {:^7} ", "th_shms");
+  fmt::print(" {:21} ", "start time");
+  fmt::print(" {:21} ", "end time");
+  fmt::print(" {:^5} ", "charge");
+  fmt::print(" {:^9} ", "pi_count");
+  fmt::print(" {:^9} ", "yield");
+  fmt::print(" {:^9} ", "triggers");
+  std::cout << "\n";
+
 }
