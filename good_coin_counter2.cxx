@@ -75,8 +75,13 @@ void good_coin_counter2(int RunNumber = 6018, int nevents = -1) {
   ROOT::RDataFrame d("T", rootfile);
   // HMS Scaler tree
   ROOT::RDataFrame d_sh("TSH", rootfile);
-  //int N_scaler_events = *(d_sh.Count());
-  auto bcm4b = d_sh.Max("H.BCM4B.scalerChargeCut");
+  
+  auto bcm4b_charge        = d_sh.Max("H.BCM4B.scalerChargeCut");
+  auto el_real_scaler      = d_sh.Max("H.hEL_REAL.scaler");
+  auto time_1MHz           = d_sh.Max("H.1MHz.scalerTime");
+  auto time_1MHz_cut       = d_sh.Max("H.1MHz.scalerTimeCut");
+  auto total_charge = d_sh.Sum("H.BCM4A.scalerCurrent");
+
   std::string hpdelta = "P.gtr.dp > -10 && P.gtr.dp < 20 && "
                         "H.gtr.dp > -10 && H.gtr.dp < 10";
   std::string epiCut = "P.aero.npeSum > 1.0 && P.cal.eprtracknorm < 0.2 && "
@@ -169,7 +174,6 @@ void good_coin_counter2(int RunNumber = 6018, int nevents = -1) {
   auto h_event_type =
       d0.Histo1D({"event_type", "event_type", 10, 0, 10}, "fEvtHdr.fEvtType");
 
-  auto total_charge = d_sh.Sum("H.BCM4A.scalerCurrent");
 
   auto d_hgc_cut = d2_coin.Filter(
       [=](double npe, double dp) {
@@ -199,11 +203,15 @@ void good_coin_counter2(int RunNumber = 6018, int nevents = -1) {
       double(*pion_count) / (double(*coin_counts) - double(*pion_count));
   double kaon_counts = (double(*coin_counts) - double(*pion_count));
 
+  double pion_corrected =
+      double(double(*pion_count) - random_bg * double(*pion_count) / (double(*coin_counts)));
+
   json jruns;
   {
     std::ifstream input_file("db2/run_count_list.json");
     input_file >> jruns;
   }
+
 
   // std::ifstream input_file("db2/run_count_list.json");
   // input_file >> jruns;
@@ -220,9 +228,8 @@ void good_coin_counter2(int RunNumber = 6018, int nevents = -1) {
   j_current_run["pion counts"] = int(*pion_count);
   j_current_run["pi/K ratio"] = pi_K_ratio;
   j_current_run["kaon counts"] = kaon_counts;
-  j_current_run["pion bg sub. counts"] =
-      double(double(*pion_count) -
-             random_bg * double(*pion_count) / (double(*coin_counts)));
+  j_current_run["pion bg sub. counts"] = pion_corrected;
+      ;
   j_current_run["kaon bg sub. counts"] = double(
       double(kaon_counts) - random_bg * kaon_counts / (double(*coin_counts)));
   // std::cout << std::setw(4) << j_current_run << "\n";
@@ -236,12 +243,44 @@ void good_coin_counter2(int RunNumber = 6018, int nevents = -1) {
 
   std::cout << " ----------------------------------------------    \n";
   std::cout << " # of good coin  = "
-            << int(double(*pion_count) -
-                   random_bg * double(*pion_count) / (double(*coin_counts)))
+            << int(pion_corrected)
             << "    \n";
   std::cout << " ----------------------------------------------    \n";
   std::cout << " of  " << *c_n_events_total << " total triggers\n";
   std::cout << " and " << *c_n_events_coin << " coin triggers\n";
+
+
+  int count_goal = 20000;
+  std::cout << "----------------------------------------------------------\n";
+  std::cout << "Reference the run plan for this setting found on the wiki"
+               "       https://hallcweb.jlab.org/wiki/index.php/CSV_Fall_2018_Run_Plan\n\n";
+  std::cout << "----------------------------------------------------------\n";
+  std::cout << "Please enter **total count** goal for this setting. \n";
+  std::cout << "   Desired count : ";
+  std::cin >> count_goal ;
+  std::cout << "\n";
+
+  std::cout << "time : " << (*time_1MHz_cut)/60.0 << "\n";
+  std::cout << "charge : " << (*total_charge) << "\n";
+  double n_seconds = double(*time_1MHz_cut);
+  int nev_tot  = (*c_n_events_total);
+  double goal_Nevents   = (count_goal/pion_corrected)*nev_tot;
+  double time_remaining = (count_goal* n_seconds)/pion_corrected - (n_seconds);
+  double charge_goal    = count_goal* (*total_charge)/(pion_corrected);
+
+  std::cout << "----------------------------------------------------------\n";
+  std::cout << " Nevents goal     " << goal_Nevents/1000000   << "M events\n";
+  std::cout << " Charge goal      " << charge_goal/1000.0    << " mC\n";
+
+  std::string cmd = "caput hcRunPlanChargeGoal " + std::to_string(charge_goal/1000.0);
+  system(cmd.c_str());
+
+  cmd = "caput hcRunPlanNTrigEventsGoal " + std::to_string(goal_Nevents);
+  system(cmd.c_str());
+
+  cmd = "caput hcRunPlanCountGoal " + std::to_string(count_goal);
+  system(cmd.c_str());
+
   // std::cout << " pions+kaons   : " << *coin_counts << "\n";
   // std::cout << " pions         : " << *pion_count << "\n";
   // std::cout << " random        : " << random_bg << "\n";

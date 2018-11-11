@@ -42,19 +42,25 @@ void make_human_table() {
     fmt::print(" {:>7.3f} ", runjs["spectrometers"]["shms_momentum"].get<double>());
     fmt::print(" {:>7.2f} ", runjs["spectrometers"]["shms_angle"].get<double>());
     if (runjs.find("start_time") != runjs.end()) {
-      fmt::print(" {:21} ", runjs["start_time"].get<std::string>());
-      fmt::print(" {:21} ", runjs["end_time"].get<std::string>());
+      fmt::print(" {:^21} ", runjs["start_time"].get<std::string>());
+    } else {
+      fmt::print(" {:21} ", "");
+    }
+    if (runjs.find("end_time") != runjs.end()) {
+      fmt::print(" {:^21} ", runjs["end_time"].get<std::string>());
+    }else{
+      fmt::print(" {:21} ", "");
     }
 
     double total_charge = 0.0001;
     if (runjs.find("total_charge") != runjs.end()) {
       total_charge = runjs["total_charge"].get<double>() / 1000.0;
-      fmt::print(" {:>5.1f} ", total_charge);
+      fmt::print(" {:>11.1f} ", total_charge);
     }
     if (j2.count(it.key()) != 0) {
       double pi_yield = j2[it.key()]["pion bg sub. counts"].get<double>();
-      fmt::print(" {:>5.0f} ", pi_yield);
-      fmt::print(" {:>5.1f} ", pi_yield / total_charge);
+      fmt::print(" {:>9.0f} ", pi_yield);
+      fmt::print(" {:>9.1f} ", pi_yield / total_charge);
 
       int n_events = j2[it.key()]["total trigger events"].get<int>();
       fmt::print(" {:>9d} ", n_events);
@@ -71,12 +77,12 @@ void make_human_table() {
   fmt::print(" {:^7} ", "th_hms");
   fmt::print(" {:^7} ", "P_shms");
   fmt::print(" {:^7} ", "th_shms");
-  fmt::print(" {:21} ", "start time");
-  fmt::print(" {:21} ", "end time");
-  fmt::print(" {:^5} ", "charge");
-  fmt::print(" {:^9} ", "pi_count");
-  fmt::print(" {:^9} ", "yield");
-  fmt::print(" {:^9} ", "triggers");
+  fmt::print(" {:^21} ", "start time");
+  fmt::print(" {:^21} ", "end time");
+  fmt::print(" {:>11} ", "charge");
+  fmt::print(" {:>9} ", "pi_count");
+  fmt::print(" {:>9} ", "yield");
+  fmt::print(" {:>9} ", "triggers");
   std::cout << "\n";
 
 }

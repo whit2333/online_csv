@@ -131,8 +131,8 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
   auto bcm4b_charge        = d_sh.Max("H.BCM4B.scalerChargeCut");
   auto el_real_scaler      = d_sh.Max("H.hEL_REAL.scaler");
   auto time_1MHz           = d_sh.Max("H.1MHz.scalerTime");
-  auto hTRIG1_ROC1_npassed = d_sh.Max("H.hTRIG1_ROC1.npassed");
-  auto H_hTRIG1_scaler     = d_sh.Max("H.hTRIG1.scaler");
+  //auto hTRIG1_ROC1_npassed = d_sh.Max("H.hTRIG1_ROC1.npassed");
+  //auto H_hTRIG1_scaler     = d_sh.Max("H.hTRIG1.scaler");
 
   //{(hTRIG1_ROC1.npassed / H.hTRIG1.scaler)*100.0:%3.4f}
   //H.hEL_REAL.scaler/H.1MHz.scalerTime)/1000
@@ -150,7 +150,7 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
   // -------------------------------------
 
   double good_total_charge = *bcm4b_charge / 1000.0; // mC
-  double hms_live_time = double(*hTRIG1_ROC1_npassed) / double(*H_hTRIG1_scaler);
+  //double hms_live_time = double(*hTRIG1_ROC1_npassed) / double(*H_hTRIG1_scaler);
 
   double hms_scaler_yield     = ((*el_real_scaler) / good_total_charge);
   double hms_scaler_yield_unc = (std::sqrt(*el_real_scaler) / good_total_charge);
@@ -172,7 +172,6 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
     input_file >> jruns;
   }
   std::string run_str                = std::to_string(RunNumber);
-  jruns[run_str]["hms e raw counts"] = double(hms_live_time);
   jruns[run_str]["hms e raw counts"] = int(*c_T2_yield_raw + *c_T6_yield_raw);
   jruns[run_str]["hms e counts"]     = int(*c_T2_yield + *c_T6_yield);
   jruns[run_str]["ps cor. hms e raw counts"] = int((*c_T2_yield_raw)*singles_ps_value + (*c_T6_yield_raw));
@@ -184,7 +183,7 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
   jruns[run_str]["hms ps4 factor"]        = singles_ps_value;
   jruns[run_str]["hms scaler yield"]      = hms_scaler_yield;
   jruns[run_str]["hms scaler yield unc."] = hms_scaler_yield_unc;
-  jruns[run_str]["hms live time"]         = hms_live_time;
+  //jruns[run_str]["hms live time"]         = hms_live_time;
 
   std::ofstream json_output_file("db2/run_count_list.json");
   json_output_file << std::setw(4) << jruns << "\n";
