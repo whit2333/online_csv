@@ -64,8 +64,15 @@ void good_coin_counter2(int RunNumber = 6018, int nevents = -1) {
   rootfile +=
       std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
 
-  // auto file = new TFile(rootfile.c_str());
+  {
+    TFile file(rootfile.c_str());
+    if (file.IsZombie()) {
+      std::cout << " Did your replay finish?  Check that the it is done before running this script.\n";
+      return;
+    }
+  }
   // new TBrowser;
+  //
 
   ROOT::EnableImplicitMT(24);
 
@@ -80,7 +87,7 @@ void good_coin_counter2(int RunNumber = 6018, int nevents = -1) {
   auto el_real_scaler      = d_sh.Max("H.hEL_REAL.scaler");
   auto time_1MHz           = d_sh.Max("H.1MHz.scalerTime");
   auto time_1MHz_cut       = d_sh.Max("H.1MHz.scalerTimeCut");
-  auto total_charge = d_sh.Sum("H.BCM4A.scalerCurrent");
+  auto total_charge        = bcm4b_charge;
 
   std::string hpdelta = "P.gtr.dp > -10 && P.gtr.dp < 20 && "
                         "H.gtr.dp > -10 && H.gtr.dp < 10";

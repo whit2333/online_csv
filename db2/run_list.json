@@ -1509,16 +1509,6 @@
       }
     }, 
     "end_time": "00:19:29 11/08/18 EST", 
-    "integrators": {
-      "bcm1": {
-        "PV": "ibcm1", 
-        "total": 67779.66002360012
-      }, 
-      "bcm2": {
-        "PV": "ibcm2", 
-        "total": 67948.37652048198
-      }
-    }, 
     "spectrometers": {
       "hms_angle": 16.63, 
       "hms_momentum": -4.508, 
@@ -12810,7 +12800,7 @@
     }, 
     "total_charge": 52536.55589161827
   }, 
-  "6100": {
+  "6101": {
     "beam": {
       "beam_energy": 10.6, 
       "beam_pol": 0.0
@@ -12828,36 +12818,62 @@
       }
     }, 
     "daq": {
-      "ps1": 0, 
-      "ps2": 0, 
-      "ps3": 0, 
-      "ps4": 0, 
-      "ps5": 0, 
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 6, 
+      "ps5": -1, 
       "ps6": 0
     }, 
-    "end_time": "13:22:30 11/10/18 EST", 
+    "end_time": "22:23:19 11/10/18 EST", 
     "integrators": {
       "bcm1": {
         "PV": "ibcm1", 
-        "total": -0.02
+        "total": 0.0
       }, 
       "bcm2": {
         "PV": "ibcm2", 
-        "total": 0.9600000000000005
+        "total": 0.14
       }
     }, 
     "spectrometers": {
-      "hms_angle": 16.63, 
+      "hms_angle": 16.632, 
       "hms_momentum": -4.508, 
-      "shms_angle": 11.63, 
+      "shms_angle": 11.613, 
       "shms_momentum": -2.433
     }, 
-    "start_time": "11:44:04 11/10/18 EST", 
+    "start_time": "22:22:54 11/10/18 EST", 
     "target": {
       "target_id": 2, 
       "target_label": "LH2", 
       "target_name": "Loop 2 10cm"
     }, 
-    "total_charge": 0.0
+    "total_charge": 40838.60544955169
+  }, 
+  "6102": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 6, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "spectrometers": {
+      "hms_angle": 16.632, 
+      "hms_momentum": -4.508, 
+      "shms_angle": 11.613, 
+      "shms_momentum": -2.433
+    }, 
+    "start_time": "23:01:30 11/10/18 EST", 
+    "target": {
+      "target_id": 2, 
+      "target_label": "LH2", 
+      "target_name": "Loop 2 10cm"
+    }
   }
 }
