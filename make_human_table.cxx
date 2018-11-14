@@ -54,16 +54,21 @@ void make_human_table() {
 
     double total_charge = 0.0001;
     if (runjs.find("total_charge") != runjs.end()) {
-      total_charge = runjs["total_charge"].get<double>() / 1000.0;
+        total_charge = runjs["total_charge"].get<double>() / 1000.0;
       fmt::print(" {:>11.1f} ", total_charge);
+
     }
     if (j2.count(it.key()) != 0) {
+      try {
       double pi_yield = j2[it.key()]["pion bg sub. counts"].get<double>();
-      fmt::print(" {:>9.0f} ", pi_yield);
+      fmt::print(" {:>9.1f} ", pi_yield);
       fmt::print(" {:>9.1f} ", pi_yield / total_charge);
 
       int n_events = j2[it.key()]["total trigger events"].get<int>();
       fmt::print(" {:>9d} ", n_events);
+      } catch(std::domain_error ) {
+        //you suck
+      }
 
       //double live_time = j2[it.key()]["live time"].get<int>();
     }

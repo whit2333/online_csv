@@ -220,9 +220,6 @@ void good_coin_counter2(int RunNumber = 6018, int nevents = -1) {
   }
 
 
-  // std::ifstream input_file("db2/run_count_list.json");
-  // input_file >> jruns;
-  // input_file.close();
   // std::cout << jruns << std::endl;;
   // Open json db file to get current values (if run already exists, replace)
   // fill the run values
@@ -236,38 +233,36 @@ void good_coin_counter2(int RunNumber = 6018, int nevents = -1) {
   j_current_run["pi/K ratio"] = pi_K_ratio;
   j_current_run["kaon counts"] = kaon_counts;
   j_current_run["pion bg sub. counts"] = pion_corrected;
-      ;
   j_current_run["kaon bg sub. counts"] = double(
       double(kaon_counts) - random_bg * kaon_counts / (double(*coin_counts)));
   // std::cout << std::setw(4) << j_current_run << "\n";
-  //
-  jruns[run_str] = j_current_run;
 
+  jruns[run_str] = nlohmann::json::parse(j_current_run.dump());
   // jruns[run_str] = nlohmann::json::parse(j_current_run.dump());
-  // jruns[run_str] = nlohmann::json::parse(j_current_run.dump());
-  std::ofstream json_output_file("db2/run_count_list.json");
-  json_output_file << std::setw(4) << jruns << "\n";
+  {
+    std::ofstream json_output_file("db2/run_count_list.json");
+    json_output_file << std::setw(4) << jruns << "\n";
+  }
 
   std::cout << " ----------------------------------------------    \n";
   std::cout << " # of good coin  = "
             << int(pion_corrected)
             << "    \n";
-  std::cout << " ----------------------------------------------    \n";
-  std::cout << " of  " << *c_n_events_total << " total triggers\n";
-  std::cout << " and " << *c_n_events_coin << " coin triggers\n";
+  std::cout << "    out of  " << *c_n_events_total << " total triggers\n";
+  std::cout << "        and " << *c_n_events_coin << " coin triggers\n";
 
 
   int count_goal = 20000;
   std::cout << "----------------------------------------------------------\n";
-  std::cout << "Reference the run plan for this setting found on the wiki"
-               "       https://hallcweb.jlab.org/wiki/index.php/CSV_Fall_2018_Run_Plan\n\n";
+  std::cout << "Reference the run plan for this setting found on the wiki\n"
+               "   https://hallcweb.jlab.org/wiki/index.php/CSV_Fall_2018_Run_Plan\n";
   std::cout << "----------------------------------------------------------\n";
   std::cout << "Please enter **total count** goal for this setting. \n";
   std::cout << "   Desired count : ";
   std::cin >> count_goal ;
   std::cout << "\n";
 
-  std::cout << "time : " << (*time_1MHz_cut)/60.0 << "\n";
+  std::cout << "time   : " << (*time_1MHz_cut)/60.0 << "\n";
   std::cout << "charge : " << (*total_charge) << "\n";
   double n_seconds = double(*time_1MHz_cut);
   int nev_tot  = (*c_n_events_total);
@@ -279,13 +274,13 @@ void good_coin_counter2(int RunNumber = 6018, int nevents = -1) {
   std::cout << " Nevents goal     " << goal_Nevents/1000000   << "M events\n";
   std::cout << " Charge goal      " << charge_goal/1000.0    << " mC\n";
 
-  std::string cmd = "caput hcRunPlanChargeGoal " + std::to_string(charge_goal/1000.0);
+  std::string cmd = "caput hcRunPlanChargeGoal " + std::to_string(charge_goal/1000.0)+" &> /dev/null";
   system(cmd.c_str());
 
-  cmd = "caput hcRunPlanNTrigEventsGoal " + std::to_string(goal_Nevents);
+  cmd = "caput hcRunPlanNTrigEventsGoal " + std::to_string(goal_Nevents) +" &> /dev/null";
   system(cmd.c_str());
 
-  cmd = "caput hcRunPlanCountGoal " + std::to_string(count_goal);
+  cmd = "caput hcRunPlanCountGoal " + std::to_string(count_goal)+" &> /dev/null";
   system(cmd.c_str());
 
   // std::cout << " pions+kaons   : " << *coin_counts << "\n";

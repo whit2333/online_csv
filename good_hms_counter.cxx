@@ -17,17 +17,6 @@ R__LOAD_LIBRARY(libGenVector.so)
 
 #include "THStack.h"
 
-//#include "THcParmList.h"
-// R__LOAD_LIBRARY(libPodd.so)
-// R__LOAD_LIBRARY(libHallA.so)
-// R__LOAD_LIBRARY(libdc.so)
-// R__LOAD_LIBRARY(libHallC.so)
-
-// fmt - string formatting library
-//#include "fmt/core.h"
-//#include "fmt/ostream.h"
-// R__LOAD_LIBRARY(libfmt.so)
-
 using Pvec3D = ROOT::Math::XYZVector;
 using Pvec4D = ROOT::Math::PxPyPzMVector;
 
@@ -44,7 +33,12 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
   json j;
   {
     std::ifstream json_input_file("db2/run_list.json");
-    json_input_file >> j;
+    try {
+      json_input_file >> j;
+    } catch(json::parse_error)  {
+      std::cerr << "error: json file, db2/run_list.json, is incomplete or has broken syntax.\n";
+      std::quick_exit(-127);
+    }
   }
 
   auto runnum_str = std::to_string(RunNumber);
@@ -76,6 +70,13 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
       std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
 
   // auto file = new TFile(rootfile.c_str());
+  {
+    TFile file(rootfile.c_str());
+    if (file.IsZombie()) {
+      std::cout << " Did your replay finish?  Check that the it is done before running this script.\n";
+      return;
+    }
+  }
   // new TBrowser;
 
   ROOT::EnableImplicitMT(24);
@@ -169,27 +170,32 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
   json jruns;
   {
     std::ifstream input_file("db2/run_count_list.json");
-    input_file >> jruns;
+    try {
+      input_file >> jruns;
+    } catch(json::parse_error)  {
+      std::cerr << "error: json file is incomplete or has broken syntax.\n";
+      std::quick_exit(-127);
+    }
   }
-  std::string run_str                = std::to_string(RunNumber);
-  jruns[run_str]["hms e raw counts"] = int(*c_T2_yield_raw + *c_T6_yield_raw);
-  jruns[run_str]["hms e counts"]     = int(*c_T2_yield + *c_T6_yield);
-  jruns[run_str]["ps cor. hms e raw counts"] = int((*c_T2_yield_raw)*singles_ps_value + (*c_T6_yield_raw));
-  jruns[run_str]["ps cor. hms e counts"]     = int((*c_T2_yield_raw)*singles_ps_value + (*c_T6_yield_raw));
-  jruns[run_str]["charge bcm4b 2u cut"]     = good_total_charge;
-  jruns[run_str]["hms e raw yield"] = double((*c_T2_yield_raw)*singles_ps_value + (*c_T6_yield_raw))/good_total_charge;
-  jruns[run_str]["hms e yield"]     = double((*c_T2_yield)*singles_ps_value + (*c_T6_yield))/good_total_charge;
-  jruns[run_str]["hms e yield unc."]     = double(std::sqrt(*c_T2_yield)*singles_ps_value + std::sqrt(*c_T6_yield))/good_total_charge;
-  jruns[run_str]["hms ps4 factor"]        = singles_ps_value;
-  jruns[run_str]["hms scaler yield"]      = hms_scaler_yield;
-  jruns[run_str]["hms scaler yield unc."] = hms_scaler_yield_unc;
+  std::string run_str                        = std::to_string(RunNumber);
+  jruns[run_str]["hms e raw counts"]         = int(*c_T2_yield_raw + *c_T6_yield_raw);
+  jruns[run_str]["hms e counts"]             = int(*c_T2_yield + *c_T6_yield);
+  jruns[run_str]["ps cor. hms e raw counts"] = int((*c_T2_yield_raw) * singles_ps_value + (*c_T6_yield_raw));
+  jruns[run_str]["ps cor. hms e counts"]     = int((*c_T2_yield_raw) * singles_ps_value + (*c_T6_yield_raw));
+  jruns[run_str]["charge bcm4b 2u cut"]      = good_total_charge;
+  jruns[run_str]["hms e raw yield"]          = double((*c_T2_yield_raw) * singles_ps_value + (*c_T6_yield_raw)) / good_total_charge;
+  jruns[run_str]["hms e yield"]              = double((*c_T2_yield) * singles_ps_value + (*c_T6_yield)) / good_total_charge;
+  jruns[run_str]["hms e yield unc."]         = double(std::sqrt(*c_T2_yield) * singles_ps_value + std::sqrt(*c_T6_yield)) / good_total_charge;
+  jruns[run_str]["hms ps4 factor"]           = singles_ps_value;
+  jruns[run_str]["hms scaler yield"]         = hms_scaler_yield;
+  jruns[run_str]["hms scaler yield unc."]    = hms_scaler_yield_unc;
   //jruns[run_str]["hms live time"]         = hms_live_time;
 
   std::ofstream json_output_file("db2/run_count_list.json");
   json_output_file << std::setw(4) << jruns << "\n";
 
   std::cout << " ----------------------------------------------    \n";
-  std::cout << " # of good coin  = "
+  std::cout << " # of good hms triggers = "
             << ps_cor_hms_e_yield2
             << "    \n";
   std::cout << " ----------------------------------------------    \n";

@@ -18,15 +18,24 @@ void plot_hms_singles(){
   json j;
   {
     std::ifstream json_input_file("db2/run_count_list.json");
-    json_input_file >> j;
+    try {
+      json_input_file >> j;
+    } catch(json::parse_error)  {
+      std::cerr << "error: json file, db2/run_count_list.json, is incomplete or has broken syntax.\n";
+      std::quick_exit(-127);
+    }
   }
   json j2;
   {
     std::ifstream json_input_file("db2/run_list.json");
-    json_input_file >> j2;
+    try {
+      json_input_file >> j2;
+    } catch(json::parse_error)  {
+      std::cerr << "error: json file, db2/run_list.json, is incomplete or has broken syntax.\n";
+      std::quick_exit(-127);
+    }
   }
 
-  std::cout << " runs : ";
 
   std::vector<double> runs;
   std::vector<double> hms_yields;
@@ -54,9 +63,9 @@ void plot_hms_singles(){
     if (j2.find(it.key()) == j2.end()) {
       continue;
     }
-    if (j2[it.key()]["target"]["target_id"].get<int>() != 3) {
-      continue;
-    }
+    //if (j2[it.key()]["target"]["target_id"].get<int>() != 3) {
+    //  continue;
+    //}
 
     int run_number = 0;
     int run_number2 = 0;
@@ -103,9 +112,9 @@ void plot_hms_singles(){
 
   // ------------------------------
   //
-  TGraphErrors*      gr = nullptr;
-  TMultiGraph* mg = nullptr;
-  TCanvas*     c  = nullptr;
+  TGraphErrors* gr = nullptr;
+  TMultiGraph*  mg = nullptr;
+  TCanvas*      c  = nullptr;
 
   // ------------------------------
   //
@@ -132,10 +141,12 @@ void plot_hms_singles(){
   c->cd(2);
   std::vector<double> zeros3(runs3.size());
   gr = new TGraphErrors(runs3.size(), runs3.data(), yield_ratios.data(),zeros3.data(),yield_ratio_uncs.data());
-  gr->SetTitle("; run number ; T4+T6 counts / scaler");
+  gr->SetTitle("; run number ; ps4*T2 + T6 counts / scaler");
   gr->SetMarkerStyle(20);
-  gr->Draw("alp");
-  gr->GetYaxis()->SetRangeUser(0.3, 0.45);
+  //gr->Draw("alp");
+  //gr->GetYaxis()->SetRangeUser(0.3, 0.45);
   gr->Draw("alp");
 
+  c->SaveAs("hms_singles_vs_run_number.png");
+  c->SaveAs("hms_singles_vs_run_number.pdf");
 }
