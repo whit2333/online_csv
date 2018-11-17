@@ -1,4 +1,5 @@
 void rootlogon() {
+  gSystem->SetBuildDir("$HOME/.root_build_dir");
   gPrintViaErrorHandler = kTRUE;
   gErrorIgnoreLevel = kWarning;
   gROOT->SetStyle("Plain");

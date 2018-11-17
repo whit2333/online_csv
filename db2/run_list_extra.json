@@ -1,8 +1,30 @@
 {
   "6206": {
     "comment": "Junk"
-  },
+  }, 
   "6207": {
     "comment": "Junk"
+  }, 
+  "6268": {
+    "comment": "junk maybe, DAQ problems at start (scaler rates not reading out) "
+  }, 
+  "6269": {
+    "comment": "maybe junk, DAQ problems maybe during data taking."
+  }, 
+  "6272": {
+    "comment": "good, good", 
+    "kinematic": "9-10"
+  }, 
+  "6278": {
+    "comment": "junk"
+  }, 
+  "6279": {
+    "comment": "junk"
+  }, 
+  "6280": {
+    "comment": "junk"
+  }, 
+  "6283": {
+    "comment": "junk"
   }
 }
