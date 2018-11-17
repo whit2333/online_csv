@@ -147,6 +147,6 @@ void plot_hms_singles(){
   //gr->GetYaxis()->SetRangeUser(0.3, 0.45);
   gr->Draw("alp");
 
-  c->SaveAs("hms_singles_vs_run_number.png");
-  c->SaveAs("hms_singles_vs_run_number.pdf");
+  c->SaveAs("results/hms_singles_vs_run_number.png");
+  c->SaveAs("results/hms_singles_vs_run_number.pdf");
 }
