@@ -27,7 +27,7 @@ using floaters = ROOT::VecOps::RVec<float>;
 using shorters = ROOT::VecOps::RVec<short>;
 using nlohmann::json;
 
-void good_coin_counter3(int RunNumber = 6018, int nevents = -1, int prompt = 1, int update = 1) {
+void good_coin_counter3(int RunNumber = 6018, int nevents = -1, int prompt = 1, int update = 1, int default_count_goal = 30000) {
 
   using nlohmann::json;
   json j;
@@ -238,7 +238,7 @@ void good_coin_counter3(int RunNumber = 6018, int nevents = -1, int prompt = 1, 
   j_current_run["kaon counts"] = kaon_counts;
   j_current_run["pion bg sub. counts"] = pion_corrected;
   j_current_run["kaon bg sub. counts"] = double(
-      double(kaon_counts) - random_bg * kaon_counts / (double(*coin_counts)));
+    double(kaon_counts) - random_bg * kaon_counts / (double(*coin_counts)));
   // std::cout << std::setw(4) << j_current_run << "\n";
 
   jruns[run_str] = nlohmann::json::parse(j_current_run.dump());
@@ -248,29 +248,29 @@ void good_coin_counter3(int RunNumber = 6018, int nevents = -1, int prompt = 1, 
     json_output_file << std::setw(4) << jruns << "\n";
   }
 
-  int count_goal = 30000;
+  int count_goal = default_count_goal;
 
-  if( prompt ){
+  if (prompt) {
     std::cout << "----------------------------------------------------------\n";
     std::cout << "Reference the run plan for this setting found on the wiki\n"
     "       https://hallcweb.jlab.org/wiki/index.php/CSV_Fall_2018_Run_Plan\n";
     std::cout << "----------------------------------------------------------\n";
     std::cout << "Please enter **total count** goal for this setting. \n";
     std::cout << "   Desired count [default=30000] : ";
-    //std::cin >> count_goal ;
-    //int number = 0;
-    if (std::cin.peek() == '\n') { //check if next character is newline
-      //count_goal = 30000; //and assign the default
-    } else if (!(std::cin >> count_goal)) { //be sure to handle invalid input
+    // std::cin >> count_goal ;
+    // int number = 0;
+    if (std::cin.peek() == '\n') { // check if next character is newline
+      // count_goal = 30000; //and assign the default
+    } else if (!(std::cin >> count_goal)) { // be sure to handle invalid input
       std::cout << "Invalid input.\n";
-      //error handling
+      // error handling
     }
-    
     std::cout << "\n";
+  }
 
-  std::cout << "count goal : " << count_goal << '\n';
-  std::cout << "time       : " << (*time_1MHz_cut) / 60.0 << "\n";
-  std::cout << "charge     : " << (*total_charge) << "\n";
+  //std::cout << "count goal : " << count_goal << '\n';
+  //std::cout << "time       : " << (*time_1MHz_cut) / 60.0 << "\n";
+  //std::cout << "charge     : " << (*total_charge) << "\n";
   double n_seconds      = double(*time_1MHz_cut);
   int    nev_tot        = (*c_n_events_total);
   double goal_Nevents   = (count_goal / pion_corrected) * nev_tot;
@@ -278,10 +278,13 @@ void good_coin_counter3(int RunNumber = 6018, int nevents = -1, int prompt = 1, 
   double charge_goal    = count_goal * (*total_charge) / (pion_corrected);
 
   std::cout << "----------------------------------------------------------\n";
-  std::cout << " N events to reach goal  : " << goal_Nevents/1000000   << "M events\n";
-  std::cout << " Charge   to reach goal  : " << charge_goal/1000.0    << " mC\n";
+  std::cout << " N events to reach goal  : " << goal_Nevents / 1000000 << "M events\n";
+  std::cout << " Charge   to reach goal  : " << charge_goal / 1000.0 << " mC\n";
 
-    std::string cmd = "caput hcRunPlanChargeGoal " + std::to_string(charge_goal/1000.0) + " &> /dev/null ";
+
+  if( update ) {
+    std::string cmd =
+    "caput hcRunPlanChargeGoal " + std::to_string(charge_goal / 1000.0) + " &> /dev/null ";
     system(cmd.c_str());
 
     cmd = "caput hcRunPlanNTrigEventsGoal " + std::to_string(goal_Nevents) + " &> /dev/null ";

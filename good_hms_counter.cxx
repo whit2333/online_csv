@@ -64,7 +64,7 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
   std::cout << "prescale value " << singles_ps_value << "\n";
 
   std::string coda_type = "COIN";
-  std::string rootfile = "ROOTfiles_online/";
+  std::string rootfile = "ROOTfiles_csv/";
   rootfile += std::string("coin_replay_production_");
   rootfile +=
       std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";

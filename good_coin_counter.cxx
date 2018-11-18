@@ -1,6 +1,7 @@
 #include "nlohmann/json.hpp"
 #include <cmath>
 #include <iostream>
+#include <cstdlib>
 
 #include "ROOT/RDataFrame.hxx"
 #include "ROOT/RVec.hxx"
@@ -16,18 +17,6 @@ R__LOAD_LIBRARY(libMathMore.so)
 R__LOAD_LIBRARY(libGenVector.so)
 
 #include "THStack.h"
-
-//#include "THcParmList.h"
-// R__LOAD_LIBRARY(libPodd.so)
-// R__LOAD_LIBRARY(libHallA.so)
-// R__LOAD_LIBRARY(libdc.so)
-// R__LOAD_LIBRARY(libHallC.so)
-
-// fmt - string formatting library
-//#include "fmt/core.h"
-//#include "fmt/ostream.h"
-// R__LOAD_LIBRARY(libfmt.so)
-
 using Pvec3D = ROOT::Math::XYZVector;
 using Pvec4D = ROOT::Math::PxPyPzMVector;
 
@@ -38,25 +27,61 @@ using floaters = ROOT::VecOps::RVec<float>;
 using shorters = ROOT::VecOps::RVec<short>;
 using nlohmann::json;
 
-void good_coin_counter(int RunNumber = 6018, int nevents = -1,
-                       const char *codatype = "COIN") {
+void good_coin_counter(int RunNumber = 6018, int nevents = -1, int prompt = 1, int update = 1, int default_count_goal = 30000) {
 
-  std::string coda_type = codatype;
+  using nlohmann::json;
+  json j;
+  {
+    std::ifstream json_input_file("db2/run_list.json");
+    try {
+      json_input_file >> j;
+    } catch(json::parse_error)  {
+      std::cerr << "error: json file, db2/run_list.json, is incomplete or has broken syntax.\n";
+      std::quick_exit(-127);
+    }
+  }
 
-  std::string rootfile = "ROOTfiles_online/";
+  auto runnum_str = std::to_string(RunNumber);
+  if (j.find(runnum_str) == j.end()) {
+    std::cout << "Run " << RunNumber << " not found in ddb2/run_list.json\n";
+    std::cout << "Check that run number and replay exists. \n";
+    std::cout << "If problem persists please contact Whit (717-341-1080)\n";
+    std::cout << "In the meantime use: good_coin_counter_old.cxx \n";
+  }
+  double P0_shms_setting =
+      j[runnum_str]["spectrometers"]["shms_momentum"].get<double>();
+  double P0_shms = std::abs(P0_shms_setting);
+
+  std::string coda_type = "COIN";
+  std::string rootfile = "ROOTfiles_csv/";
   rootfile += std::string("coin_replay_production_");
   rootfile +=
       std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
 
-  // auto file = new TFile(rootfile.c_str());
+  {
+    TFile file(rootfile.c_str());
+    if (file.IsZombie()) {
+      std::cout << " Did your replay finish?  Check that the it is done before running this script.\n";
+      return;
+    }
+  }
   // new TBrowser;
+  //
 
   ROOT::EnableImplicitMT(24);
 
   Pvec4D Pbeam(0, 0, 10.598, 0.000511);
 
+  // Detector tree 
   ROOT::RDataFrame d("T", rootfile);
+  // HMS Scaler tree
   ROOT::RDataFrame d_sh("TSH", rootfile);
+  
+  auto bcm4b_charge        = d_sh.Max("H.BCM4B.scalerChargeCut");
+  auto el_real_scaler      = d_sh.Max("H.hEL_REAL.scaler");
+  auto time_1MHz           = d_sh.Max("H.1MHz.scalerTime");
+  auto time_1MHz_cut       = d_sh.Max("H.1MHz.scalerTimeCut");
+  auto total_charge        = bcm4b_charge;
 
   std::string hpdelta = "P.gtr.dp > -10 && P.gtr.dp < 20 && "
                         "H.gtr.dp > -10 && H.gtr.dp < 10";
@@ -150,9 +175,17 @@ void good_coin_counter(int RunNumber = 6018, int nevents = -1,
   auto h_event_type =
       d0.Histo1D({"event_type", "event_type", 10, 0, 10}, "fEvtHdr.fEvtType");
 
-  auto total_charge = d_sh.Sum("H.BCM4A.scalerCurrent");
 
-  auto d_beans = d2_coin.Filter("P.hgcer.npeSum>1.0"); //no cerenkov cut needed when momentum is below 2.8 GeV/c
+  auto d_hgc_cut = d2_coin.Filter(
+      [=](double npe, double dp) {
+        double p_track = P0_shms * (100.0 + dp) / 100.0;
+        // no cerenkov cut needed when momentum is below 2.8 GeV/c
+        if (p_track < 2.8) {
+          return true;
+        }
+        return npe > 1.0;
+      },
+      {"P.hgcer.npeSum", "P.gtr.dp"});
 
   auto hms_electron_counts = d2.Count();
   auto hms_electron_counts2 = d2_2.Count();
@@ -160,29 +193,37 @@ void good_coin_counter(int RunNumber = 6018, int nevents = -1,
 
   auto rand_bg_count = d_random.Count();
 
-  auto bean_count = d_beans.Count();
-  auto pion_count = d_beans.Count();
-  // auto disp = d2.Display("fEvtHdr.fEvtType");
+  auto pion_count = d_hgc_cut.Count();
 
-  // disp->Print();
-  double random_bg = double(*rand_bg_count) / 5.0;
-  double hms_e_yield = (*hms_electron_counts) / (*total_charge);
+  double random_bg    = double(*rand_bg_count) / 5.0;
+  double hms_e_yield  = (*hms_electron_counts) / (*total_charge);
   double hms_e_yield2 = (*hms_electron_counts2) / (*total_charge);
-  double coin_yield = (*coin_counts) / (*total_charge);
+  double coin_yield   = (*coin_counts) / (*total_charge);
 
   double pi_K_ratio =
       double(*pion_count) / (double(*coin_counts) - double(*pion_count));
   double kaon_counts = (double(*coin_counts) - double(*pion_count));
 
+  double pion_corrected =
+      double(double(*pion_count) - random_bg * double(*pion_count) / (double(*coin_counts)));
+
+  std::cout << " ----------------------------------------------    \n";
+  std::cout << " # of good coin  = " << int(pion_corrected) << "    \n";
+  std::cout << "    out of  " << *c_n_events_total << " total triggers\n";
+  std::cout << "        and " << *c_n_events_coin << " coin triggers\n";
+
   json jruns;
   {
     std::ifstream input_file("db2/run_count_list.json");
-    input_file >> jruns;
+    try {
+      input_file >> jruns;
+    } catch(json::parse_error)  {
+      std::cerr << "error: json file is incomplete or has broken syntax.\n";
+      std::quick_exit(-127);
+    }
   }
 
-  // std::ifstream input_file("db2/run_count_list.json");
-  // input_file >> jruns;
-  // input_file.close();
+
   // std::cout << jruns << std::endl;;
   // Open json db file to get current values (if run already exists, replace)
   // fill the run values
@@ -194,29 +235,65 @@ void good_coin_counter(int RunNumber = 6018, int nevents = -1,
   j_current_run["random background"] = double(random_bg);
   j_current_run["pion counts"] = int(*pion_count);
   j_current_run["pi/K ratio"] = pi_K_ratio;
-  j_current_run["kaon ounts"] = kaon_counts;
-  j_current_run["pion bg sub. counts"] =
-      double(double(*pion_count) -
-             random_bg * double(*pion_count) / (double(*coin_counts)));
+  j_current_run["kaon counts"] = kaon_counts;
+  j_current_run["pion bg sub. counts"] = pion_corrected;
   j_current_run["kaon bg sub. counts"] = double(
-      double(kaon_counts) - random_bg * kaon_counts / (double(*coin_counts)));
+    double(kaon_counts) - random_bg * kaon_counts / (double(*coin_counts)));
   // std::cout << std::setw(4) << j_current_run << "\n";
-  //
-  jruns[run_str] = j_current_run;
 
+  jruns[run_str] = nlohmann::json::parse(j_current_run.dump());
   // jruns[run_str] = nlohmann::json::parse(j_current_run.dump());
-  // jruns[run_str] = nlohmann::json::parse(j_current_run.dump());
-  std::ofstream json_output_file("db2/run_count_list.json");
-  json_output_file << std::setw(4) << jruns << "\n";
+  if( update ) {
+    std::ofstream json_output_file("db2/run_count_list.json");
+    json_output_file << std::setw(4) << jruns << "\n";
+  }
 
-  std::cout << " ----------------------------------------------    \n";
-  std::cout << " # of good coin  = "
-            << int(double(*pion_count) -
-                   random_bg * double(*pion_count) / (double(*coin_counts)))
-            << "    \n";
-  std::cout << " ----------------------------------------------    \n";
-  std::cout << " of  " << *c_n_events_total << " total triggers\n";
-  std::cout << " and " << *c_n_events_coin << " coin triggers\n";
+  int count_goal = default_count_goal;
+
+  if (prompt) {
+    std::cout << "----------------------------------------------------------\n";
+    std::cout << "Reference the run plan for this setting found on the wiki\n"
+    "       https://hallcweb.jlab.org/wiki/index.php/CSV_Fall_2018_Run_Plan\n";
+    std::cout << "----------------------------------------------------------\n";
+    std::cout << "Please enter **total count** goal for this setting. \n";
+    std::cout << "   Desired count [default=30000] : ";
+    // std::cin >> count_goal ;
+    // int number = 0;
+    if (std::cin.peek() == '\n') { // check if next character is newline
+      // count_goal = 30000; //and assign the default
+    } else if (!(std::cin >> count_goal)) { // be sure to handle invalid input
+      std::cout << "Invalid input.\n";
+      // error handling
+    }
+    std::cout << "\n";
+  }
+
+  //std::cout << "count goal : " << count_goal << '\n';
+  //std::cout << "time       : " << (*time_1MHz_cut) / 60.0 << "\n";
+  //std::cout << "charge     : " << (*total_charge) << "\n";
+  double n_seconds      = double(*time_1MHz_cut);
+  int    nev_tot        = (*c_n_events_total);
+  double goal_Nevents   = (count_goal / pion_corrected) * nev_tot;
+  double time_remaining = (count_goal * n_seconds) / pion_corrected - (n_seconds);
+  double charge_goal    = count_goal * (*total_charge) / (pion_corrected);
+
+  std::cout << "----------------------------------------------------------\n";
+  std::cout << " N events to reach goal  : " << goal_Nevents / 1000000 << "M events\n";
+  std::cout << " Charge   to reach goal  : " << charge_goal / 1000.0 << " mC\n";
+
+
+  if( update ) {
+    std::string cmd =
+    "caput hcRunPlanChargeGoal " + std::to_string(charge_goal / 1000.0) + " &> /dev/null ";
+    system(cmd.c_str());
+
+    cmd = "caput hcRunPlanNTrigEventsGoal " + std::to_string(goal_Nevents) + " &> /dev/null ";
+    system(cmd.c_str());
+
+    cmd = "caput hcRunPlanCountGoal " + std::to_string(count_goal) + " &> /dev/null ";
+    system(cmd.c_str());
+  }
+
   // std::cout << " pions+kaons   : " << *coin_counts << "\n";
   // std::cout << " pions         : " << *pion_count << "\n";
   // std::cout << " random        : " << random_bg << "\n";

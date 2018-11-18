@@ -26,5 +26,11 @@
   }, 
   "6283": {
     "comment": "junk"
+  }, 
+  "6299": {
+    "comment": "took about 1kHz HMS singles to study daq"
+  }, 
+  "6303": {
+    "comment": "junk"
   }
 }
