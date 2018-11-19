@@ -1,9 +1,10 @@
 #!/bin/bash
 
 function print_the_help {
-  echo "USAGE:    do_good_coin [-c count_goal] [-r run_number] [-n nevents]"
+  echo "USAGE:    do_good_coin -c count_goal [-r run_number] [-n nevents]"
   echo "OPTIONS:                    "
-  echo "            -c,--count      count goal. [default: 30000] "
+  echo "            -c,--count      count goal. "
+  echo "            -I,--no-update  Don't update run info or charge goals. Also set when count goal = 0."
   echo "            -r,--run        run number [default: most current run]"
   echo "            -n,--nevents    Number of events to replay. [default: 100000, full:-1]"
   echo "            -h,--help       print help"
@@ -34,8 +35,8 @@ function print_the_help {
   echo "Set the charge goal to be equivalent to 30k good coin events.         "
   echo "    $ do_good_coin -c 30000        "
   echo "           "
-  echo "Set process the latest a full run  "
-  echo "    $ do_good_coin -n -1  -r 1234    "
+  echo "Set process the latest a full run but not update the charge/count goals."
+  echo "    $ do_good_coin -c 0 -n -1  -r 1234    "
   echo "           "
   echo "Update the estimated charge goals using 100k event replay. "
   echo "    $ do_good_coin -c 5000 -n 100000     "
@@ -60,9 +61,10 @@ if [[ $# -eq 0 ]] ; then
   exit 
 fi
 
-count_goal=30000
+count_goal=
 num_events=100000
 run_number=$(latest_run)
+update_run_info=1
 
 POSITIONAL=()
 while [[ $# -gt 0 ]]
@@ -89,6 +91,10 @@ do
       shift # past argument
       shift # past value
       ;;
+    -I|--no-update)
+      update_run_info=0
+      shift # past argument
+      ;;
     *)    # unknown option
       #POSITIONAL+=("$1") # save it in an array for later
       echo "unknown option $1"
@@ -100,23 +106,33 @@ done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
 ## target
-#if [[ -e "$targ"  ]] ; 
-#then 
-#  print_the_help
-#  echo "Error target argument, --target, required."
-#  exit
-#fi
+if [[ -z "$count_goal"  ]] ; 
+then 
+  echo "Error: provide count goal with '-c number' or '--count number' argument "
+  exit
+fi
+if [[ "$count_goal" -eq "0"  ]] ; 
+then 
+  update_run_info=0
+fi
+
 
 #pushd /home/cdaq/hallc-online/hallc_replay_sidis_fall18
 #./run_full_auto_sidis.sh ${run_number} ${num_events}
 #popd
+
+#run_good_counter(){
+#  echo " running counter...."
+#  root -l -b -q  "good_coin_counter.cxx(${run_number},${num_events},0,${update_run_info},${count_goal})" & 
+#}
+#trap run_good_counter SIGINT
 
 pushd /home/cdaq/whit/online/replay_test
 ./bin/hc_coin -r ${run_number} -n ${num_events}
 popd
 
 pushd /home/cdaq/whit/online/replay_test
-root -l -b -q  "good_coin_counter.cxx(${run_number},${num_events},0,1,${count_goal})"
+root -l -b -q  "good_coin_counter.cxx(${run_number},${num_events},0,${update_run_info},${count_goal})"
 root -l -b -q  "good_hms_counter.cxx(${run_number},${num_events})"
 popd
 

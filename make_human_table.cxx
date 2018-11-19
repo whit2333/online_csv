@@ -39,14 +39,59 @@ void make_human_table() {
   }
 
   // std::cout << j.dump(2);
+  auto print_header = [](){
+  // print header
+    std::cout << "\n";
+    fmt::print(" {:<5} ", "Run");
+  fmt::print(" {:^5} ", "Target");
+  fmt::print(" {:^7} ", "P_hms");
+  fmt::print(" {:^7} ", "th_hms");
+  fmt::print(" {:^7} ", "P_shms");
+  fmt::print(" {:^7} ", "th_shms");
+  fmt::print(" {:^21} ", "start time");
+  fmt::print(" {:^21} ", "end time");
+  fmt::print(" {:>9} ", "pi_count");
+  fmt::print(" {:>11} ", "charge");
+  fmt::print(" {:>9} ", "yield");
+  fmt::print(" {:>9} ", "triggers");
+  fmt::print(" {:<} ", "comment");
+  std::cout << "\n";
+  };
 
   std::cout << " runs : \n";
-  std::vector<int> runs;
+
+  std::string old_target = "";
+
+  double p_hms   = 0.0;
+  double th_hms  = 0.0;
+  double p_shms  = 0.0;
+  double th_shms = 0.0;
+
   for (json::iterator it = j.begin(); it != j.end(); ++it) {
     auto runjs = it.value();
-    runs.push_back(std::stoi(it.key()));
+
+    std::string target_lab = runjs["target"]["target_label"].get<std::string>();
+    if(target_lab != old_target) { 
+      print_header(); 
+    }
+
+    if ((p_hms != runjs["spectrometers"]["hms_momentum"].get<double>()) ||
+        (th_hms != runjs["spectrometers"]["hms_angle"].get<double>()) ||
+        (p_shms != runjs["spectrometers"]["shms_momentum"].get<double>()) ||
+        (th_shms != runjs["spectrometers"]["shms_angle"].get<double>())) {
+      print_header();
+    }
+
+    p_hms   = runjs["spectrometers"]["hms_momentum"].get<double>();
+    th_hms  = runjs["spectrometers"]["hms_angle"].get<double>();
+    p_shms  = runjs["spectrometers"]["shms_momentum"].get<double>();
+    th_shms  = runjs["spectrometers"]["shms_angle"].get<double>();
+
+
+    old_target = target_lab;
+
     fmt::print(" {:<5} ", std::stoi(it.key()));
-    fmt::print(" {:^5} ", runjs["target"]["target_label"].get<std::string>());
+    fmt::print(" {:^5} ", target_lab);
     fmt::print(" {:>7.3f} ", runjs["spectrometers"]["hms_momentum"].get<double>());
     fmt::print(" {:>7.2f} ", runjs["spectrometers"]["hms_angle"].get<double>());
     fmt::print(" {:>7.3f} ", runjs["spectrometers"]["shms_momentum"].get<double>());
@@ -65,14 +110,21 @@ void make_human_table() {
     double total_charge = 0.0001;
     if (runjs.find("total_charge") != runjs.end()) {
       total_charge = runjs["total_charge"].get<double>() / 1000.0;
-      fmt::print(" {:>11.1f} ", total_charge);
-    } else {
-      fmt::print(" {:>11} ", "");
+      //fmt::print("/ {:>10.1f} ", total_charge);
     }
+    //else {
+    //  fmt::print(" {:>11} ", "");
+    //}
     if (j2.count(it.key()) != 0) {
       try {
         double pi_yield = j2[it.key()]["pion bg sub. counts"].get<double>();
         fmt::print(" {:>9.1f} ", pi_yield);
+    if (runjs.find("total_charge") != runjs.end()) {
+      //total_charge = runjs["total_charge"].get<double>() / 1000.0;
+      fmt::print("/ {:<10.1f} ", total_charge);
+    } else {
+      fmt::print(" {:>11} ", "");
+    }
         fmt::print(" {:>9.1f} ", pi_yield / total_charge);
         int n_events = j2[it.key()]["total trigger events"].get<int>();
         fmt::print(" {:>9d} ", n_events);
@@ -98,21 +150,7 @@ void make_human_table() {
     fmt::print(" {:<} ", comment);
     std::cout << "\n";
   }
+  print_header(); 
 
-  // print header
-  fmt::print(" {:<5} ", "Run");
-  fmt::print(" {:^5} ", "Target");
-  fmt::print(" {:^7} ", "P_hms");
-  fmt::print(" {:^7} ", "th_hms");
-  fmt::print(" {:^7} ", "P_shms");
-  fmt::print(" {:^7} ", "th_shms");
-  fmt::print(" {:^21} ", "start time");
-  fmt::print(" {:^21} ", "end time");
-  fmt::print(" {:>11} ", "charge");
-  fmt::print(" {:>9} ", "pi_count");
-  fmt::print(" {:>9} ", "yield");
-  fmt::print(" {:>9} ", "triggers");
-  fmt::print(" {:<} ", "comment");
-  std::cout << "\n";
 
 }

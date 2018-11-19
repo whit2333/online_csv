@@ -17,6 +17,14 @@ R__LOAD_LIBRARY(libGenVector.so)
 
 #include "THStack.h"
 
+#ifdef __cpp_lib_filesystem
+#include <filesystem>
+namespace fs = std::filesystem;
+#else
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#endif
+
 using Pvec3D = ROOT::Math::XYZVector;
 using Pvec4D = ROOT::Math::PxPyPzMVector;
 
@@ -69,25 +77,46 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
   rootfile +=
       std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
 
-  // auto file = new TFile(rootfile.c_str());
-  {
+  bool found_good_file = false; 
+  if(!gSystem->AccessPathName(rootfile.c_str())) {
     TFile file(rootfile.c_str());
     if (file.IsZombie()) {
+      std::cout << rootfile << " is a zombie.\n";
       std::cout << " Did your replay finish?  Check that the it is done before running this script.\n";
-      return;
+      //return;
+    } else {
+      found_good_file = true;
     }
   }
-  // new TBrowser;
+  if(!found_good_file) {
+    rootfile = "ROOTfiles_online/";
+    rootfile += std::string("coin_replay_production_");
+    rootfile += std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
+
+    if(!gSystem->AccessPathName(rootfile.c_str())) {
+      TFile file(rootfile.c_str());
+      if (file.IsZombie()) {
+        std::cout << rootfile << " is a zombie.\n";
+        std::cout << " Did your replay finish?  Check that the it is done before running this script.\n";
+      } else {
+        found_good_file = true;
+      }
+    }
+  }
+  if(!found_good_file) {
+    std::cout << " Error: suitable root file not found\n";
+    return;
+  }
 
   ROOT::EnableImplicitMT(24);
 
-  Pvec4D Pbeam(0, 0, 10.598, 0.000511);
+    Pvec4D Pbeam(0, 0, 10.598, 0.000511);
 
-  // Detector tree 
-  ROOT::RDataFrame d("T", rootfile);
+    // Detector tree 
+    ROOT::RDataFrame d("T", rootfile);
 
-  // HMS Scaler tree
-  ROOT::RDataFrame d_sh("TSH", rootfile);
+    // HMS Scaler tree
+    ROOT::RDataFrame d_sh("TSH", rootfile);
   //int N_scaler_events = *(d_sh.Count());
   
   std::string hpdelta = "H.gtr.dp > -10 && H.gtr.dp < 10";
@@ -132,6 +161,7 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
   auto bcm4b_charge        = d_sh.Max("H.BCM4B.scalerChargeCut");
   auto el_real_scaler      = d_sh.Max("H.hEL_REAL.scaler");
   auto time_1MHz           = d_sh.Max("H.1MHz.scalerTime");
+  auto time_1MHz_cut       = d_sh.Max("H.1MHz.scalerTimeCut");
   //auto hTRIG1_ROC1_npassed = d_sh.Max("H.hTRIG1_ROC1.npassed");
   //auto H_hTRIG1_scaler     = d_sh.Max("H.hTRIG1.scaler");
 
@@ -152,6 +182,7 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
 
   double good_total_charge = *bcm4b_charge / 1000.0; // mC
   //double hms_live_time = double(*hTRIG1_ROC1_npassed) / double(*H_hTRIG1_scaler);
+  double good_time = *time_1MHz_cut; // s
 
   double hms_scaler_yield     = ((*el_real_scaler) / good_total_charge);
   double hms_scaler_yield_unc = (std::sqrt(*el_real_scaler) / good_total_charge);
@@ -183,6 +214,7 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
   jruns[run_str]["ps cor. hms e raw counts"] = int((*c_T2_yield_raw) * singles_ps_value + (*c_T6_yield_raw));
   jruns[run_str]["ps cor. hms e counts"]     = int((*c_T2_yield_raw) * singles_ps_value + (*c_T6_yield_raw));
   jruns[run_str]["charge bcm4b 2u cut"]      = good_total_charge;
+  jruns[run_str]["time 1MHz 2u cut"]         = good_time;
   jruns[run_str]["hms e raw yield"]          = double((*c_T2_yield_raw) * singles_ps_value + (*c_T6_yield_raw)) / good_total_charge;
   jruns[run_str]["hms e yield"]              = double((*c_T2_yield) * singles_ps_value + (*c_T6_yield)) / good_total_charge;
   jruns[run_str]["hms e yield unc."]         = double(std::sqrt(*c_T2_yield) * singles_ps_value + std::sqrt(*c_T6_yield)) / good_total_charge;

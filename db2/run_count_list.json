@@ -1413,6 +1413,7 @@
         "ps cor. hms e counts": 2213478,
         "ps cor. hms e raw counts": 2213478,
         "random background": 256.8,
+        "time 1MHz 2u cut": 509.313285,
         "total trigger events": 119926
     },
     "6130": {
@@ -1435,6 +1436,7 @@
         "ps cor. hms e counts": 2638599,
         "ps cor. hms e raw counts": 2638599,
         "random background": 317.4,
+        "time 1MHz 2u cut": 566.036009,
         "total trigger events": 156165
     },
     "6132": {
@@ -1457,6 +1459,7 @@
         "ps cor. hms e counts": 5153661,
         "ps cor. hms e raw counts": 5153661,
         "random background": 580.8,
+        "time 1MHz 2u cut": 1367.95347,
         "total trigger events": 275492
     },
     "6133": {
@@ -1479,6 +1482,7 @@
         "ps cor. hms e counts": 1064677,
         "ps cor. hms e raw counts": 1064677,
         "random background": 53.8,
+        "time 1MHz 2u cut": 817.4343969999999,
         "total trigger events": 54210
     },
     "6135": {
@@ -1501,6 +1505,7 @@
         "ps cor. hms e counts": 2141251,
         "ps cor. hms e raw counts": 2141251,
         "random background": 138.4,
+        "time 1MHz 2u cut": 1142.1233049999998,
         "total trigger events": 107456
     },
     "6136": {
@@ -1523,6 +1528,7 @@
         "ps cor. hms e counts": 26703869,
         "ps cor. hms e raw counts": 26703869,
         "random background": 10127.2,
+        "time 1MHz 2u cut": 2449.3006519999994,
         "total trigger events": 2557335
     },
     "6137": {
@@ -1545,6 +1551,7 @@
         "ps cor. hms e counts": 27012672,
         "ps cor. hms e raw counts": 27012672,
         "random background": 10204.8,
+        "time 1MHz 2u cut": 2522.5392060000013,
         "total trigger events": 2583154
     },
     "6138": {
@@ -1567,6 +1574,7 @@
         "ps cor. hms e counts": 24206093,
         "ps cor. hms e raw counts": 24206093,
         "random background": 9071.8,
+        "time 1MHz 2u cut": 2237.9571750000005,
         "total trigger events": 2315760
     },
     "6139": {
@@ -1589,6 +1597,7 @@
         "ps cor. hms e counts": 32745109,
         "ps cor. hms e raw counts": 32745109,
         "random background": 12074.2,
+        "time 1MHz 2u cut": 2457.4562490000008,
         "total trigger events": 3018423
     },
     "6140": {
@@ -1611,6 +1620,7 @@
         "ps cor. hms e counts": 28718825,
         "ps cor. hms e raw counts": 28718825,
         "random background": 11018.2,
+        "time 1MHz 2u cut": 2071.827318,
         "total trigger events": 2726386
     },
     "6141": {
@@ -1633,6 +1643,7 @@
         "ps cor. hms e counts": 31567902,
         "ps cor. hms e raw counts": 31567902,
         "random background": 12057.0,
+        "time 1MHz 2u cut": 2256.043987,
         "total trigger events": 3004673
     },
     "6142": {
@@ -1655,6 +1666,7 @@
         "ps cor. hms e counts": 7340142,
         "ps cor. hms e raw counts": 7340142,
         "random background": 600.4,
+        "time 1MHz 2u cut": 434.948671,
         "total trigger events": 310572
     },
     "6144": {
@@ -1677,6 +1689,7 @@
         "ps cor. hms e counts": 30401432,
         "ps cor. hms e raw counts": 30401432,
         "random background": 2463.6,
+        "time 1MHz 2u cut": 1826.1102310000008,
         "total trigger events": 1292798
     },
     "6145": {
@@ -1699,6 +1712,7 @@
         "ps cor. hms e counts": 25675570,
         "ps cor. hms e raw counts": 25675570,
         "random background": 3744.8,
+        "time 1MHz 2u cut": 801.851407,
         "total trigger events": 1710655
     },
     "6146": {
@@ -1721,6 +1735,7 @@
         "ps cor. hms e counts": 5120665,
         "ps cor. hms e raw counts": 5120665,
         "random background": 705.2,
+        "time 1MHz 2u cut": 180.382482,
         "total trigger events": 334251
     },
     "6154": {
@@ -1737,11 +1752,11 @@
     "6155": {
         "charge bcm4b 2u cut": 2.2815776386804476,
         "coin trigger events": 12964,
-        "hms e counts": 1113,
+        "hms e counts": 1146,
         "hms e raw counts": 2198,
         "hms e raw yield": 123255.50322391927,
-        "hms e yield": 62441.00467358813,
-        "hms e yield unc.": 1871.6399218299098,
+        "hms e yield": 64236.69197808394,
+        "hms e yield unc.": 1898.7934275696387,
         "hms ps4 factor": 128.0,
         "hms scaler yield": 112377.9421980523,
         "hms scaler yield unc.": 221.93352530319535,
@@ -1754,6 +1769,7 @@
         "ps cor. hms e counts": 281217,
         "ps cor. hms e raw counts": 281217,
         "random background": 3.6,
+        "time 1MHz 2u cut": 109.442603,
         "total trigger events": 15161
     },
     "6163": {
@@ -1776,6 +1792,7 @@
         "ps cor. hms e counts": 37779,
         "ps cor. hms e raw counts": 37779,
         "random background": 2018.0,
+        "time 1MHz 2u cut": 684.1126459999999,
         "total trigger events": 1023700
     },
     "6164": {
@@ -1798,6 +1815,7 @@
         "ps cor. hms e counts": 6836,
         "ps cor. hms e raw counts": 6836,
         "random background": 386.6,
+        "time 1MHz 2u cut": 150.041027,
         "total trigger events": 190318
     },
     "6166": {
@@ -1820,6 +1838,7 @@
         "ps cor. hms e counts": 2790246,
         "ps cor. hms e raw counts": 2790246,
         "random background": 251.4,
+        "time 1MHz 2u cut": 144.368197,
         "total trigger events": 110524
     },
     "6167": {
@@ -1842,6 +1861,7 @@
         "ps cor. hms e counts": 713990,
         "ps cor. hms e raw counts": 713990,
         "random background": 12.8,
+        "time 1MHz 2u cut": 176.190336,
         "total trigger events": 11129
     },
     "6168": {
@@ -1864,16 +1884,17 @@
         "ps cor. hms e counts": 7316148,
         "ps cor. hms e raw counts": 7316148,
         "random background": 221.2,
+        "time 1MHz 2u cut": 1549.9447870000001,
         "total trigger events": 201966
     },
     "6169": {
         "charge bcm4b 2u cut": 4.788166805644958,
         "coin trigger events": 6868,
-        "hms e counts": 4636,
+        "hms e counts": 4638,
         "hms e raw counts": 8956,
         "hms e raw yield": 119511.08288987863,
-        "hms e yield": 61847.678249402765,
-        "hms e yield unc.": 909.8286907339697,
+        "hms e yield": 61874.41081850397,
+        "hms e yield unc.": 910.0251687797308,
         "hms ps4 factor": 64.0,
         "hms scaler yield": 106166.30970347475,
         "hms scaler yield unc.": 148.90480942031581,
@@ -1886,6 +1907,7 @@
         "ps cor. hms e counts": 572239,
         "ps cor. hms e raw counts": 572239,
         "random background": 18.4,
+        "time 1MHz 2u cut": 116.254717,
         "total trigger events": 15809
     },
     "6170": {
@@ -1908,6 +1930,7 @@
         "ps cor. hms e counts": 22787689,
         "ps cor. hms e raw counts": 22787689,
         "random background": 4829.0,
+        "time 1MHz 2u cut": 1456.2609980000002,
         "total trigger events": 1501566
     },
     "6171": {
@@ -1930,6 +1953,7 @@
         "ps cor. hms e counts": 18741409,
         "ps cor. hms e raw counts": 18741409,
         "random background": 4042.0,
+        "time 1MHz 2u cut": 1198.2293160000002,
         "total trigger events": 1234973
     },
     "6172": {
@@ -1952,6 +1976,7 @@
         "ps cor. hms e counts": 4762426,
         "ps cor. hms e raw counts": 4762426,
         "random background": 282.4,
+        "time 1MHz 2u cut": 1004.730121,
         "total trigger events": 249639
     },
     "6174": {
@@ -1974,6 +1999,7 @@
         "ps cor. hms e counts": 15429433,
         "ps cor. hms e raw counts": 15429433,
         "random background": 3665.2,
+        "time 1MHz 2u cut": 812.566513,
         "total trigger events": 1059899
     },
     "6175": {
@@ -1996,6 +2022,7 @@
         "ps cor. hms e counts": 12791698,
         "ps cor. hms e raw counts": 12791698,
         "random background": 3017.8,
+        "time 1MHz 2u cut": 696.96298,
         "total trigger events": 874677
     },
     "6176": {
@@ -2018,6 +2045,7 @@
         "ps cor. hms e counts": 1494904,
         "ps cor. hms e raw counts": 1494904,
         "random background": 207.0,
+        "time 1MHz 2u cut": 72.864994,
         "total trigger events": 57783
     },
     "6177": {
@@ -2040,6 +2068,7 @@
         "ps cor. hms e counts": 34055426,
         "ps cor. hms e raw counts": 34055426,
         "random background": 4454.6,
+        "time 1MHz 2u cut": 1697.0631589999998,
         "total trigger events": 1303461
     },
     "6178": {
@@ -2062,6 +2091,7 @@
         "ps cor. hms e counts": 18583770,
         "ps cor. hms e raw counts": 18583770,
         "random background": 4924.8,
+        "time 1MHz 2u cut": 1858.776281,
         "total trigger events": 1421295
     },
     "6179": {
@@ -2084,6 +2114,7 @@
         "ps cor. hms e counts": 20604147,
         "ps cor. hms e raw counts": 20604147,
         "random background": 5138.4,
+        "time 1MHz 2u cut": 2210.7502919999997,
         "total trigger events": 1518021
     },
     "6180": {
@@ -2106,6 +2137,7 @@
         "ps cor. hms e counts": 18535374,
         "ps cor. hms e raw counts": 18535374,
         "random background": 4625.8,
+        "time 1MHz 2u cut": 1989.1157360000002,
         "total trigger events": 1371818
     },
     "6181": {
@@ -2128,6 +2160,7 @@
         "ps cor. hms e counts": 3494804,
         "ps cor. hms e raw counts": 3494804,
         "random background": 393.0,
+        "time 1MHz 2u cut": 735.9119699999999,
         "total trigger events": 221919
     },
     "6182": {
@@ -2150,6 +2183,7 @@
         "ps cor. hms e counts": 4079583,
         "ps cor. hms e raw counts": 4079583,
         "random background": 447.0,
+        "time 1MHz 2u cut": 872.2621650000001,
         "total trigger events": 259876
     },
     "6183": {
@@ -2172,6 +2206,7 @@
         "ps cor. hms e counts": 6536558,
         "ps cor. hms e raw counts": 6536558,
         "random background": 1045.6,
+        "time 1MHz 2u cut": 1410.3818769999998,
         "total trigger events": 507029
     },
     "6184": {
@@ -2194,6 +2229,7 @@
         "ps cor. hms e counts": 2743630,
         "ps cor. hms e raw counts": 2743630,
         "random background": 498.6,
+        "time 1MHz 2u cut": 591.270993,
         "total trigger events": 226210
     },
     "6185": {
@@ -2216,6 +2252,7 @@
         "ps cor. hms e counts": 10995022,
         "ps cor. hms e raw counts": 10995022,
         "random background": 3030.4,
+        "time 1MHz 2u cut": 2001.2415349999997,
         "total trigger events": 1152433
     },
     "6186": {
@@ -2238,6 +2275,7 @@
         "ps cor. hms e counts": 15819370,
         "ps cor. hms e raw counts": 15819370,
         "random background": 4290.4,
+        "time 1MHz 2u cut": 2922.029582999999,
         "total trigger events": 1642873
     },
     "6187": {
@@ -2260,6 +2298,7 @@
         "ps cor. hms e counts": 15531757,
         "ps cor. hms e raw counts": 15531757,
         "random background": 4271.8,
+        "time 1MHz 2u cut": 2862.302428,
         "total trigger events": 1617214
     },
     "6188": {
@@ -2282,6 +2321,7 @@
         "ps cor. hms e counts": 12932106,
         "ps cor. hms e raw counts": 12932106,
         "random background": 3623.0,
+        "time 1MHz 2u cut": 2299.211205,
         "total trigger events": 1342972
     },
     "6189": {
@@ -2304,6 +2344,7 @@
         "ps cor. hms e counts": 12704354,
         "ps cor. hms e raw counts": 12704354,
         "random background": 3485.0,
+        "time 1MHz 2u cut": 2285.8247929999998,
         "total trigger events": 1318249
     },
     "6190": {
@@ -2326,7 +2367,22 @@
         "ps cor. hms e counts": 12222752,
         "ps cor. hms e raw counts": 12222752,
         "random background": 3418.2,
+        "time 1MHz 2u cut": 2171.543547,
         "total trigger events": 1271514
+    },
+    "6191": {
+        "charge bcm4b 2u cut": 22.440543907528824,
+        "hms e counts": 11445,
+        "hms e raw counts": 48033,
+        "hms e raw yield": 67750.00669613548,
+        "hms e yield": 16138.111513353248,
+        "hms e yield unc.": 152.1840083913737,
+        "hms ps4 factor": 32.0,
+        "hms scaler yield": 47305.938945795424,
+        "hms scaler yield unc.": 45.91357860633935,
+        "ps cor. hms e counts": 1520347,
+        "ps cor. hms e raw counts": 1520347,
+        "time 1MHz 2u cut": 407.356736
     },
     "6192": {
         "charge bcm4b 2u cut": 73.16935444643363,
@@ -2348,6 +2404,7 @@
         "ps cor. hms e counts": 10307076,
         "ps cor. hms e raw counts": 10307076,
         "random background": 1179.8,
+        "time 1MHz 2u cut": 1203.456916,
         "total trigger events": 755783
     },
     "6193": {
@@ -2370,6 +2427,7 @@
         "ps cor. hms e counts": 10999896,
         "ps cor. hms e raw counts": 10999896,
         "random background": 1266.4,
+        "time 1MHz 2u cut": 1311.123241,
         "total trigger events": 807843
     },
     "6194": {
@@ -2392,6 +2450,7 @@
         "ps cor. hms e counts": 14155533,
         "ps cor. hms e raw counts": 14155533,
         "random background": 2161.0,
+        "time 1MHz 2u cut": 1163.7858529999999,
         "total trigger events": 1239454
     },
     "6195": {
@@ -2414,6 +2473,7 @@
         "ps cor. hms e counts": 15314935,
         "ps cor. hms e raw counts": 15314935,
         "random background": 2405.8,
+        "time 1MHz 2u cut": 1212.916926,
         "total trigger events": 1384506
     },
     "6196": {
@@ -2436,6 +2496,7 @@
         "ps cor. hms e counts": 5124752,
         "ps cor. hms e raw counts": 5124752,
         "random background": 124.4,
+        "time 1MHz 2u cut": 2461.476042,
         "total trigger events": 250409
     },
     "6197": {
@@ -2458,6 +2519,7 @@
         "ps cor. hms e counts": 4703562,
         "ps cor. hms e raw counts": 4703562,
         "random background": 240.2,
+        "time 1MHz 2u cut": 2231.7734120000005,
         "total trigger events": 260625
     },
     "6198": {
@@ -2480,6 +2542,7 @@
         "ps cor. hms e counts": 14034338,
         "ps cor. hms e raw counts": 14034338,
         "random background": 3099.4,
+        "time 1MHz 2u cut": 1723.817128,
         "total trigger events": 1215254
     },
     "6199": {
@@ -2502,6 +2565,7 @@
         "ps cor. hms e counts": 15088405,
         "ps cor. hms e raw counts": 15088405,
         "random background": 3296.2,
+        "time 1MHz 2u cut": 1861.4730200000004,
         "total trigger events": 1309351
     },
     "6200": {
@@ -2524,6 +2588,7 @@
         "ps cor. hms e counts": 13240750,
         "ps cor. hms e raw counts": 13240750,
         "random background": 2887.6,
+        "time 1MHz 2u cut": 1709.2438369999998,
         "total trigger events": 1105988
     },
     "6201": {
@@ -2546,6 +2611,7 @@
         "ps cor. hms e counts": 13042845,
         "ps cor. hms e raw counts": 13042845,
         "random background": 2888.8,
+        "time 1MHz 2u cut": 1667.7516209999999,
         "total trigger events": 1089671
     },
     "6202": {
@@ -2568,6 +2634,7 @@
         "ps cor. hms e counts": 12434773,
         "ps cor. hms e raw counts": 12434773,
         "random background": 3169.6,
+        "time 1MHz 2u cut": 2944.7223819999995,
         "total trigger events": 1098435
     },
     "6203": {
@@ -2590,6 +2657,7 @@
         "ps cor. hms e counts": 11395824,
         "ps cor. hms e raw counts": 11395824,
         "random background": 2860.4,
+        "time 1MHz 2u cut": 2703.598085,
         "total trigger events": 1009587
     },
     "6204": {
@@ -2612,6 +2680,7 @@
         "ps cor. hms e counts": 7359407,
         "ps cor. hms e raw counts": 7359407,
         "random background": 1810.2,
+        "time 1MHz 2u cut": 1755.467465,
         "total trigger events": 652014
     },
     "6205": {
@@ -2634,7 +2703,36 @@
         "ps cor. hms e counts": 12847319,
         "ps cor. hms e raw counts": 12847319,
         "random background": 2950.4,
+        "time 1MHz 2u cut": 3164.181643,
         "total trigger events": 1110919
+    },
+    "6206": {
+        "charge bcm4b 2u cut": 0.0,
+        "hms e counts": 0,
+        "hms e raw counts": 64,
+        "hms e raw yield": null,
+        "hms e yield": null,
+        "hms e yield unc.": null,
+        "hms ps4 factor": 64.0,
+        "hms scaler yield": null,
+        "hms scaler yield unc.": null,
+        "ps cor. hms e counts": 4096,
+        "ps cor. hms e raw counts": 4096,
+        "time 1MHz 2u cut": 0.0
+    },
+    "6207": {
+        "charge bcm4b 2u cut": 0.0,
+        "hms e counts": 0,
+        "hms e raw counts": 30,
+        "hms e raw yield": null,
+        "hms e yield": null,
+        "hms e yield unc.": null,
+        "hms ps4 factor": 64.0,
+        "hms scaler yield": null,
+        "hms scaler yield unc.": null,
+        "ps cor. hms e counts": 1920,
+        "ps cor. hms e raw counts": 1920,
+        "time 1MHz 2u cut": 0.0
     },
     "6208": {
         "charge bcm4b 2u cut": 14.763084543962512,
@@ -2656,6 +2754,7 @@
         "ps cor. hms e counts": 3906176,
         "ps cor. hms e raw counts": 3906176,
         "random background": 903.0,
+        "time 1MHz 2u cut": 955.1314520000002,
         "total trigger events": 347842
     },
     "6209": {
@@ -2678,6 +2777,7 @@
         "ps cor. hms e counts": 15931609,
         "ps cor. hms e raw counts": 15931609,
         "random background": 3647.2,
+        "time 1MHz 2u cut": 3895.7349870000003,
         "total trigger events": 1374098
     },
     "6210": {
@@ -2691,7 +2791,8 @@
         "hms scaler yield": 235920.398254314,
         "hms scaler yield unc.": 95.78439952043031,
         "ps cor. hms e counts": 6679147,
-        "ps cor. hms e raw counts": 6679147
+        "ps cor. hms e raw counts": 6679147,
+        "time 1MHz 2u cut": 1674.721656
     },
     "6211": {
         "charge bcm4b 2u cut": 63.66130234333761,
@@ -2713,6 +2814,7 @@
         "ps cor. hms e counts": 3237102,
         "ps cor. hms e raw counts": 3237102,
         "random background": 305.4,
+        "time 1MHz 2u cut": 1578.4758550000001,
         "total trigger events": 216728
     },
     "6212": {
@@ -2735,6 +2837,7 @@
         "ps cor. hms e counts": 7363244,
         "ps cor. hms e raw counts": 7363244,
         "random background": 688.4,
+        "time 1MHz 2u cut": 3651.097672000001,
         "total trigger events": 494365
     },
     "6213": {
@@ -2757,6 +2860,7 @@
         "ps cor. hms e counts": 4201788,
         "ps cor. hms e raw counts": 4201788,
         "random background": 694.8,
+        "time 1MHz 2u cut": 2056.702129,
         "total trigger events": 362433
     },
     "6214": {
@@ -2779,6 +2883,7 @@
         "ps cor. hms e counts": 3557243,
         "ps cor. hms e raw counts": 3557243,
         "random background": 590.0,
+        "time 1MHz 2u cut": 1732.942068,
         "total trigger events": 307535
     },
     "6215": {
@@ -2801,6 +2906,7 @@
         "ps cor. hms e counts": 2577742,
         "ps cor. hms e raw counts": 2577742,
         "random background": 607.2,
+        "time 1MHz 2u cut": 1201.6179010000003,
         "total trigger events": 272807
     },
     "6216": {
@@ -2823,6 +2929,7 @@
         "ps cor. hms e counts": 10256847,
         "ps cor. hms e raw counts": 10256847,
         "random background": 2467.4,
+        "time 1MHz 2u cut": 4803.362033999999,
         "total trigger events": 1070596
     },
     "6217": {
@@ -2845,6 +2952,7 @@
         "ps cor. hms e counts": 3101639,
         "ps cor. hms e raw counts": 3101639,
         "random background": 724.8,
+        "time 1MHz 2u cut": 1449.796849,
         "total trigger events": 326990
     },
     "6219": {
@@ -2867,6 +2975,7 @@
         "ps cor. hms e counts": 10865864,
         "ps cor. hms e raw counts": 10865864,
         "random background": 2509.0,
+        "time 1MHz 2u cut": 5093.884350000001,
         "total trigger events": 1137070
     },
     "6220": {
@@ -2889,6 +2998,7 @@
         "ps cor. hms e counts": 9405232,
         "ps cor. hms e raw counts": 9405232,
         "random background": 2147.2,
+        "time 1MHz 2u cut": 4404.011466,
         "total trigger events": 984963
     },
     "6221": {
@@ -2911,6 +3021,7 @@
         "ps cor. hms e counts": 2786645,
         "ps cor. hms e raw counts": 2786645,
         "random background": 768.6,
+        "time 1MHz 2u cut": 1208.821426,
         "total trigger events": 331251
     },
     "6222": {
@@ -2933,6 +3044,7 @@
         "ps cor. hms e counts": 6924016,
         "ps cor. hms e raw counts": 6924016,
         "random background": 1888.4,
+        "time 1MHz 2u cut": 3184.010722999999,
         "total trigger events": 765808
     },
     "6223": {
@@ -2955,6 +3067,7 @@
         "ps cor. hms e counts": 7891979,
         "ps cor. hms e raw counts": 7891979,
         "random background": 2180.4,
+        "time 1MHz 2u cut": 3408.748592,
         "total trigger events": 874384
     },
     "6224": {
@@ -2977,6 +3090,7 @@
         "ps cor. hms e counts": 7582323,
         "ps cor. hms e raw counts": 7582323,
         "random background": 2059.2,
+        "time 1MHz 2u cut": 3255.7234620000004,
         "total trigger events": 836410
     },
     "6225": {
@@ -2999,7 +3113,50 @@
         "ps cor. hms e counts": 2991567,
         "ps cor. hms e raw counts": 2991567,
         "random background": 818.4,
+        "time 1MHz 2u cut": 1292.7108500000002,
         "total trigger events": 336044
+    },
+    "6226": {
+        "charge bcm4b 2u cut": 0.0,
+        "hms e counts": 0,
+        "hms e raw counts": 58,
+        "hms e raw yield": null,
+        "hms e yield": null,
+        "hms e yield unc.": null,
+        "hms ps4 factor": 32.0,
+        "hms scaler yield": null,
+        "hms scaler yield unc.": null,
+        "ps cor. hms e counts": 1856,
+        "ps cor. hms e raw counts": 1856,
+        "time 1MHz 2u cut": 0.0
+    },
+    "6227": {
+        "charge bcm4b 2u cut": 0.0,
+        "hms e counts": 0,
+        "hms e raw counts": 60,
+        "hms e raw yield": null,
+        "hms e yield": null,
+        "hms e yield unc.": null,
+        "hms ps4 factor": 32.0,
+        "hms scaler yield": null,
+        "hms scaler yield unc.": null,
+        "ps cor. hms e counts": 1920,
+        "ps cor. hms e raw counts": 1920,
+        "time 1MHz 2u cut": 0.0
+    },
+    "6233": {
+        "charge bcm4b 2u cut": 0.0,
+        "hms e counts": 0,
+        "hms e raw counts": 1594,
+        "hms e raw yield": null,
+        "hms e yield": null,
+        "hms e yield unc.": null,
+        "hms ps4 factor": 0.5,
+        "hms scaler yield": null,
+        "hms scaler yield unc.": null,
+        "ps cor. hms e counts": 797,
+        "ps cor. hms e raw counts": 797,
+        "time 1MHz 2u cut": 0.0
     },
     "6237": {
         "charge bcm4b 2u cut": 80.01048225882836,
@@ -3021,7 +3178,22 @@
         "ps cor. hms e counts": 11600823,
         "ps cor. hms e raw counts": 11600823,
         "random background": 567.4,
+        "time 1MHz 2u cut": 1421.1239130000004,
         "total trigger events": 403185
+    },
+    "6239": {
+        "charge bcm4b 2u cut": 0.0,
+        "hms e counts": 0,
+        "hms e raw counts": 20,
+        "hms e raw yield": null,
+        "hms e yield": null,
+        "hms e yield unc.": null,
+        "hms ps4 factor": 64.0,
+        "hms scaler yield": null,
+        "hms scaler yield unc.": null,
+        "ps cor. hms e counts": 1280,
+        "ps cor. hms e raw counts": 1280,
+        "time 1MHz 2u cut": 0.0
     },
     "6240": {
         "charge bcm4b 2u cut": 145.16666295136162,
@@ -3071,8 +3243,8 @@
         "charge bcm4b 2u cut": 79.03604754981028,
         "coin trigger events": 67417,
         "hms e counts": 103598,
-        "hms e raw counts": 249250,
-        "hms e raw yield": 50400.673154733966,
+        "hms e raw counts": 249246,
+        "hms e raw yield": 50400.05318446067,
         "hms e yield": 20955.60255535546,
         "hms e yield unc.": 65.24941713081957,
         "hms ps4 factor": 16.0,
@@ -3084,19 +3256,20 @@
         "pi/K ratio": 11.727941176470589,
         "pion bg sub. counts": 1551.324090121317,
         "pion counts": 1595,
-        "ps cor. hms e counts": 3983470,
-        "ps cor. hms e raw counts": 3983470,
+        "ps cor. hms e counts": 3983421,
+        "ps cor. hms e raw counts": 3983421,
         "random background": 47.4,
+        "time 1MHz 2u cut": 1936.2631339999998,
         "total trigger events": 316365
     },
     "6243": {
         "charge bcm4b 2u cut": 64.61669059647241,
         "coin trigger events": 38539,
-        "hms e counts": 84460,
-        "hms e raw counts": 203467,
-        "hms e raw yield": 50316.055650449765,
-        "hms e yield": 20891.196802853527,
-        "hms e yield unc.": 72.07232323711152,
+        "hms e counts": 84461,
+        "hms e raw counts": 203460,
+        "hms e raw yield": 50314.32235214919,
+        "hms e yield": 20891.44441689647,
+        "hms e yield unc.": 72.07274948810779,
         "hms ps4 factor": 16.0,
         "hms scaler yield": 44718.92592032174,
         "hms scaler yield unc.": 26.307121235356906,
@@ -3106,9 +3279,10 @@
         "pi/K ratio": 12.495238095238095,
         "pion bg sub. counts": 1268.853069865914,
         "pion counts": 1312,
-        "ps cor. hms e counts": 3251257,
-        "ps cor. hms e raw counts": 3251257,
+        "ps cor. hms e counts": 3251145,
+        "ps cor. hms e raw counts": 3251145,
         "random background": 46.6,
+        "time 1MHz 2u cut": 1580.1332689999997,
         "total trigger events": 241725
     },
     "6244": {
@@ -3197,6 +3371,7 @@
         "ps cor. hms e counts": 18606116,
         "ps cor. hms e raw counts": 18606116,
         "random background": 1984.4,
+        "time 1MHz 2u cut": 1154.9416110000002,
         "total trigger events": 926326
     },
     "6248": {
@@ -3219,6 +3394,7 @@
         "ps cor. hms e counts": 14473830,
         "ps cor. hms e raw counts": 14473830,
         "random background": 2983.0,
+        "time 1MHz 2u cut": 949.317846,
         "total trigger events": 1061177
     },
     "6249": {
@@ -3241,6 +3417,7 @@
         "ps cor. hms e counts": 18565463,
         "ps cor. hms e raw counts": 18565463,
         "random background": 3933.6,
+        "time 1MHz 2u cut": 1220.6473500000002,
         "total trigger events": 1365255
     },
     "6250": {
@@ -3263,6 +3440,7 @@
         "ps cor. hms e counts": 21133148,
         "ps cor. hms e raw counts": 21133148,
         "random background": 4427.2,
+        "time 1MHz 2u cut": 1393.498658,
         "total trigger events": 1550633
     },
     "6251": {
@@ -3285,6 +3463,7 @@
         "ps cor. hms e counts": 5000391,
         "ps cor. hms e raw counts": 5000391,
         "random background": 139.8,
+        "time 1MHz 2u cut": 2316.2454430000003,
         "total trigger events": 109325
     },
     "6252": {
@@ -3307,6 +3486,7 @@
         "ps cor. hms e counts": 4197195,
         "ps cor. hms e raw counts": 4197195,
         "random background": 108.4,
+        "time 1MHz 2u cut": 1955.5547979999994,
         "total trigger events": 91865
     },
     "6253": {
@@ -3329,6 +3509,7 @@
         "ps cor. hms e counts": 17476989,
         "ps cor. hms e raw counts": 17476989,
         "random background": 2013.8,
+        "time 1MHz 2u cut": 1985.791686,
         "total trigger events": 703843
     },
     "6254": {
@@ -3351,6 +3532,7 @@
         "ps cor. hms e counts": 16493413,
         "ps cor. hms e raw counts": 16493413,
         "random background": 1917.2,
+        "time 1MHz 2u cut": 1874.474585,
         "total trigger events": 664496
     },
     "6255": {
@@ -3373,6 +3555,7 @@
         "ps cor. hms e counts": 17855856,
         "ps cor. hms e raw counts": 17855856,
         "random background": 2056.6,
+        "time 1MHz 2u cut": 2093.0201169999996,
         "total trigger events": 719283
     },
     "6256": {
@@ -3395,6 +3578,7 @@
         "ps cor. hms e counts": 13407229,
         "ps cor. hms e raw counts": 13407229,
         "random background": 3142.2,
+        "time 1MHz 2u cut": 1545.0446100000001,
         "total trigger events": 868789
     },
     "6257": {
@@ -3417,6 +3601,7 @@
         "ps cor. hms e counts": 29366078,
         "ps cor. hms e raw counts": 29366078,
         "random background": 6960.4,
+        "time 1MHz 2u cut": 3489.1055109999998,
         "total trigger events": 1899501
     },
     "6258": {
@@ -3439,6 +3624,7 @@
         "ps cor. hms e counts": 6062671,
         "ps cor. hms e raw counts": 6062671,
         "random background": 1441.2,
+        "time 1MHz 2u cut": 730.445066,
         "total trigger events": 393226
     },
     "6259": {
@@ -3461,6 +3647,7 @@
         "ps cor. hms e counts": 19803546,
         "ps cor. hms e raw counts": 19803546,
         "random background": 4681.4,
+        "time 1MHz 2u cut": 2365.8515460000003,
         "total trigger events": 1289982
     },
     "6260": {
@@ -3483,6 +3670,7 @@
         "ps cor. hms e counts": 6711550,
         "ps cor. hms e raw counts": 6711550,
         "random background": 1572.2,
+        "time 1MHz 2u cut": 787.5951530000001,
         "total trigger events": 434975
     },
     "6261": {
@@ -3505,6 +3693,7 @@
         "ps cor. hms e counts": 7473875,
         "ps cor. hms e raw counts": 7473875,
         "random background": 427.6,
+        "time 1MHz 2u cut": 3464.262532,
         "total trigger events": 199804
     },
     "6262": {
@@ -3527,6 +3716,7 @@
         "ps cor. hms e counts": 5895462,
         "ps cor. hms e raw counts": 5895462,
         "random background": 328.6,
+        "time 1MHz 2u cut": 2753.8498510000004,
         "total trigger events": 159010
     },
     "6263": {
@@ -3549,6 +3739,7 @@
         "ps cor. hms e counts": 12095457,
         "ps cor. hms e raw counts": 12095457,
         "random background": 3219.8,
+        "time 1MHz 2u cut": 1490.9481010000004,
         "total trigger events": 901692
     },
     "6264": {
@@ -3571,6 +3762,7 @@
         "ps cor. hms e counts": 10987659,
         "ps cor. hms e raw counts": 10987659,
         "random background": 2869.8,
+        "time 1MHz 2u cut": 1336.200731,
         "total trigger events": 819140
     },
     "6265": {
@@ -3593,6 +3785,7 @@
         "ps cor. hms e counts": 10913467,
         "ps cor. hms e raw counts": 10913467,
         "random background": 2895.4,
+        "time 1MHz 2u cut": 1331.4015849999998,
         "total trigger events": 815860
     },
     "6266": {
@@ -3615,6 +3808,7 @@
         "ps cor. hms e counts": 21550154,
         "ps cor. hms e raw counts": 21550154,
         "random background": 5652.8,
+        "time 1MHz 2u cut": 2665.396019000001,
         "total trigger events": 1619160
     },
     "6267": {
@@ -3637,6 +3831,7 @@
         "ps cor. hms e counts": 14808038,
         "ps cor. hms e raw counts": 14808038,
         "random background": 3843.8,
+        "time 1MHz 2u cut": 2195.6444199999996,
         "total trigger events": 1110023
     },
     "6268": {
@@ -3659,17 +3854,30 @@
         "ps cor. hms e counts": 1247724,
         "ps cor. hms e raw counts": 1247724,
         "random background": 401.4,
+        "time 1MHz 2u cut": 327.85716,
         "total trigger events": 95843
     },
     "6269": {
+        "charge bcm4b 2u cut": 8.914353512209086,
         "coin trigger events": 162258,
+        "hms e counts": 7797,
+        "hms e raw counts": 18813,
+        "hms e raw yield": 265317.9500634241,
+        "hms e yield": 110032.7689110153,
+        "hms e yield unc.": 1258.1758014886022,
+        "hms ps4 factor": 128.0,
+        "hms scaler yield": 234233.02622452978,
+        "hms scaler yield unc.": 162.09855310811778,
         "kaon bg sub. counts": 0.0,
         "kaon counts": 0.0,
         "pi+K counts": 1890,
         "pi/K ratio": null,
         "pion bg sub. counts": 1173.4,
         "pion counts": 1890,
+        "ps cor. hms e counts": 2365138,
+        "ps cor. hms e raw counts": 2365138,
         "random background": 716.6,
+        "time 1MHz 2u cut": 600.219935,
         "total trigger events": 180733
     },
     "6270": {
@@ -3692,6 +3900,7 @@
         "ps cor. hms e counts": 12644218,
         "ps cor. hms e raw counts": 12644218,
         "random background": 3876.2,
+        "time 1MHz 2u cut": 2918.073129,
         "total trigger events": 1081374
     },
     "6271": {
@@ -4154,6 +4363,7 @@
         "ps cor. hms e counts": 5692738,
         "ps cor. hms e raw counts": 5692738,
         "random background": 120.4,
+        "time 1MHz 2u cut": 2821.43746,
         "total trigger events": 417407
     },
     "6296": {
@@ -4176,6 +4386,7 @@
         "ps cor. hms e counts": 5321968,
         "ps cor. hms e raw counts": 5321968,
         "random background": 99.4,
+        "time 1MHz 2u cut": 2634.961850000001,
         "total trigger events": 389509
     },
     "6297": {
@@ -4198,61 +4409,122 @@
         "ps cor. hms e counts": 23312066,
         "ps cor. hms e raw counts": 23312066,
         "random background": 1724.0,
+        "time 1MHz 2u cut": 2558.654684,
         "total trigger events": 586290
     },
     "6298": {
+        "charge bcm4b 2u cut": 61.41559921149342,
         "coin trigger events": 170954,
+        "hms e counts": 38127,
+        "hms e raw counts": 76247,
+        "hms e raw yield": 158191.4061693603,
+        "hms e yield": 79134.01582656022,
+        "hms e yield unc.": 406.31199780272595,
+        "hms ps4 factor": 128.0,
+        "hms scaler yield": 130050.9496373239,
+        "hms scaler yield unc.": 46.01690622599115,
         "kaon bg sub. counts": 222.00708038317367,
         "kaon counts": 262.0,
         "pi+K counts": 4802,
         "pi/K ratio": 17.328244274809162,
         "pion bg sub. counts": 3846.9929196168264,
         "pion counts": 4540,
+        "ps cor. hms e counts": 9715420,
+        "ps cor. hms e raw counts": 9715420,
         "random background": 733.0,
+        "time 1MHz 2u cut": 1044.6129520000002,
         "total trigger events": 246853
     },
     "6299": {
+        "charge bcm4b 2u cut": 132.3052638877107,
         "coin trigger events": 368648,
+        "hms e counts": 1171240,
+        "hms e raw counts": 2355623,
+        "hms e raw yield": 141846.07965354875,
+        "hms e yield": 70553.5949644635,
+        "hms e yield unc.": 65.83461065023242,
+        "hms ps4 factor": 8.0,
+        "hms scaler yield": 130079.60903661813,
+        "hms scaler yield unc.": 31.35566745135742,
         "kaon bg sub. counts": 500.4680542295207,
         "kaon counts": 588.0,
         "pi+K counts": 10474,
         "pi/K ratio": 16.812925170068027,
         "pion bg sub. counts": 8414.331945770478,
         "pion counts": 9886,
+        "ps cor. hms e counts": 18766983,
+        "ps cor. hms e raw counts": 18766983,
         "random background": 1559.2,
+        "time 1MHz 2u cut": 2201.8789180000003,
         "total trigger events": 2713128
     },
     "6300": {
+        "charge bcm4b 2u cut": 119.93790480967893,
         "coin trigger events": 614252,
+        "hms e counts": 73381,
+        "hms e raw counts": 147658,
+        "hms e raw yield": 156080.85725447244,
+        "hms e yield": 77616.84694069087,
+        "hms e yield unc.": 288.0129556383617,
+        "hms ps4 factor": 128.0,
+        "hms scaler yield": 130105.84956242052,
+        "hms scaler yield unc.": 32.935949075521336,
         "kaon bg sub. counts": 0.0,
         "kaon counts": 0.0,
         "pi+K counts": 10637,
         "pi/K ratio": null,
         "pion bg sub. counts": 7397.0,
         "pion counts": 10637,
+        "ps cor. hms e counts": 18720011,
+        "ps cor. hms e raw counts": 18720011,
         "random background": 3240.0,
+        "time 1MHz 2u cut": 1957.9304499999998,
         "total trigger events": 760491
     },
     "6301": {
+        "charge bcm4b 2u cut": 194.14698208358297,
         "coin trigger events": 1135121,
+        "hms e counts": 117144,
+        "hms e raw counts": 239494,
+        "hms e raw yield": 156138.69283298706,
+        "hms e yield": 76427.77570249297,
+        "hms e yield unc.": 224.6449400745701,
+        "hms ps4 factor": 128.0,
+        "hms scaler yield": 129606.86140960499,
+        "hms scaler yield unc.": 25.837392033749435,
         "kaon bg sub. counts": 0.0,
         "kaon counts": 0.0,
         "pi+K counts": 17594,
         "pi/K ratio": null,
         "pion bg sub. counts": 11764.0,
         "pion counts": 17594,
+        "ps cor. hms e counts": 30313856,
+        "ps cor. hms e raw counts": 30313856,
         "random background": 5830.0,
+        "time 1MHz 2u cut": 2752.97471,
         "total trigger events": 1371927
     },
     "6302": {
+        "charge bcm4b 2u cut": 189.72604545019095,
         "coin trigger events": 1109638,
+        "hms e counts": 114791,
+        "hms e raw counts": 233913,
+        "hms e raw yield": 156063.26969890576,
+        "hms e yield": 76610.49364893812,
+        "hms e yield unc.": 227.52142711052923,
+        "hms ps4 factor": 128.0,
+        "hms scaler yield": 129502.97330922032,
+        "hms scaler yield unc.": 26.126208747919474,
         "kaon bg sub. counts": 0.0,
         "kaon counts": 0.0,
         "pi+K counts": 17530,
         "pi/K ratio": null,
         "pion bg sub. counts": 11829.8,
         "pion counts": 17530,
+        "ps cor. hms e counts": 29609267,
+        "ps cor. hms e raw counts": 29609267,
         "random background": 5700.2,
+        "time 1MHz 2u cut": 2686.409134,
         "total trigger events": 1340940
     },
     "6304": {
@@ -4275,17 +4547,30 @@
         "ps cor. hms e counts": 5615373,
         "ps cor. hms e raw counts": 5615373,
         "random background": 239.6,
+        "time 1MHz 2u cut": 2725.965,
         "total trigger events": 223626
     },
     "6305": {
+        "charge bcm4b 2u cut": 153.55867819927954,
         "coin trigger events": 105900,
+        "hms e counts": 119154,
+        "hms e raw counts": 243567,
+        "hms e raw yield": 50650.59227656527,
+        "hms e yield": 24782.383155586806,
+        "hms e yield unc.": 71.96187898908609,
+        "hms ps4 factor": 32.0,
+        "hms scaler yield": 43466.21811460289,
+        "hms scaler yield unc.": 16.824367449616783,
         "kaon bg sub. counts": 0.0,
         "kaon counts": 0.0,
         "pi+K counts": 3541,
         "pi/K ratio": null,
         "pion bg sub. counts": 3204.8,
         "pion counts": 3541,
+        "ps cor. hms e counts": 7777838,
+        "ps cor. hms e raw counts": 7777838,
         "random background": 336.2,
+        "time 1MHz 2u cut": 3756.000079,
         "total trigger events": 348945
     },
     "6306": {
@@ -4308,182 +4593,593 @@
         "ps cor. hms e counts": 10441862,
         "ps cor. hms e raw counts": 10441862,
         "random background": 2973.4,
+        "time 1MHz 2u cut": 772.80105,
         "total trigger events": 989661
     },
     "6307": {
+        "charge bcm4b 2u cut": 155.26156709705725,
         "coin trigger events": 2650723,
+        "hms e counts": 78848,
+        "hms e raw counts": 168699,
+        "hms e raw yield": 272696.74518699665,
+        "hms e yield": 127666.57821770557,
+        "hms e yield unc.": 459.0300211030027,
+        "hms ps4 factor": 256.0,
+        "hms scaler yield": 230229.79007840704,
+        "hms scaler yield unc.": 38.507806080292234,
         "kaon bg sub. counts": 0.0,
         "kaon counts": 0.0,
         "pi+K counts": 30701,
         "pi/K ratio": null,
         "pion bg sub. counts": 18011.4,
         "pion counts": 30701,
+        "ps cor. hms e counts": 42339324,
+        "ps cor. hms e raw counts": 42339324,
         "random background": 12689.6,
+        "time 1MHz 2u cut": 3068.486826,
         "total trigger events": 2816098
     },
     "6308": {
+        "charge bcm4b 2u cut": 111.07899035776924,
         "coin trigger events": 1899399,
+        "hms e counts": 56740,
+        "hms e raw counts": 120648,
+        "hms e raw yield": 272800.8951323759,
+        "hms e yield": 128521.6038966408,
+        "hms e yield unc.": 544.5049402087558,
+        "hms ps4 factor": 256.0,
+        "hms scaler yield": 230370.97220257722,
+        "hms scaler yield unc.": 45.540512710858145,
         "kaon bg sub. counts": 0.0,
         "kaon counts": 0.0,
         "pi+K counts": 21920,
         "pi/K ratio": null,
         "pion bg sub. counts": 12837.6,
         "pion counts": 21920,
+        "ps cor. hms e counts": 30302448,
+        "ps cor. hms e raw counts": 30302448,
         "random background": 9082.4,
+        "time 1MHz 2u cut": 2180.485272,
         "total trigger events": 2017759
     },
     "6309": {
+        "charge bcm4b 2u cut": 94.36472195974994,
         "coin trigger events": 1411360,
+        "hms e counts": 47707,
+        "hms e raw counts": 104474,
+        "hms e raw yield": 278977.28571943287,
+        "hms e yield": 127610.05119197312,
+        "hms e yield unc.": 588.6376925570368,
+        "hms ps4 factor": 256.0,
+        "hms scaler yield": 229633.6549292517,
+        "hms scaler yield unc.": 49.33020688169692,
         "kaon bg sub. counts": 6855.9383279583235,
         "kaon counts": 7911.0,
         "pi+K counts": 28217,
         "pi/K ratio": 2.566805713563393,
         "pion bg sub. counts": 17597.861672041676,
         "pion counts": 20306,
+        "ps cor. hms e counts": 26325614,
+        "ps cor. hms e raw counts": 26325614,
         "random background": 3763.2,
+        "time 1MHz 2u cut": 1335.874302,
         "total trigger events": 1514188
     },
     "6310": {
+        "charge bcm4b 2u cut": 33.46430318939149,
         "coin trigger events": 503890,
+        "hms e counts": 16862,
+        "hms e raw counts": 37090,
+        "hms e raw yield": 279514.8593730539,
+        "hms e yield": 127255.95916038666,
+        "hms e yield unc.": 987.086239773464,
+        "hms ps4 factor": 256.0,
+        "hms scaler yield": 229534.64641197195,
+        "hms scaler yield unc.": 82.81961949876003,
         "kaon bg sub. counts": 2175.6066584463624,
         "kaon counts": 2517.0,
         "pi+K counts": 9732,
         "pi/K ratio": 2.866507747318236,
         "pion bg sub. counts": 6236.393341553638,
         "pion counts": 7215,
+        "ps cor. hms e counts": 9353770,
+        "ps cor. hms e raw counts": 9353770,
         "random background": 1320.0,
+        "time 1MHz 2u cut": 462.789229,
         "total trigger events": 540426
     },
     "6311": {
+        "charge bcm4b 2u cut": 38.42263726344239,
         "coin trigger events": 29761,
+        "hms e counts": 3859,
+        "hms e raw counts": 7823,
+        "hms e raw yield": 52049.60258942998,
+        "hms e yield": 25678.32585866609,
+        "hms e yield unc.": 413.68497718800893,
+        "hms ps4 factor": 256.0,
+        "hms scaler yield": 43598.64702972543,
+        "hms scaler yield unc.": 33.685494004818175,
         "kaon bg sub. counts": 491.9572869955157,
         "kaon counts": 501.0,
         "pi+K counts": 1784,
         "pi/K ratio": 2.560878243512974,
         "pion bg sub. counts": 1259.8427130044843,
         "pion counts": 1283,
+        "ps cor. hms e counts": 1999883,
+        "ps cor. hms e raw counts": 1999883,
         "random background": 32.2,
+        "time 1MHz 2u cut": 933.074779,
         "total trigger events": 37573
     },
     "6312": {
+        "charge bcm4b 2u cut": 62.7419347380179,
         "coin trigger events": 49404,
+        "hms e counts": 6270,
+        "hms e raw counts": 12755,
+        "hms e raw yield": 51986.12401130813,
+        "hms e yield": 25562.568427271734,
+        "hms e yield unc.": 322.99107312816517,
+        "hms ps4 factor": 256.0,
+        "hms scaler yield": 43496.06067130683,
+        "hms scaler yield unc.": 26.32970598769035,
         "kaon bg sub. counts": 748.5263898662913,
         "kaon counts": 765.0,
         "pi+K counts": 2842,
         "pi/K ratio": 2.715032679738562,
         "pion bg sub. counts": 2032.2736101337086,
         "pion counts": 2077,
+        "ps cor. hms e counts": 3261710,
+        "ps cor. hms e raw counts": 3261710,
         "random background": 61.2,
+        "time 1MHz 2u cut": 1537.764016,
         "total trigger events": 62145
     },
     "6313": {
+        "charge bcm4b 2u cut": 81.16623602303834,
         "coin trigger events": 418029,
+        "hms e counts": 49340,
+        "hms e raw counts": 100263,
+        "hms e raw yield": 157025.2068407164,
+        "hms e yield": 77290.21705798162,
+        "hms e yield unc.": 349.3391215042984,
+        "hms ps4 factor": 128.0,
+        "hms scaler yield": 129636.90957670356,
+        "hms scaler yield unc.": 39.964706820726775,
         "kaon bg sub. counts": 4503.6611629576455,
         "kaon counts": 4800.0,
         "pi+K counts": 16716,
         "pi/K ratio": 2.4825,
         "pion bg sub. counts": 11180.338837042354,
         "pion counts": 11916,
+        "ps cor. hms e counts": 12745145,
+        "ps cor. hms e raw counts": 12745145,
         "random background": 1032.0,
+        "time 1MHz 2u cut": 1150.248127,
         "total trigger events": 517595
     },
     "6314": {
+        "charge bcm4b 2u cut": 77.24378656557518,
         "coin trigger events": 397019,
+        "hms e counts": 46820,
+        "hms e raw counts": 95402,
+        "hms e raw yield": 156907.6755411356,
+        "hms e yield": 77042.44269470047,
+        "hms e yield unc.": 357.5295582617333,
+        "hms ps4 factor": 128.0,
+        "hms scaler yield": 129640.38203252516,
+        "hms scaler yield unc.": 40.96739728461192,
         "kaon bg sub. counts": 4196.308051033876,
         "kaon counts": 4487.0,
         "pi+K counts": 15911,
         "pi/K ratio": 2.546021840873635,
         "pion bg sub. counts": 10683.891948966124,
         "pion counts": 11424,
+        "ps cor. hms e counts": 12120143,
+        "ps cor. hms e raw counts": 12120143,
         "random background": 1030.8,
+        "time 1MHz 2u cut": 1092.097009,
         "total trigger events": 491702
     },
     "6315": {
+        "charge bcm4b 2u cut": 82.54334894417288,
         "coin trigger events": 746311,
+        "hms e counts": 49314,
+        "hms e raw counts": 100159,
+        "hms e raw yield": 153011.79515435226,
+        "hms e yield": 75406.53583379237,
+        "hms e yield unc.": 342.2542722844993,
+        "hms ps4 factor": 128.0,
+        "hms scaler yield": 129657.14545018504,
+        "hms scaler yield unc.": 39.63302173099928,
         "kaon bg sub. counts": 1444.7856646756493,
         "kaon counts": 1720.0,
         "pi+K counts": 14398,
         "pi/K ratio": 7.370930232558139,
         "pion bg sub. counts": 10649.41433532435,
         "pion counts": 12678,
+        "ps cor. hms e counts": 12630106,
+        "ps cor. hms e raw counts": 12630106,
         "random background": 2303.8,
+        "time 1MHz 2u cut": 1173.367472,
         "total trigger events": 844972
     },
     "6316": {
+        "charge bcm4b 2u cut": 81.50064081610017,
         "coin trigger events": 741698,
+        "hms e counts": 48128,
+        "hms e raw counts": 98866,
+        "hms e raw yield": 152912.20872876974,
+        "hms e yield": 74491.47564003784,
+        "hms e yield unc.": 342.34620115213846,
+        "hms ps4 factor": 128.0,
+        "hms scaler yield": 129654.53883784113,
+        "hms scaler yield unc.": 39.8853447879372,
         "kaon bg sub. counts": 1605.7749982628031,
         "kaon counts": 1910.0,
         "pi+K counts": 14391,
         "pi/K ratio": 6.534554973821989,
         "pion bg sub. counts": 10493.025001737196,
         "pion counts": 12481,
+        "ps cor. hms e counts": 12462443,
+        "ps cor. hms e raw counts": 12462443,
         "random background": 2292.2,
+        "time 1MHz 2u cut": 1139.1035060000002,
         "total trigger events": 839049
     },
     "6317": {
+        "charge bcm4b 2u cut": 75.41229165099286,
         "coin trigger events": 80828,
+        "hms e counts": 14828,
+        "hms e raw counts": 30444,
+        "hms e raw yield": 51525.49955626289,
+        "hms e yield": 25105.787910041236,
+        "hms e yield unc.": 206.50770701031206,
+        "hms ps4 factor": 128.0,
+        "hms scaler yield": 43592.08463275389,
+        "hms scaler yield unc.": 24.042673005101047,
         "kaon bg sub. counts": 324.87313784967984,
         "kaon counts": 343.0,
         "pi+K counts": 2967,
         "pi/K ratio": 7.650145772594752,
         "pion bg sub. counts": 2485.3268621503203,
         "pion counts": 2624,
+        "ps cor. hms e counts": 3885656,
+        "ps cor. hms e raw counts": 3885656,
         "random background": 156.8,
+        "time 1MHz 2u cut": 1842.6233079999997,
         "total trigger events": 111184
     },
     "6318": {
+        "charge bcm4b 2u cut": 88.82382158036881,
         "coin trigger events": 93818,
+        "hms e counts": 17587,
+        "hms e raw counts": 35983,
+        "hms e raw yield": 51707.6378642898,
+        "hms e yield": 25286.640003073306,
+        "hms e yield unc.": 190.9606650596203,
+        "hms ps4 factor": 128.0,
+        "hms scaler yield": 43671.921912188154,
+        "hms scaler yield unc.": 22.173611045339364,
         "kaon bg sub. counts": 385.28680203045684,
         "kaon counts": 405.0,
         "pi+K counts": 3546,
         "pi/K ratio": 7.7555555555555555,
         "pion bg sub. counts": 2988.1131979695433,
         "pion counts": 3141,
+        "ps cor. hms e counts": 4592870,
+        "ps cor. hms e raw counts": 4592870,
         "random background": 172.6,
+        "time 1MHz 2u cut": 2179.830255,
         "total trigger events": 129699
     },
     "6322": {
+        "charge bcm4b 2u cut": 67.17153401851708,
         "coin trigger events": 1286367,
+        "hms e counts": 34137,
+        "hms e raw counts": 72334,
+        "hms e raw yield": 269874.1999103775,
+        "hms e yield": 127568.72572893451,
+        "hms e yield unc.": 697.6249020490342,
+        "hms ps4 factor": 256.0,
+        "hms scaler yield": 231032.34467924995,
+        "hms scaler yield unc.": 58.64672428046768,
         "kaon bg sub. counts": 1862.362831293241,
         "kaon counts": 2361.0,
         "pi+K counts": 18790,
         "pi/K ratio": 6.958492164337145,
         "pion bg sub. counts": 12959.237168706759,
         "pion counts": 16429,
+        "ps cor. hms e counts": 18127864,
+        "ps cor. hms e raw counts": 18127864,
         "random background": 3968.4,
+        "time 1MHz 2u cut": 1460.725049,
         "total trigger events": 1357173
     },
     "6323": {
+        "charge bcm4b 2u cut": 49.22290361336662,
         "coin trigger events": 941665,
+        "hms e counts": 25043,
+        "hms e raw counts": 53069,
+        "hms e raw yield": 270516.73149131547,
+        "hms e yield": 127669.69314450373,
+        "hms e yield unc.": 815.275575381303,
+        "hms ps4 factor": 256.0,
+        "hms scaler yield": 231040.84003918382,
+        "hms scaler yield unc.": 68.5110720110758,
         "kaon bg sub. counts": 1339.1173364796107,
         "kaon counts": 1703.0,
         "pi+K counts": 13561,
         "pi/K ratio": 6.963006459189665,
         "pion bg sub. counts": 9324.28266352039,
         "pion counts": 11858,
+        "ps cor. hms e counts": 13315619,
+        "ps cor. hms e raw counts": 13315619,
         "random background": 2897.6,
+        "time 1MHz 2u cut": 1076.035246,
         "total trigger events": 993675
     },
     "6324": {
+        "charge bcm4b 2u cut": 21.243576916765377,
         "coin trigger events": 375466,
+        "hms e counts": 11004,
+        "hms e raw counts": 22460,
+        "hms e raw yield": 265497.1910850305,
+        "hms e yield": 130193.18784386362,
+        "hms e yield unc.": 1253.186915772404,
+        "hms ps4 factor": 256.0,
+        "hms scaler yield": 231680.7107994975,
+        "hms scaler yield unc.": 104.431403980726,
         "kaon bg sub. counts": 0.0,
         "kaon counts": 0.0,
         "pi+K counts": 5481,
         "pi/K ratio": null,
         "pion bg sub. counts": 4226.4,
         "pion counts": 5481,
+        "ps cor. hms e counts": 5640110,
+        "ps cor. hms e raw counts": 5640110,
         "random background": 1254.6,
+        "time 1MHz 2u cut": 1034.883048,
         "total trigger events": 397496
     },
     "6325": {
-        "coin trigger events": 81331,
+        "charge bcm4b 2u cut": 54.62979886656952,
+        "coin trigger events": 965784,
+        "hms e counts": 111927,
+        "hms e raw counts": 228444,
+        "hms e raw yield": 263043.0881705782,
+        "hms e yield": 128896.90509750503,
+        "hms e yield unc.": 389.34558057852865,
+        "hms ps4 factor": 64.0,
+        "hms scaler yield": 231740.2454825289,
+        "hms scaler yield unc.": 65.13072770396674,
         "kaon bg sub. counts": 0.0,
         "kaon counts": 0.0,
-        "pi+K counts": 1113,
+        "pi+K counts": 14119,
         "pi/K ratio": null,
-        "pion bg sub. counts": 845.2,
-        "pion counts": 1113,
-        "random background": 267.8,
+        "pion bg sub. counts": 10887.4,
+        "pion counts": 14119,
+        "ps cor. hms e counts": 14369991,
+        "ps cor. hms e raw counts": 14369991,
+        "random background": 3231.6,
+        "time 1MHz 2u cut": 2669.87349,
+        "total trigger events": 1190253
+    },
+    "6326": {
+        "charge bcm4b 2u cut": 43.49261046024868,
+        "coin trigger events": 746153,
+        "hms e counts": 88675,
+        "hms e raw counts": 181893,
+        "hms e raw yield": 262824.4402677926,
+        "hms e yield": 128239.87663600245,
+        "hms e yield unc.": 435.2490795015789,
+        "hms ps4 factor": 64.0,
+        "hms scaler yield": 231745.3446307203,
+        "hms scaler yield unc.": 72.99578305228958,
+        "kaon bg sub. counts": 0.0,
+        "kaon counts": 0.0,
+        "pi+K counts": 10540,
+        "pi/K ratio": null,
+        "pion bg sub. counts": 8193.8,
+        "pion counts": 10540,
+        "ps cor. hms e counts": 11430921,
+        "ps cor. hms e raw counts": 11430921,
+        "random background": 2346.2,
+        "time 1MHz 2u cut": 2122.5159249999997,
+        "total trigger events": 924709
+    },
+    "6327": {
+        "charge bcm4b 2u cut": 35.30302609106005,
+        "coin trigger events": 626913,
+        "hms e counts": 72057,
+        "hms e raw counts": 147536,
+        "hms e raw yield": 262699.68971154356,
+        "hms e yield": 128465.72949021154,
+        "hms e yield unc.": 483.51127980052445,
+        "hms ps4 factor": 64.0,
+        "hms scaler yield": 231780.49889814138,
+        "hms scaler yield unc.": 81.02750752233969,
+        "kaon bg sub. counts": 0.0,
+        "kaon counts": 0.0,
+        "pi+K counts": 9140,
+        "pi/K ratio": null,
+        "pion bg sub. counts": 7058.0,
+        "pion counts": 9140,
+        "ps cor. hms e counts": 9274094,
+        "ps cor. hms e raw counts": 9274094,
+        "random background": 2082.0,
+        "time 1MHz 2u cut": 1730.9756419999999,
+        "total trigger events": 771779
+    },
+    "6328": {
+        "charge bcm4b 2u cut": 58.876051097840865,
+        "coin trigger events": 89608,
+        "hms e counts": 22952,
+        "hms e raw counts": 47008,
+        "hms e raw yield": 50778.06585621427,
+        "hms e yield": 24799.69313114388,
+        "hms e yield unc.": 164.38199953703375,
+        "hms ps4 factor": 64.0,
+        "hms scaler yield": 43687.49180758706,
+        "hms scaler yield unc.": 27.24013270912748,
+        "kaon bg sub. counts": 0.0,
+        "kaon counts": 0.0,
+        "pi+K counts": 2164,
+        "pi/K ratio": null,
+        "pion bg sub. counts": 1943.6,
+        "pion counts": 2164,
+        "ps cor. hms e counts": 2989612,
+        "ps cor. hms e raw counts": 2989612,
+        "random background": 220.4,
+        "time 1MHz 2u cut": 1454.210734,
+        "total trigger events": 136317
+    },
+    "6329": {
+        "charge bcm4b 2u cut": 98.59202870608712,
+        "coin trigger events": 33095,
+        "hms e counts": 147246,
+        "hms e raw counts": 300728,
+        "hms e raw yield": 48533.87299965934,
+        "hms e yield": 23764.659585053672,
+        "hms e yield unc.": 62.38826652665409,
+        "hms ps4 factor": 16.0,
+        "hms scaler yield": 43587.49948041872,
+        "hms scaler yield unc.": 21.02616538256241,
+        "kaon bg sub. counts": 0.0,
+        "kaon counts": 0.0,
+        "pi+K counts": 788,
+        "pi/K ratio": null,
+        "pion bg sub. counts": 703.4,
+        "pion counts": 788,
+        "ps cor. hms e counts": 4785053,
+        "ps cor. hms e raw counts": 4785053,
+        "random background": 84.6,
+        "time 1MHz 2u cut": 2415.18295,
         "total trigger events": 100000
+    },
+    "6331": {
+        "charge bcm4b 2u cut": 159.11585410788967,
+        "coin trigger events": 1743181,
+        "hms e counts": 189296,
+        "hms e raw counts": 374381,
+        "hms e raw yield": 147688.23089159906,
+        "hms e yield": 74710.99009366757,
+        "hms e yield unc.": 173.70181138904354,
+        "hms ps4 factor": 64.0,
+        "hms scaler yield": 130873.22515253653,
+        "hms scaler yield unc.": 28.67930847827757,
+        "kaon bg sub. counts": 0.0,
+        "kaon counts": 0.0,
+        "pi+K counts": 26956,
+        "pi/K ratio": null,
+        "pion bg sub. counts": 21085.2,
+        "pion counts": 26956,
+        "ps cor. hms e counts": 23499539,
+        "ps cor. hms e raw counts": 23499539,
+        "random background": 5870.8,
+        "time 1MHz 2u cut": 3640.7916490000002,
+        "total trigger events": 2110247
+    },
+    "6332": {
+        "coin trigger events": 919809,
+        "kaon bg sub. counts": 0.0,
+        "kaon counts": 0.0,
+        "pi+K counts": 14571,
+        "pi/K ratio": null,
+        "pion bg sub. counts": 11493.2,
+        "pion counts": 14571,
+        "random background": 3077.8,
+        "total trigger events": 1113186
+    },
+    "6333": {
+        "charge bcm4b 2u cut": 3.4048448898124652,
+        "coin trigger events": 63401,
+        "hms e counts": 3881,
+        "hms e raw counts": 7687,
+        "hms e raw yield": 138921.1594969463,
+        "hms e yield": 70100.69701387963,
+        "hms e yield unc.": 1151.1701923780608,
+        "hms ps4 factor": 64.0,
+        "hms scaler yield": 130533.40589164975,
+        "hms scaler yield unc.": 195.7997661881836,
+        "kaon bg sub. counts": 0.0,
+        "kaon counts": 0.0,
+        "pi+K counts": 353,
+        "pi/K ratio": null,
+        "pion bg sub. counts": 224.0,
+        "pion counts": 353,
+        "ps cor. hms e counts": 473005,
+        "ps cor. hms e raw counts": 473005,
+        "random background": 129.0,
+        "time 1MHz 2u cut": 77.027498,
+        "total trigger events": 70787
+    },
+    "6334": {
+        "charge bcm4b 2u cut": 58.24149120422394,
+        "coin trigger events": 584098,
+        "hms e counts": 70048,
+        "hms e raw counts": 134823,
+        "hms e raw yield": 145294.40824802037,
+        "hms e yield": 75548.16865130144,
+        "hms e yield unc.": 288.7083495117067,
+        "hms ps4 factor": 64.0,
+        "hms scaler yield": 131367.2064674936,
+        "hms scaler yield unc.": 47.4927414505673,
+        "kaon bg sub. counts": 0.0,
+        "kaon counts": 0.0,
+        "pi+K counts": 7472,
+        "pi/K ratio": null,
+        "pion bg sub. counts": 5787.6,
+        "pion counts": 7472,
+        "ps cor. hms e counts": 8462163,
+        "ps cor. hms e raw counts": 8462163,
+        "random background": 1684.4,
+        "time 1MHz 2u cut": 2716.953409,
+        "total trigger events": 716278
+    },
+    "6335": {
+        "charge bcm4b 2u cut": 64.5704319665363,
+        "coin trigger events": 648577,
+        "hms e counts": 77520,
+        "hms e raw counts": 149472,
+        "hms e raw yield": 145350.3517657116,
+        "hms e yield": 75448.72864602786,
+        "hms e yield unc.": 274.00724792146264,
+        "hms ps4 factor": 64.0,
+        "hms scaler yield": 131339.31029600513,
+        "hms scaler yield unc.": 45.100413093446846,
+        "kaon bg sub. counts": 0.0,
+        "kaon counts": 0.0,
+        "pi+K counts": 8387,
+        "pi/K ratio": null,
+        "pion bg sub. counts": 6542.2,
+        "pion counts": 8387,
+        "ps cor. hms e counts": 9385335,
+        "ps cor. hms e raw counts": 9385335,
+        "random background": 1844.8,
+        "time 1MHz 2u cut": 3004.611533,
+        "total trigger events": 795178
+    },
+    "6336": {
+        "charge bcm4b 2u cut": 69.03034392184503,
+        "coin trigger events": 692762,
+        "hms e counts": 83080,
+        "hms e raw counts": 159859,
+        "hms e raw yield": 145387.03459688276,
+        "hms e yield": 75652.31032185793,
+        "hms e yield unc.": 265.3622927416819,
+        "hms ps4 factor": 64.0,
+        "hms scaler yield": 131282.77341715698,
+        "hms scaler yield unc.": 43.60977569011508,
+        "kaon bg sub. counts": 0.0,
+        "kaon counts": 0.0,
+        "pi+K counts": 9008,
+        "pi/K ratio": null,
+        "pion bg sub. counts": 7006.6,
+        "pion counts": 9008,
+        "ps cor. hms e counts": 10036117,
+        "ps cor. hms e raw counts": 10036117,
+        "random background": 2001.4,
+        "time 1MHz 2u cut": 3213.4919040000004,
+        "total trigger events": 849528
     }
 }
