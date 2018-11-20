@@ -42339,6 +42339,2146 @@
       "beam_energy": 10.6, 
       "beam_pol": 0.0
     }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [
+          {
+            "end_time": "20:30:28 11/19/18 EST", 
+            "id": 0, 
+            "start_time": "20:01:45 11/19/18 EST"
+          }
+        ], 
+        "trips": 1
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [
+          {
+            "end_time": "20:30:28 11/19/18 EST", 
+            "id": 0, 
+            "start_time": "20:01:45 11/19/18 EST"
+          }
+        ], 
+        "trips": 1
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 5, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "21:00:04 11/19/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 20.507372304193943, 
+        "time": 3524.000000001, 
+        "total": 72267.97999999997
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 20.707378640770788, 
+        "time": 3502.000000001, 
+        "total": 72517.24
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -2.966
+    }, 
+    "start_time": "20:01:20 11/19/18 EST", 
+    "target": {
+      "target_id": 5, 
+      "target_label": "DUMMY", 
+      "target_name": "10cm Dummy"
+    }, 
+    "total_charge": 72238.49466322798
+  }, 
+  "6366": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [], 
+        "trips": 0
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [], 
+        "trips": 0
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 5, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "21:08:00 11/19/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 71.14749999777662, 
+        "time": 32.000000001000004, 
+        "total": 2276.72
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 71.30124999777183, 
+        "time": 32.000000001000004, 
+        "total": 2281.6400000000003
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -2.541
+    }, 
+    "start_time": "21:07:28 11/19/18 EST", 
+    "target": {
+      "target_id": 3, 
+      "target_label": "LD2", 
+      "target_name": "Loop 3 10cm"
+    }, 
+    "total_charge": 2276.704985916938
+  }, 
+  "6367": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [
+          {
+            "end_time": "21:16:18 11/19/18 EST", 
+            "id": 0, 
+            "start_time": "21:15:58 11/19/18 EST"
+          }, 
+          {
+            "end_time": "21:17:16 11/19/18 EST", 
+            "id": 1, 
+            "start_time": "21:16:44 11/19/18 EST"
+          }, 
+          {
+            "end_time": "21:17:58 11/19/18 EST", 
+            "id": 2, 
+            "start_time": "21:17:34 11/19/18 EST"
+          }, 
+          {
+            "end_time": "21:18:24 11/19/18 EST", 
+            "id": 3, 
+            "start_time": "21:18:00 11/19/18 EST"
+          }, 
+          {
+            "end_time": "21:20:06 11/19/18 EST", 
+            "id": 4, 
+            "start_time": "21:19:46 11/19/18 EST"
+          }, 
+          {
+            "end_time": "21:25:56 11/19/18 EST", 
+            "id": 5, 
+            "start_time": "21:22:48 11/19/18 EST"
+          }, 
+          {
+            "end_time": "21:27:14 11/19/18 EST", 
+            "id": 6, 
+            "start_time": "21:26:48 11/19/18 EST"
+          }, 
+          {
+            "end_time": "21:34:10 11/19/18 EST", 
+            "id": 7, 
+            "start_time": "21:33:08 11/19/18 EST"
+          }
+        ], 
+        "trips": 8
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [
+          {
+            "end_time": "21:16:18 11/19/18 EST", 
+            "id": 0, 
+            "start_time": "21:15:58 11/19/18 EST"
+          }, 
+          {
+            "end_time": "21:17:16 11/19/18 EST", 
+            "id": 1, 
+            "start_time": "21:16:44 11/19/18 EST"
+          }, 
+          {
+            "end_time": "21:17:58 11/19/18 EST", 
+            "id": 2, 
+            "start_time": "21:17:34 11/19/18 EST"
+          }, 
+          {
+            "end_time": "21:18:24 11/19/18 EST", 
+            "id": 3, 
+            "start_time": "21:18:00 11/19/18 EST"
+          }, 
+          {
+            "end_time": "21:20:06 11/19/18 EST", 
+            "id": 4, 
+            "start_time": "21:19:46 11/19/18 EST"
+          }, 
+          {
+            "end_time": "21:25:56 11/19/18 EST", 
+            "id": 5, 
+            "start_time": "21:22:48 11/19/18 EST"
+          }, 
+          {
+            "end_time": "21:27:14 11/19/18 EST", 
+            "id": 6, 
+            "start_time": "21:26:48 11/19/18 EST"
+          }, 
+          {
+            "end_time": "21:34:10 11/19/18 EST", 
+            "id": 7, 
+            "start_time": "21:33:08 11/19/18 EST"
+          }
+        ], 
+        "trips": 8
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 8, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "21:36:08 11/19/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 51.15791717414677, 
+        "time": 1642.000000001, 
+        "total": 84001.30000000015
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 51.51872705015191, 
+        "time": 1634.000000001, 
+        "total": 84181.59999999974
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -2.541
+    }, 
+    "start_time": "21:08:44 11/19/18 EST", 
+    "target": {
+      "target_id": 3, 
+      "target_label": "LD2", 
+      "target_name": "Loop 3 10cm"
+    }, 
+    "total_charge": 84143.38919616242
+  }, 
+  "6368": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [
+          {
+            "end_time": "21:41:02 11/19/18 EST", 
+            "id": 0, 
+            "start_time": "21:40:36 11/19/18 EST"
+          }, 
+          {
+            "end_time": "21:55:52 11/19/18 EST", 
+            "id": 1, 
+            "start_time": "21:55:18 11/19/18 EST"
+          }, 
+          {
+            "end_time": "21:58:12 11/19/18 EST", 
+            "id": 2, 
+            "start_time": "21:56:14 11/19/18 EST"
+          }
+        ], 
+        "trips": 3
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [
+          {
+            "end_time": "21:41:02 11/19/18 EST", 
+            "id": 0, 
+            "start_time": "21:40:36 11/19/18 EST"
+          }, 
+          {
+            "end_time": "21:55:52 11/19/18 EST", 
+            "id": 1, 
+            "start_time": "21:55:18 11/19/18 EST"
+          }, 
+          {
+            "end_time": "21:58:12 11/19/18 EST", 
+            "id": 2, 
+            "start_time": "21:56:14 11/19/18 EST"
+          }
+        ], 
+        "trips": 3
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 8, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "21:59:35 11/19/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 60.832303206952744, 
+        "time": 1372.000000001, 
+        "total": 83461.92
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 61.22491947286892, 
+        "time": 1366.000000001, 
+        "total": 83633.24000000017
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -2.541
+    }, 
+    "start_time": "21:36:44 11/19/18 EST", 
+    "target": {
+      "target_id": 3, 
+      "target_label": "LD2", 
+      "target_name": "Loop 3 10cm"
+    }, 
+    "total_charge": 83319.0547126957
+  }, 
+  "6370": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [
+          {
+            "end_time": "22:04:58 11/19/18 EST", 
+            "id": 0, 
+            "start_time": "22:04:30 11/19/18 EST"
+          }, 
+          {
+            "end_time": "22:07:24 11/19/18 EST", 
+            "id": 1, 
+            "start_time": "22:07:04 11/19/18 EST"
+          }, 
+          {
+            "end_time": "22:14:22 11/19/18 EST", 
+            "id": 2, 
+            "start_time": "22:13:30 11/19/18 EST"
+          }, 
+          {
+            "end_time": "22:15:20 11/19/18 EST", 
+            "id": 3, 
+            "start_time": "22:15:00 11/19/18 EST"
+          }, 
+          {
+            "end_time": "22:18:14 11/19/18 EST", 
+            "id": 4, 
+            "start_time": "22:17:28 11/19/18 EST"
+          }, 
+          {
+            "end_time": "22:21:22 11/19/18 EST", 
+            "id": 5, 
+            "start_time": "22:20:18 11/19/18 EST"
+          }
+        ], 
+        "trips": 6
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [
+          {
+            "end_time": "22:04:58 11/19/18 EST", 
+            "id": 0, 
+            "start_time": "22:04:30 11/19/18 EST"
+          }, 
+          {
+            "end_time": "22:07:24 11/19/18 EST", 
+            "id": 1, 
+            "start_time": "22:07:04 11/19/18 EST"
+          }, 
+          {
+            "end_time": "22:14:22 11/19/18 EST", 
+            "id": 2, 
+            "start_time": "22:13:30 11/19/18 EST"
+          }, 
+          {
+            "end_time": "22:15:20 11/19/18 EST", 
+            "id": 3, 
+            "start_time": "22:15:00 11/19/18 EST"
+          }, 
+          {
+            "end_time": "22:18:14 11/19/18 EST", 
+            "id": 4, 
+            "start_time": "22:17:28 11/19/18 EST"
+          }, 
+          {
+            "end_time": "22:21:22 11/19/18 EST", 
+            "id": 5, 
+            "start_time": "22:20:18 11/19/18 EST"
+          }
+        ], 
+        "trips": 6
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 8, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "22:25:02 11/19/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 54.35260530416974, 
+        "time": 1282.000000001, 
+        "total": 69680.03999999996
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 54.46400936033175, 
+        "time": 1282.000000001, 
+        "total": 69822.85999999977
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -2.541
+    }, 
+    "start_time": "22:03:40 11/19/18 EST", 
+    "target": {
+      "target_id": 3, 
+      "target_label": "LD2", 
+      "target_name": "Loop 3 10cm"
+    }, 
+    "total_charge": 69679.49393145557
+  }, 
+  "6371": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [
+          {
+            "end_time": "22:32:44 11/19/18 EST", 
+            "id": 0, 
+            "start_time": "22:32:28 11/19/18 EST"
+          }, 
+          {
+            "end_time": "23:00:42 11/19/18 EST", 
+            "id": 1, 
+            "start_time": "23:00:22 11/19/18 EST"
+          }
+        ], 
+        "trips": 2
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [
+          {
+            "end_time": "22:32:44 11/19/18 EST", 
+            "id": 0, 
+            "start_time": "22:32:28 11/19/18 EST"
+          }, 
+          {
+            "end_time": "23:00:42 11/19/18 EST", 
+            "id": 1, 
+            "start_time": "23:00:22 11/19/18 EST"
+          }
+        ], 
+        "trips": 2
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 5, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "23:04:40 11/19/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 40.00070763499069, 
+        "time": 2148.000000001, 
+        "total": 85921.52
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 40.12587523275602, 
+        "time": 2148.000000001, 
+        "total": 86190.38000000006
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -2.541
+    }, 
+    "start_time": "22:28:52 11/19/18 EST", 
+    "target": {
+      "target_id": 5, 
+      "target_label": "DUMMY", 
+      "target_name": "10cm Dummy"
+    }, 
+    "total_charge": 85839.97777914988
+  }, 
+  "6372": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [
+          {
+            "end_time": "23:16:10 11/19/18 EST", 
+            "id": 0, 
+            "start_time": "23:15:50 11/19/18 EST"
+          }, 
+          {
+            "end_time": "23:17:56 11/19/18 EST", 
+            "id": 1, 
+            "start_time": "23:16:48 11/19/18 EST"
+          }, 
+          {
+            "end_time": "23:22:12 11/19/18 EST", 
+            "id": 2, 
+            "start_time": "23:21:46 11/19/18 EST"
+          }, 
+          {
+            "end_time": "23:22:50 11/19/18 EST", 
+            "id": 3, 
+            "start_time": "23:22:16 11/19/18 EST"
+          }, 
+          {
+            "end_time": "23:31:02 11/19/18 EST", 
+            "id": 4, 
+            "start_time": "23:30:48 11/19/18 EST"
+          }, 
+          {
+            "end_time": "23:42:26 11/19/18 EST", 
+            "id": 5, 
+            "start_time": "23:42:06 11/19/18 EST"
+          }
+        ], 
+        "trips": 6
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [
+          {
+            "end_time": "23:16:10 11/19/18 EST", 
+            "id": 0, 
+            "start_time": "23:15:50 11/19/18 EST"
+          }, 
+          {
+            "end_time": "23:17:56 11/19/18 EST", 
+            "id": 1, 
+            "start_time": "23:16:48 11/19/18 EST"
+          }, 
+          {
+            "end_time": "23:22:12 11/19/18 EST", 
+            "id": 2, 
+            "start_time": "23:21:46 11/19/18 EST"
+          }, 
+          {
+            "end_time": "23:22:50 11/19/18 EST", 
+            "id": 3, 
+            "start_time": "23:22:16 11/19/18 EST"
+          }, 
+          {
+            "end_time": "23:31:02 11/19/18 EST", 
+            "id": 4, 
+            "start_time": "23:30:48 11/19/18 EST"
+          }, 
+          {
+            "end_time": "23:42:26 11/19/18 EST", 
+            "id": 5, 
+            "start_time": "23:42:06 11/19/18 EST"
+          }
+        ], 
+        "trips": 6
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 5, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "23:49:18 11/19/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 37.715553030288724, 
+        "time": 2640.000000001, 
+        "total": 99569.05999999995
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 37.88867223063809, 
+        "time": 2636.000000001, 
+        "total": 99874.5399999999
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -2.541
+    }, 
+    "start_time": "23:05:16 11/19/18 EST", 
+    "target": {
+      "target_id": 5, 
+      "target_label": "DUMMY", 
+      "target_name": "10cm Dummy"
+    }, 
+    "total_charge": 99569.42557044035
+  }, 
+  "6373": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [
+          {
+            "end_time": "00:00:24 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "23:59:56 11/19/18 EST"
+          }, 
+          {
+            "end_time": "00:07:38 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "00:07:18 11/20/18 EST"
+          }, 
+          {
+            "end_time": "00:09:44 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "00:07:50 11/20/18 EST"
+          }, 
+          {
+            "end_time": "00:15:18 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "00:15:04 11/20/18 EST"
+          }, 
+          {
+            "end_time": "00:20:46 11/20/18 EST", 
+            "id": 4, 
+            "start_time": "00:20:32 11/20/18 EST"
+          }, 
+          {
+            "end_time": "00:22:14 11/20/18 EST", 
+            "id": 5, 
+            "start_time": "00:22:04 11/20/18 EST"
+          }, 
+          {
+            "end_time": "00:24:20 11/20/18 EST", 
+            "id": 6, 
+            "start_time": "00:24:06 11/20/18 EST"
+          }, 
+          {
+            "end_time": "00:27:26 11/20/18 EST", 
+            "id": 7, 
+            "start_time": "00:27:14 11/20/18 EST"
+          }, 
+          {
+            "end_time": "00:41:56 11/20/18 EST", 
+            "id": 8, 
+            "start_time": "00:39:38 11/20/18 EST"
+          }, 
+          {
+            "end_time": "00:48:52 11/20/18 EST", 
+            "id": 9, 
+            "start_time": "00:46:32 11/20/18 EST"
+          }
+        ], 
+        "trips": 10
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [
+          {
+            "end_time": "00:00:24 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "23:59:56 11/19/18 EST"
+          }, 
+          {
+            "end_time": "00:07:38 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "00:07:18 11/20/18 EST"
+          }, 
+          {
+            "end_time": "00:09:44 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "00:07:50 11/20/18 EST"
+          }, 
+          {
+            "end_time": "00:15:18 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "00:15:04 11/20/18 EST"
+          }, 
+          {
+            "end_time": "00:20:46 11/20/18 EST", 
+            "id": 4, 
+            "start_time": "00:20:32 11/20/18 EST"
+          }, 
+          {
+            "end_time": "00:22:14 11/20/18 EST", 
+            "id": 5, 
+            "start_time": "00:22:04 11/20/18 EST"
+          }, 
+          {
+            "end_time": "00:24:20 11/20/18 EST", 
+            "id": 6, 
+            "start_time": "00:24:06 11/20/18 EST"
+          }, 
+          {
+            "end_time": "00:27:26 11/20/18 EST", 
+            "id": 7, 
+            "start_time": "00:27:14 11/20/18 EST"
+          }, 
+          {
+            "end_time": "00:41:56 11/20/18 EST", 
+            "id": 8, 
+            "start_time": "00:39:38 11/20/18 EST"
+          }, 
+          {
+            "end_time": "00:48:52 11/20/18 EST", 
+            "id": 9, 
+            "start_time": "00:46:32 11/20/18 EST"
+          }
+        ], 
+        "trips": 10
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 5, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "00:53:10 11/20/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 34.55006080706612, 
+        "time": 3618.000000001, 
+        "total": 125002.11999999976
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 34.73248753461649, 
+        "time": 3610.000000001, 
+        "total": 125384.28000000026
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -2.116
+    }, 
+    "start_time": "23:52:52 11/19/18 EST", 
+    "target": {
+      "target_id": 5, 
+      "target_label": "DUMMY", 
+      "target_name": "10cm Dummy"
+    }, 
+    "total_charge": 125003.64283278983
+  }, 
+  "6374": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [
+          {
+            "end_time": "00:54:54 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "00:54:22 11/20/18 EST"
+          }, 
+          {
+            "end_time": "00:57:46 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "00:57:34 11/20/18 EST"
+          }, 
+          {
+            "end_time": "01:01:20 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "01:01:06 11/20/18 EST"
+          }, 
+          {
+            "end_time": "01:03:36 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "01:03:20 11/20/18 EST"
+          }, 
+          {
+            "end_time": "01:13:12 11/20/18 EST", 
+            "id": 4, 
+            "start_time": "01:12:50 11/20/18 EST"
+          }
+        ], 
+        "trips": 5
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [
+          {
+            "end_time": "00:54:54 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "00:54:22 11/20/18 EST"
+          }, 
+          {
+            "end_time": "00:57:46 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "00:57:34 11/20/18 EST"
+          }, 
+          {
+            "end_time": "01:01:20 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "01:01:06 11/20/18 EST"
+          }, 
+          {
+            "end_time": "01:03:36 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "01:03:20 11/20/18 EST"
+          }, 
+          {
+            "end_time": "01:13:12 11/20/18 EST", 
+            "id": 4, 
+            "start_time": "01:12:50 11/20/18 EST"
+          }
+        ], 
+        "trips": 5
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 5, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "01:18:16 11/20/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 36.76312757199124, 
+        "time": 1458.000000001, 
+        "total": 53600.63999999999
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 36.875692729741516, 
+        "time": 1458.000000001, 
+        "total": 53764.76000000001
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -2.116
+    }, 
+    "start_time": "00:53:56 11/20/18 EST", 
+    "target": {
+      "target_id": 5, 
+      "target_label": "DUMMY", 
+      "target_name": "10cm Dummy"
+    }, 
+    "total_charge": 53600.68421937041
+  }, 
+  "6375": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [
+          {
+            "end_time": "01:32:48 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "01:32:34 11/20/18 EST"
+          }, 
+          {
+            "end_time": "01:34:26 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "01:34:04 11/20/18 EST"
+          }, 
+          {
+            "end_time": "01:37:20 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "01:35:50 11/20/18 EST"
+          }, 
+          {
+            "end_time": "01:38:12 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "01:37:58 11/20/18 EST"
+          }, 
+          {
+            "end_time": "01:48:46 11/20/18 EST", 
+            "id": 4, 
+            "start_time": "01:48:32 11/20/18 EST"
+          }, 
+          {
+            "end_time": "01:51:18 11/20/18 EST", 
+            "id": 5, 
+            "start_time": "01:49:56 11/20/18 EST"
+          }, 
+          {
+            "end_time": "01:57:52 11/20/18 EST", 
+            "id": 6, 
+            "start_time": "01:57:32 11/20/18 EST"
+          }, 
+          {
+            "end_time": "02:00:12 11/20/18 EST", 
+            "id": 7, 
+            "start_time": "01:59:58 11/20/18 EST"
+          }
+        ], 
+        "trips": 8
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [
+          {
+            "end_time": "01:32:48 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "01:32:34 11/20/18 EST"
+          }, 
+          {
+            "end_time": "01:34:26 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "01:34:04 11/20/18 EST"
+          }, 
+          {
+            "end_time": "01:37:20 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "01:35:50 11/20/18 EST"
+          }, 
+          {
+            "end_time": "01:38:12 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "01:37:58 11/20/18 EST"
+          }, 
+          {
+            "end_time": "01:48:46 11/20/18 EST", 
+            "id": 4, 
+            "start_time": "01:48:32 11/20/18 EST"
+          }, 
+          {
+            "end_time": "01:51:18 11/20/18 EST", 
+            "id": 5, 
+            "start_time": "01:49:56 11/20/18 EST"
+          }, 
+          {
+            "end_time": "01:57:52 11/20/18 EST", 
+            "id": 6, 
+            "start_time": "01:57:32 11/20/18 EST"
+          }, 
+          {
+            "end_time": "02:00:12 11/20/18 EST", 
+            "id": 7, 
+            "start_time": "01:59:58 11/20/18 EST"
+          }
+        ], 
+        "trips": 8
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 8, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "02:05:58 11/20/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 43.5716666666468, 
+        "time": 2196.000000001, 
+        "total": 95683.37999999995
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 43.78231963468351, 
+        "time": 2190.000000001, 
+        "total": 95883.28000000067
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -2.116
+    }, 
+    "start_time": "01:29:19 11/20/18 EST", 
+    "target": {
+      "target_id": 3, 
+      "target_label": "LD2", 
+      "target_name": "Loop 3 10cm"
+    }, 
+    "total_charge": 95808.98004761295
+  }, 
+  "6376": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [
+          {
+            "end_time": "02:37:10 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "02:35:06 11/20/18 EST"
+          }, 
+          {
+            "end_time": "02:46:42 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "02:45:54 11/20/18 EST"
+          }, 
+          {
+            "end_time": "02:49:56 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "02:48:58 11/20/18 EST"
+          }, 
+          {
+            "end_time": "02:50:34 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "02:50:18 11/20/18 EST"
+          }, 
+          {
+            "end_time": "02:58:06 11/20/18 EST", 
+            "id": 4, 
+            "start_time": "02:57:06 11/20/18 EST"
+          }, 
+          {
+            "end_time": "03:05:38 11/20/18 EST", 
+            "id": 5, 
+            "start_time": "03:00:46 11/20/18 EST"
+          }, 
+          {
+            "end_time": "03:09:10 11/20/18 EST", 
+            "id": 6, 
+            "start_time": "03:08:52 11/20/18 EST"
+          }, 
+          {
+            "end_time": "03:11:34 11/20/18 EST", 
+            "id": 7, 
+            "start_time": "03:11:18 11/20/18 EST"
+          }, 
+          {
+            "end_time": "03:21:10 11/20/18 EST", 
+            "id": 8, 
+            "start_time": "03:20:56 11/20/18 EST"
+          }
+        ], 
+        "trips": 9
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [
+          {
+            "end_time": "02:37:10 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "02:35:06 11/20/18 EST"
+          }, 
+          {
+            "end_time": "02:46:42 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "02:45:54 11/20/18 EST"
+          }, 
+          {
+            "end_time": "02:49:56 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "02:48:58 11/20/18 EST"
+          }, 
+          {
+            "end_time": "02:50:34 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "02:50:18 11/20/18 EST"
+          }, 
+          {
+            "end_time": "02:58:06 11/20/18 EST", 
+            "id": 4, 
+            "start_time": "02:57:06 11/20/18 EST"
+          }, 
+          {
+            "end_time": "03:05:38 11/20/18 EST", 
+            "id": 5, 
+            "start_time": "03:00:46 11/20/18 EST"
+          }, 
+          {
+            "end_time": "03:09:10 11/20/18 EST", 
+            "id": 6, 
+            "start_time": "03:08:52 11/20/18 EST"
+          }, 
+          {
+            "end_time": "03:11:34 11/20/18 EST", 
+            "id": 7, 
+            "start_time": "03:11:18 11/20/18 EST"
+          }, 
+          {
+            "end_time": "03:21:10 11/20/18 EST", 
+            "id": 8, 
+            "start_time": "03:20:56 11/20/18 EST"
+          }
+        ], 
+        "trips": 9
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 8, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "03:29:38 11/20/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 44.22140131185325, 
+        "time": 3354.000000001, 
+        "total": 148318.58000000002
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 44.50265868262127, 
+        "time": 3340.000000001, 
+        "total": 148638.87999999954
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -2.116
+    }, 
+    "start_time": "02:33:39 11/20/18 EST", 
+    "target": {
+      "target_id": 3, 
+      "target_label": "LD2", 
+      "target_name": "Loop 3 10cm"
+    }, 
+    "total_charge": 148440.04274913282
+  }, 
+  "6377": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [
+          {
+            "end_time": "03:55:26 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "03:48:32 11/20/18 EST"
+          }, 
+          {
+            "end_time": "03:59:56 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "03:58:44 11/20/18 EST"
+          }, 
+          {
+            "end_time": "04:06:44 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "04:04:02 11/20/18 EST"
+          }, 
+          {
+            "end_time": "04:09:16 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "04:08:18 11/20/18 EST"
+          }
+        ], 
+        "trips": 4
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [
+          {
+            "end_time": "03:55:26 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "03:48:32 11/20/18 EST"
+          }, 
+          {
+            "end_time": "03:59:56 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "03:58:44 11/20/18 EST"
+          }, 
+          {
+            "end_time": "04:06:44 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "04:04:02 11/20/18 EST"
+          }, 
+          {
+            "end_time": "04:09:16 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "04:08:18 11/20/18 EST"
+          }
+        ], 
+        "trips": 4
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 8, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "04:10:23 11/20/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 36.21380422689868, 
+        "time": 1798.000000001, 
+        "total": 65112.42000000004
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 36.4969910514335, 
+        "time": 1788.000000001, 
+        "total": 65256.61999999959
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -2.116
+    }, 
+    "start_time": "03:40:25 11/20/18 EST", 
+    "target": {
+      "target_id": 3, 
+      "target_label": "LD2", 
+      "target_name": "Loop 3 10cm"
+    }, 
+    "total_charge": 65111.31754126971
+  }, 
+  "6378": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [
+          {
+            "end_time": "04:26:16 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "04:26:00 11/20/18 EST"
+          }, 
+          {
+            "end_time": "04:32:54 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "04:29:40 11/20/18 EST"
+          }, 
+          {
+            "end_time": "04:36:38 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "04:36:26 11/20/18 EST"
+          }, 
+          {
+            "end_time": "04:47:44 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "04:44:24 11/20/18 EST"
+          }, 
+          {
+            "end_time": "04:50:00 11/20/18 EST", 
+            "id": 4, 
+            "start_time": "04:49:46 11/20/18 EST"
+          }, 
+          {
+            "end_time": "05:04:04 11/20/18 EST", 
+            "id": 5, 
+            "start_time": "05:03:06 11/20/18 EST"
+          }, 
+          {
+            "end_time": "05:05:20 11/20/18 EST", 
+            "id": 6, 
+            "start_time": "05:04:56 11/20/18 EST"
+          }, 
+          {
+            "end_time": "05:06:48 11/20/18 EST", 
+            "id": 7, 
+            "start_time": "05:06:34 11/20/18 EST"
+          }
+        ], 
+        "trips": 8
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [
+          {
+            "end_time": "04:26:16 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "04:26:00 11/20/18 EST"
+          }, 
+          {
+            "end_time": "04:32:54 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "04:29:40 11/20/18 EST"
+          }, 
+          {
+            "end_time": "04:36:38 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "04:36:26 11/20/18 EST"
+          }, 
+          {
+            "end_time": "04:47:44 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "04:44:24 11/20/18 EST"
+          }, 
+          {
+            "end_time": "04:50:00 11/20/18 EST", 
+            "id": 4, 
+            "start_time": "04:49:46 11/20/18 EST"
+          }, 
+          {
+            "end_time": "05:04:04 11/20/18 EST", 
+            "id": 5, 
+            "start_time": "05:03:06 11/20/18 EST"
+          }, 
+          {
+            "end_time": "05:05:20 11/20/18 EST", 
+            "id": 6, 
+            "start_time": "05:04:56 11/20/18 EST"
+          }, 
+          {
+            "end_time": "05:06:48 11/20/18 EST", 
+            "id": 7, 
+            "start_time": "05:06:34 11/20/18 EST"
+          }
+        ], 
+        "trips": 8
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 7, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "05:20:43 11/20/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 23.284554831698372, 
+        "time": 3684.000000001, 
+        "total": 85780.30000000009
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 23.413224578568826, 
+        "time": 3678.000000001, 
+        "total": 86113.83999999956
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -1.691
+    }, 
+    "start_time": "04:19:20 11/20/18 EST", 
+    "target": {
+      "target_id": 3, 
+      "target_label": "LD2", 
+      "target_name": "Loop 3 10cm"
+    }, 
+    "total_charge": 85725.39690052374
+  }, 
+  "6379": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [
+          {
+            "end_time": "05:28:36 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "05:22:58 11/20/18 EST"
+          }, 
+          {
+            "end_time": "05:43:16 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "05:43:04 11/20/18 EST"
+          }, 
+          {
+            "end_time": "05:46:52 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "05:46:34 11/20/18 EST"
+          }, 
+          {
+            "end_time": "06:00:00 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "05:59:50 11/20/18 EST"
+          }, 
+          {
+            "end_time": "06:05:00 11/20/18 EST", 
+            "id": 4, 
+            "start_time": "06:04:48 11/20/18 EST"
+          }, 
+          {
+            "end_time": "06:17:12 11/20/18 EST", 
+            "id": 5, 
+            "start_time": "06:17:00 11/20/18 EST"
+          }, 
+          {
+            "end_time": "06:17:58 11/20/18 EST", 
+            "id": 6, 
+            "start_time": "06:17:46 11/20/18 EST"
+          }, 
+          {
+            "end_time": "06:21:22 11/20/18 EST", 
+            "id": 7, 
+            "start_time": "06:21:10 11/20/18 EST"
+          }
+        ], 
+        "trips": 8
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [
+          {
+            "end_time": "05:28:36 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "05:22:58 11/20/18 EST"
+          }, 
+          {
+            "end_time": "05:43:16 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "05:43:04 11/20/18 EST"
+          }, 
+          {
+            "end_time": "05:46:52 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "05:46:34 11/20/18 EST"
+          }, 
+          {
+            "end_time": "06:00:00 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "05:59:50 11/20/18 EST"
+          }, 
+          {
+            "end_time": "06:05:00 11/20/18 EST", 
+            "id": 4, 
+            "start_time": "06:04:48 11/20/18 EST"
+          }, 
+          {
+            "end_time": "06:17:12 11/20/18 EST", 
+            "id": 5, 
+            "start_time": "06:17:00 11/20/18 EST"
+          }, 
+          {
+            "end_time": "06:17:58 11/20/18 EST", 
+            "id": 6, 
+            "start_time": "06:17:46 11/20/18 EST"
+          }, 
+          {
+            "end_time": "06:21:22 11/20/18 EST", 
+            "id": 7, 
+            "start_time": "06:21:10 11/20/18 EST"
+          }
+        ], 
+        "trips": 8
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 7, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "06:21:44 11/20/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 23.950071783538377, 
+        "time": 3622.000000001, 
+        "total": 86747.15999999995
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 24.054773480656394, 
+        "time": 3620.000000001, 
+        "total": 87078.2800000002
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -1.691
+    }, 
+    "start_time": "05:21:21 11/20/18 EST", 
+    "target": {
+      "target_id": 3, 
+      "target_label": "LD2", 
+      "target_name": "Loop 3 10cm"
+    }, 
+    "total_charge": 86802.56755354776
+  }, 
+  "6380": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [
+          {
+            "end_time": "06:26:10 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "06:25:56 11/20/18 EST"
+          }, 
+          {
+            "end_time": "06:33:48 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "06:33:34 11/20/18 EST"
+          }, 
+          {
+            "end_time": "06:36:04 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "06:35:52 11/20/18 EST"
+          }, 
+          {
+            "end_time": "06:43:36 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "06:43:18 11/20/18 EST"
+          }, 
+          {
+            "end_time": "06:55:40 11/20/18 EST", 
+            "id": 4, 
+            "start_time": "06:55:26 11/20/18 EST"
+          }, 
+          {
+            "end_time": "07:00:28 11/20/18 EST", 
+            "id": 5, 
+            "start_time": "07:00:14 11/20/18 EST"
+          }, 
+          {
+            "end_time": "07:05:58 11/20/18 EST", 
+            "id": 6, 
+            "start_time": "07:05:40 11/20/18 EST"
+          }, 
+          {
+            "end_time": "07:06:20 11/20/18 EST", 
+            "id": 7, 
+            "start_time": "07:06:06 11/20/18 EST"
+          }, 
+          {
+            "end_time": "07:15:52 11/20/18 EST", 
+            "id": 8, 
+            "start_time": "07:15:40 11/20/18 EST"
+          }
+        ], 
+        "trips": 9
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [
+          {
+            "end_time": "06:26:10 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "06:25:56 11/20/18 EST"
+          }, 
+          {
+            "end_time": "06:33:48 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "06:33:34 11/20/18 EST"
+          }, 
+          {
+            "end_time": "06:36:04 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "06:35:52 11/20/18 EST"
+          }, 
+          {
+            "end_time": "06:43:36 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "06:43:18 11/20/18 EST"
+          }, 
+          {
+            "end_time": "06:55:40 11/20/18 EST", 
+            "id": 4, 
+            "start_time": "06:55:26 11/20/18 EST"
+          }, 
+          {
+            "end_time": "07:00:28 11/20/18 EST", 
+            "id": 5, 
+            "start_time": "07:00:14 11/20/18 EST"
+          }, 
+          {
+            "end_time": "07:05:58 11/20/18 EST", 
+            "id": 6, 
+            "start_time": "07:05:40 11/20/18 EST"
+          }, 
+          {
+            "end_time": "07:06:20 11/20/18 EST", 
+            "id": 7, 
+            "start_time": "07:06:06 11/20/18 EST"
+          }, 
+          {
+            "end_time": "07:15:52 11/20/18 EST", 
+            "id": 8, 
+            "start_time": "07:15:40 11/20/18 EST"
+          }
+        ], 
+        "trips": 9
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 7, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "07:22:23 11/20/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 26.354453688290004, 
+        "time": 3606.000000001, 
+        "total": 95034.1600000001
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 26.469678135397736, 
+        "time": 3604.000000001, 
+        "total": 95396.71999999991
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -1.691
+    }, 
+    "start_time": "06:22:18 11/20/18 EST", 
+    "target": {
+      "target_id": 3, 
+      "target_label": "LD2", 
+      "target_name": "Loop 3 10cm"
+    }, 
+    "total_charge": 94977.84385700854
+  }, 
+  "6381": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [
+          {
+            "end_time": "07:25:40 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "07:25:22 11/20/18 EST"
+          }, 
+          {
+            "end_time": "07:28:00 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "07:27:44 11/20/18 EST"
+          }
+        ], 
+        "trips": 2
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [
+          {
+            "end_time": "07:25:40 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "07:25:22 11/20/18 EST"
+          }, 
+          {
+            "end_time": "07:28:00 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "07:27:44 11/20/18 EST"
+          }
+        ], 
+        "trips": 2
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 7, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "07:42:51 11/20/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 15.375919732428608, 
+        "time": 1196.000000001, 
+        "total": 18389.59999999999
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 15.543198653185662, 
+        "time": 1188.000000001, 
+        "total": 18465.32000000011
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -1.691
+    }, 
+    "start_time": "07:22:56 11/20/18 EST", 
+    "target": {
+      "target_id": 3, 
+      "target_label": "LD2", 
+      "target_name": "Loop 3 10cm"
+    }, 
+    "total_charge": 18389.82253604286
+  }, 
+  "6382": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [
+          {
+            "end_time": "07:49:20 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "07:49:20 11/20/18 EST"
+          }, 
+          {
+            "end_time": "07:57:54 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "07:57:40 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:04:12 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "08:01:40 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:07:52 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "08:07:28 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:11:18 11/20/18 EST", 
+            "id": 4, 
+            "start_time": "08:08:12 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:15:58 11/20/18 EST", 
+            "id": 5, 
+            "start_time": "08:15:28 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:27:04 11/20/18 EST", 
+            "id": 6, 
+            "start_time": "08:25:42 11/20/18 EST"
+          }
+        ], 
+        "trips": 7
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [
+          {
+            "end_time": "07:49:20 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "07:49:20 11/20/18 EST"
+          }, 
+          {
+            "end_time": "07:57:54 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "07:57:40 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:04:12 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "08:01:40 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:07:52 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "08:07:28 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:11:18 11/20/18 EST", 
+            "id": 4, 
+            "start_time": "08:08:12 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:15:58 11/20/18 EST", 
+            "id": 5, 
+            "start_time": "08:15:28 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:27:04 11/20/18 EST", 
+            "id": 6, 
+            "start_time": "08:25:42 11/20/18 EST"
+          }
+        ], 
+        "trips": 7
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 5, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "08:28:29 11/20/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 31.592929292915997, 
+        "time": 2376.000000001, 
+        "total": 75064.8
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 31.723807919110335, 
+        "time": 2374.000000001, 
+        "total": 75312.31999999966
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -1.691
+    }, 
+    "start_time": "07:48:54 11/20/18 EST", 
+    "target": {
+      "target_id": 5, 
+      "target_label": "DUMMY", 
+      "target_name": "10cm Dummy"
+    }, 
+    "total_charge": 74984.42441594726
+  }, 
+  "6383": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [
+          {
+            "end_time": "08:30:36 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "08:29:30 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:37:46 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "08:37:20 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:39:18 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "08:38:56 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:47:32 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "08:47:10 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:48:56 11/20/18 EST", 
+            "id": 4, 
+            "start_time": "08:48:36 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:50:40 11/20/18 EST", 
+            "id": 5, 
+            "start_time": "08:50:22 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:59:04 11/20/18 EST", 
+            "id": 6, 
+            "start_time": "08:58:28 11/20/18 EST"
+          }, 
+          {
+            "end_time": "09:02:10 11/20/18 EST", 
+            "id": 7, 
+            "start_time": "09:01:50 11/20/18 EST"
+          }, 
+          {
+            "end_time": "09:03:24 11/20/18 EST", 
+            "id": 8, 
+            "start_time": "09:03:06 11/20/18 EST"
+          }, 
+          {
+            "end_time": "09:08:24 11/20/18 EST", 
+            "id": 9, 
+            "start_time": "09:03:54 11/20/18 EST"
+          }, 
+          {
+            "end_time": "09:22:00 11/20/18 EST", 
+            "id": 10, 
+            "start_time": "09:15:44 11/20/18 EST"
+          }, 
+          {
+            "end_time": "09:26:24 11/20/18 EST", 
+            "id": 11, 
+            "start_time": "09:26:10 11/20/18 EST"
+          }
+        ], 
+        "trips": 12
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [
+          {
+            "end_time": "08:30:36 11/20/18 EST", 
+            "id": 0, 
+            "start_time": "08:29:30 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:37:46 11/20/18 EST", 
+            "id": 1, 
+            "start_time": "08:37:20 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:39:18 11/20/18 EST", 
+            "id": 2, 
+            "start_time": "08:38:56 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:47:32 11/20/18 EST", 
+            "id": 3, 
+            "start_time": "08:47:10 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:48:56 11/20/18 EST", 
+            "id": 4, 
+            "start_time": "08:48:36 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:50:40 11/20/18 EST", 
+            "id": 5, 
+            "start_time": "08:50:22 11/20/18 EST"
+          }, 
+          {
+            "end_time": "08:59:04 11/20/18 EST", 
+            "id": 6, 
+            "start_time": "08:58:28 11/20/18 EST"
+          }, 
+          {
+            "end_time": "09:02:10 11/20/18 EST", 
+            "id": 7, 
+            "start_time": "09:01:50 11/20/18 EST"
+          }, 
+          {
+            "end_time": "09:03:24 11/20/18 EST", 
+            "id": 8, 
+            "start_time": "09:03:06 11/20/18 EST"
+          }, 
+          {
+            "end_time": "09:08:24 11/20/18 EST", 
+            "id": 9, 
+            "start_time": "09:03:54 11/20/18 EST"
+          }, 
+          {
+            "end_time": "09:22:00 11/20/18 EST", 
+            "id": 10, 
+            "start_time": "09:15:44 11/20/18 EST"
+          }, 
+          {
+            "end_time": "09:26:24 11/20/18 EST", 
+            "id": 11, 
+            "start_time": "09:26:10 11/20/18 EST"
+          }
+        ], 
+        "trips": 12
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 5, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "09:29:50 11/20/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 29.985697036215708, 
+        "time": 3644.000000001, 
+        "total": 109267.88000000002
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 30.183226872238713, 
+        "time": 3632.000000001, 
+        "total": 109625.48000000119
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -1.691
+    }, 
+    "start_time": "08:29:04 11/20/18 EST", 
+    "target": {
+      "target_id": 5, 
+      "target_label": "DUMMY", 
+      "target_name": "10cm Dummy"
+    }, 
+    "total_charge": 109269.25620025392
+  }, 
+  "6384": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
+    "counters": {
+      "ibcm1": {
+        "PV": "ibcm1", 
+        "trip_events": [], 
+        "trips": 0
+      }, 
+      "ibcm2": {
+        "PV": "ibcm2", 
+        "trip_events": [], 
+        "trips": 0
+      }
+    }, 
+    "daq": {
+      "ps1": -1, 
+      "ps2": -1, 
+      "ps3": -1, 
+      "ps4": 5, 
+      "ps5": -1, 
+      "ps6": 0
+    }, 
+    "end_time": "09:31:00 11/20/18 EST", 
+    "integrators": {
+      "bcm1": {
+        "PV": "ibcm1", 
+        "average": 40.954736841027504, 
+        "time": 38.000000001000004, 
+        "total": 1556.28
+      }, 
+      "bcm2": {
+        "PV": "ibcm2", 
+        "average": 41.07999999891894, 
+        "time": 38.000000001000004, 
+        "total": 1561.04
+      }
+    }, 
+    "spectrometers": {
+      "hms_angle": 15.3, 
+      "hms_momentum": -6.358, 
+      "shms_angle": 20.580000000000002, 
+      "shms_momentum": -1.691
+    }, 
+    "start_time": "09:30:21 11/20/18 EST", 
+    "target": {
+      "target_id": 5, 
+      "target_label": "DUMMY", 
+      "target_name": "10cm Dummy"
+    }, 
+    "total_charge": 1638.4205577775997
+  }, 
+  "6385": {
+    "beam": {
+      "beam_energy": 10.6, 
+      "beam_pol": 0.0
+    }, 
     "daq": {
       "ps1": -1, 
       "ps2": -1, 
@@ -42351,9 +44491,9 @@
       "hms_angle": 15.3, 
       "hms_momentum": -6.358, 
       "shms_angle": 20.580000000000002, 
-      "shms_momentum": -2.966
+      "shms_momentum": 2.966
     }, 
-    "start_time": "20:01:20 11/19/18 EST", 
+    "start_time": "10:43:15 11/20/18 EST", 
     "target": {
       "target_id": 5, 
       "target_label": "DUMMY", 
