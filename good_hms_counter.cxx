@@ -35,7 +35,7 @@ using floaters = ROOT::VecOps::RVec<float>;
 using shorters = ROOT::VecOps::RVec<short>;
 using nlohmann::json;
 
-void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
+void good_hms_counter(int RunNumber = 6018, int nevents = -1, int prompt =0, int update = 1) {
 
   using nlohmann::json;
   json j;
@@ -69,7 +69,7 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
   //    The way the input rates are prescaled follows:
   //         input-rate/(2^{val - 1} + 1)
   double singles_ps_value = std::pow(2.0,ps7-1.0);
-  std::cout << "prescale value " << singles_ps_value << "\n";
+  //std::cout << "prescale value " << singles_ps_value << "\n";
 
   std::string coda_type = "COIN";
   std::string rootfile = "ROOTfiles_csv/";
@@ -110,15 +110,15 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
 
   ROOT::EnableImplicitMT(24);
 
-    Pvec4D Pbeam(0, 0, 10.598, 0.000511);
+  Pvec4D Pbeam(0, 0, 10.598, 0.000511);
 
-    // Detector tree 
-    ROOT::RDataFrame d("T", rootfile);
+  // Detector tree 
+  ROOT::RDataFrame d("T", rootfile);
 
-    // HMS Scaler tree
-    ROOT::RDataFrame d_sh("TSH", rootfile);
+  // HMS Scaler tree
+  ROOT::RDataFrame d_sh("TSH", rootfile);
   //int N_scaler_events = *(d_sh.Count());
-  
+
   std::string hpdelta = "H.gtr.dp > -10 && H.gtr.dp < 10";
   std::string epiCut = "H.cer.npeSum > 1.0 && H.cal.etottracknorm > 0.6 && "
                        "H.cal.etottracknorm < 2.0 && P.cal.etottracknorm<1.0";
@@ -223,8 +223,11 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
   jruns[run_str]["hms scaler yield unc."]    = hms_scaler_yield_unc;
   //jruns[run_str]["hms live time"]         = hms_live_time;
 
-  std::ofstream json_output_file("db2/run_count_list.json");
-  json_output_file << std::setw(4) << jruns << "\n";
+  if( update ) {
+    std::cout << "Updating db2/run_count_list.json with hms counts\n" ;
+    std::ofstream json_output_file("db2/run_count_list.json");
+    json_output_file << std::setw(4) << jruns << "\n";
+  }
 
   std::cout << " ----------------------------------------------    \n";
   std::cout << " # of good hms triggers = "
@@ -261,6 +264,8 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
   double hmax = 0.0;
   THStack *hs = nullptr;
   // TLatex latex;
+
+  gSystem->mkdir("results/good_hms_counter",true);
 
   // ---------------------------------------------------------
   //

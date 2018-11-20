@@ -211,6 +211,7 @@ void good_coin_counter(int RunNumber = 6018, int nevents = -1, int prompt = 1, i
   std::cout << " # of good coin  = " << int(pion_corrected) << "    \n";
   std::cout << "    out of  " << *c_n_events_total << " total triggers\n";
   std::cout << "        and " << *c_n_events_coin << " coin triggers\n";
+  std::cout << "  coin yield: " << coin_yield << " events/mC \n";
 
   json jruns;
   {

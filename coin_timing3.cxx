@@ -32,16 +32,13 @@ using floaters = ROOT::VecOps::RVec<float>;
 using shorters = ROOT::VecOps::RVec<short>;
 using FVec     = std::vector<float>;
 
-void coin_timing3(int RunNumber = 6012, const char* codatype = "COIN", int nevents = 500000) {
+void coin_timing3(int RunNumber = 6335, int nevents = -1) {
+  std::string coda_type = "COIN";
 
-  std::string coda_type = codatype;
-  std::string hallc_replay_dir = "/w/hallc-scifs17exp/c-sidis18/SIDISAnalyzer/";
-  std::string rootfile    = std::string("ROOTfiles/coin_replay_production_");
-  if(coda_type == "SHMS") {
-    rootfile         = std::string("ROOTfiles/shms_replay_production_all_");// + std::to_string(RunNumber) + "_50000.root";
-  }
+  std::string rootfile    = std::string("ROOTfiles_csv/coin_replay_production_");
   rootfile  += std::to_string(RunNumber) + "_" + std::to_string(nevents) +".root";
-  std::string db_filename = hallc_replay_dir+"DBASE/"+coda_type+"/standard.database";
+
+  std::string db_filename = "DBASE/"+coda_type+"/standard.database";
   std::cout << rootfile << "\n";
 
   TFile* f = new TFile(rootfile.c_str()); 

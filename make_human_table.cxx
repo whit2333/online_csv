@@ -51,7 +51,7 @@ void make_human_table() {
   fmt::print(" {:^21} ", "start time");
   fmt::print(" {:^21} ", "end time");
   fmt::print(" {:>9} ", "pi_count");
-  fmt::print(" {:>11} ", "charge");
+  fmt::print(" {:>9} ", "charge");
   fmt::print(" {:>9} ", "yield");
   fmt::print(" {:>9} ", "triggers");
   fmt::print(" {:<} ", "comment");
@@ -121,7 +121,7 @@ void make_human_table() {
         fmt::print(" {:>9.1f} ", pi_yield);
     if (runjs.find("total_charge") != runjs.end()) {
       //total_charge = runjs["total_charge"].get<double>() / 1000.0;
-      fmt::print("/ {:<10.1f} ", total_charge);
+      fmt::print("/ {:<6.1f} ", total_charge);
     } else {
       fmt::print(" {:>11} ", "");
     }

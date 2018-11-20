@@ -67,7 +67,6 @@ void plot_hms_singles(int start_run = 0){
     //  continue;
     //}
 
-    std::cout << " derp 0\n";
     int run_number = std::stoi(it.key());
     int run_number2 = 0;
     double yield      = 0.0;
@@ -92,7 +91,6 @@ void plot_hms_singles(int start_run = 0){
         //you suck
       }
     }
-    std::cout << " derp \n";
     if (it.value().find("hms scaler yield") != it.value().end()) {
       run_number2 = std::stoi(it.key());
       yield2      = it.value()["hms scaler yield"].get<double>();
@@ -104,7 +102,6 @@ void plot_hms_singles(int start_run = 0){
         hms_yield_uncs2.push_back(0.0);
       }
     }
-    std::cout << " derp 2\n";
     if (it.value().find("hms scaler yield") != it.value().end()) {
       if (it.value().find("hms e yield") != it.value().end()) {
         runs3.push_back(double(run_number2));
@@ -120,7 +117,6 @@ void plot_hms_singles(int start_run = 0){
         }
       }
     }
-    std::cout << " derp 3\n";
   }
 
   // ------------------------------

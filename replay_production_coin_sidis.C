@@ -240,7 +240,7 @@ void replay_production_coin_sidis (Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   // Start the actual analysis.
   analyzer->Process(run);
   // Create report file from template
-  analyzer->PrintReport("TEMPLATES/COIN/PRODUCTION/csv_production.template",
+  //analyzer->PrintReport("TEMPLATES/COIN/PRODUCTION/csv_production.template",
   			Form("REPORT_OUTPUT/COIN/PRODUCTION/replay_csv_production_%d_%d.report", RunNumber, MaxEvent));  // optional
 
 }
