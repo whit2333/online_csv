@@ -12,7 +12,7 @@ namespace fs = std::experimental::filesystem;
 #include "TGraph.h"
 
 
-void plot_hms_singles(){
+void plot_hms_singles(int start_run = 0){
 
   using nlohmann::json;
   json j;
@@ -20,7 +20,7 @@ void plot_hms_singles(){
     std::ifstream json_input_file("db2/run_count_list.json");
     try {
       json_input_file >> j;
-    } catch(json::parse_error)  {
+    } catch(json::parse_error) {
       std::cerr << "error: json file, db2/run_count_list.json, is incomplete or has broken syntax.\n";
       std::quick_exit(-127);
     }
@@ -63,16 +63,21 @@ void plot_hms_singles(){
     if (j2.find(it.key()) == j2.end()) {
       continue;
     }
-    //if (j2[it.key()]["target"]["target_id"].get<int>() != 3) {
-    //  continue;
-    //}
+    if (j2[it.key()]["target"]["target_id"].get<int>() != 3) {
+      continue;
+    }
 
-    int run_number = 0;
+    int run_number = std::stoi(it.key());
     int run_number2 = 0;
     double yield      = 0.0;
     double yield2      =0.0;
+
+    if(run_number < start_run ) {
+      continue;
+    }
+
     if (it.value().find("hms e yield") != it.value().end()) {
-      run_number = std::stoi(it.key());
+      try {
       yield      = it.value()["hms e yield"].get<double>();
       runs.push_back(double(run_number));
       hms_yields.push_back(yield);
@@ -80,6 +85,10 @@ void plot_hms_singles(){
         hms_yield_uncs.push_back(it.value()["hms e yield unc."].get<double>());
       } else {
         hms_yield_uncs.push_back(0.0);
+      }
+      } catch(std::domain_error ) {
+        continue;
+        //you suck
       }
     }
     if (it.value().find("hms scaler yield") != it.value().end()) {
@@ -147,6 +156,6 @@ void plot_hms_singles(){
   //gr->GetYaxis()->SetRangeUser(0.3, 0.45);
   gr->Draw("alp");
 
-  c->SaveAs("hms_singles_vs_run_number.png");
-  c->SaveAs("hms_singles_vs_run_number.pdf");
+  c->SaveAs("results/hms_singles_vs_run_number.png");
+  c->SaveAs("results/hms_singles_vs_run_number.pdf");
 }

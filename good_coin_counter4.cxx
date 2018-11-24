@@ -1,6 +1,7 @@
 #include "nlohmann/json.hpp"
 #include <cmath>
 #include <iostream>
+#include <cstdlib>
 
 #include "ROOT/RDataFrame.hxx"
 #include "ROOT/RVec.hxx"
@@ -16,18 +17,6 @@ R__LOAD_LIBRARY(libMathMore.so)
 R__LOAD_LIBRARY(libGenVector.so)
 
 #include "THStack.h"
-
-//#include "THcParmList.h"
-// R__LOAD_LIBRARY(libPodd.so)
-// R__LOAD_LIBRARY(libHallA.so)
-// R__LOAD_LIBRARY(libdc.so)
-// R__LOAD_LIBRARY(libHallC.so)
-
-// fmt - string formatting library
-//#include "fmt/core.h"
-//#include "fmt/ostream.h"
-// R__LOAD_LIBRARY(libfmt.so)
-
 using Pvec3D = ROOT::Math::XYZVector;
 using Pvec4D = ROOT::Math::PxPyPzMVector;
 
@@ -38,13 +27,18 @@ using floaters = ROOT::VecOps::RVec<float>;
 using shorters = ROOT::VecOps::RVec<short>;
 using nlohmann::json;
 
-void good_coin_counter2(int RunNumber = 6018, int nevents = -1) {
+void good_coin_counter4(int RunNumber = 6018, int nevents = -1, int prompt = 1, int update = 1, int default_count_goal = 30000) {
 
   using nlohmann::json;
   json j;
   {
     std::ifstream json_input_file("db2/run_list.json");
-    json_input_file >> j;
+    try {
+      json_input_file >> j;
+    } catch(json::parse_error)  {
+      std::cerr << "error: json file, db2/run_list.json, is incomplete or has broken syntax.\n";
+      std::quick_exit(-127);
+    }
   }
 
   auto runnum_str = std::to_string(RunNumber);
@@ -59,17 +53,49 @@ void good_coin_counter2(int RunNumber = 6018, int nevents = -1) {
   double P0_shms = std::abs(P0_shms_setting);
 
   std::string coda_type = "COIN";
-  std::string rootfile = "ROOTfiles_online/";
+  std::string rootfile = "ROOTfiles_csv/";
   rootfile += std::string("coin_replay_production_");
   rootfile +=
       std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
 
-  {
+  //{
+  //  TFile file(rootfile.c_str());
+  //  if (file.IsZombie()) {
+  //    std::cout << " Did your replay finish?  Check that the it is done before running this script.\n";
+  //    return;
+  //  }
+  //}
+  bool found_good_file = false; 
+  if(!gSystem->AccessPathName(rootfile.c_str())) {
     TFile file(rootfile.c_str());
     if (file.IsZombie()) {
+      std::cout << rootfile << " is a zombie.\n";
       std::cout << " Did your replay finish?  Check that the it is done before running this script.\n";
-      return;
+      //return;
+    } else {
+      std::cout <<  " using : " << rootfile << "\n";
+      found_good_file = true;
     }
+  }
+  if(!found_good_file) {
+    rootfile = "ROOTfiles_online/";
+    rootfile += std::string("coin_replay_production_");
+    rootfile += std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
+
+    if(!gSystem->AccessPathName(rootfile.c_str())) {
+      TFile file(rootfile.c_str());
+      if (file.IsZombie()) {
+        std::cout << rootfile << " is a zombie.\n";
+        std::cout << " Did your replay finish?  Check that the it is done before running this script.\n";
+      } else {
+        found_good_file = true;
+        std::cout <<  " using : " << rootfile << "\n";
+      }
+    }
+  }
+  if(!found_good_file) {
+    std::cout << " Error: suitable root file not found\n";
+    return;
   }
   // new TBrowser;
   //
@@ -213,10 +239,21 @@ void good_coin_counter2(int RunNumber = 6018, int nevents = -1) {
   double pion_corrected =
       double(double(*pion_count) - random_bg * double(*pion_count) / (double(*coin_counts)));
 
+  std::cout << " ----------------------------------------------    \n";
+  std::cout << " # of good coin  = " << int(pion_corrected) << "    \n";
+  std::cout << "    out of  " << *c_n_events_total << " total triggers\n";
+  std::cout << "        and " << *c_n_events_coin << " coin triggers\n";
+  std::cout << "  coin yield: " << coin_yield << " events/mC \n";
+
   json jruns;
   {
     std::ifstream input_file("db2/run_count_list.json");
-    input_file >> jruns;
+    try {
+      input_file >> jruns;
+    } catch(json::parse_error)  {
+      std::cerr << "error: json file is incomplete or has broken syntax.\n";
+      std::quick_exit(-127);
+    }
   }
 
 
@@ -234,54 +271,61 @@ void good_coin_counter2(int RunNumber = 6018, int nevents = -1) {
   j_current_run["kaon counts"] = kaon_counts;
   j_current_run["pion bg sub. counts"] = pion_corrected;
   j_current_run["kaon bg sub. counts"] = double(
-      double(kaon_counts) - random_bg * kaon_counts / (double(*coin_counts)));
+    double(kaon_counts) - random_bg * kaon_counts / (double(*coin_counts)));
   // std::cout << std::setw(4) << j_current_run << "\n";
 
   jruns[run_str] = nlohmann::json::parse(j_current_run.dump());
   // jruns[run_str] = nlohmann::json::parse(j_current_run.dump());
-  {
+  if( update ) {
     std::ofstream json_output_file("db2/run_count_list.json");
     json_output_file << std::setw(4) << jruns << "\n";
   }
 
-  std::cout << " ----------------------------------------------    \n";
-  std::cout << " # of good coin  = "
-            << int(pion_corrected)
-            << "    \n";
-  std::cout << "    out of  " << *c_n_events_total << " total triggers\n";
-  std::cout << "        and " << *c_n_events_coin << " coin triggers\n";
+  int count_goal = default_count_goal;
 
+  if (prompt) {
+    std::cout << "----------------------------------------------------------\n";
+    std::cout << "Reference the run plan for this setting found on the wiki\n"
+    "       https://hallcweb.jlab.org/wiki/index.php/CSV_Fall_2018_Run_Plan\n";
+    std::cout << "----------------------------------------------------------\n";
+    std::cout << "Please enter **total count** goal for this setting. \n";
+    std::cout << "   Desired count [default=30000] : ";
+    // std::cin >> count_goal ;
+    // int number = 0;
+    if (std::cin.peek() == '\n') { // check if next character is newline
+      // count_goal = 30000; //and assign the default
+    } else if (!(std::cin >> count_goal)) { // be sure to handle invalid input
+      std::cout << "Invalid input.\n";
+      // error handling
+    }
+    std::cout << "\n";
+  }
 
-  int count_goal = 20000;
+  //std::cout << "count goal : " << count_goal << '\n';
+  //std::cout << "time       : " << (*time_1MHz_cut) / 60.0 << "\n";
+  //std::cout << "charge     : " << (*total_charge) << "\n";
+  double n_seconds      = double(*time_1MHz_cut);
+  int    nev_tot        = (*c_n_events_total);
+  double goal_Nevents   = (count_goal / pion_corrected) * nev_tot;
+  double time_remaining = (count_goal * n_seconds) / pion_corrected - (n_seconds);
+  double charge_goal    = count_goal * (*total_charge) / (pion_corrected);
+
   std::cout << "----------------------------------------------------------\n";
-  std::cout << "Reference the run plan for this setting found on the wiki\n"
-               "   https://hallcweb.jlab.org/wiki/index.php/CSV_Fall_2018_Run_Plan\n";
-  std::cout << "----------------------------------------------------------\n";
-  std::cout << "Please enter **total count** goal for this setting. \n";
-  std::cout << "   Desired count : ";
-  std::cin >> count_goal ;
-  std::cout << "\n";
+  std::cout << " N events to reach goal  : " << goal_Nevents / 1000000 << "M events\n";
+  std::cout << " Charge   to reach goal  : " << charge_goal / 1000.0 << " mC\n";
 
-  std::cout << "time   : " << (*time_1MHz_cut)/60.0 << "\n";
-  std::cout << "charge : " << (*total_charge) << "\n";
-  double n_seconds = double(*time_1MHz_cut);
-  int nev_tot  = (*c_n_events_total);
-  double goal_Nevents   = (count_goal/pion_corrected)*nev_tot;
-  double time_remaining = (count_goal* n_seconds)/pion_corrected - (n_seconds);
-  double charge_goal    = count_goal* (*total_charge)/(pion_corrected);
 
-  std::cout << "----------------------------------------------------------\n";
-  std::cout << " Nevents goal     " << goal_Nevents/1000000   << "M events\n";
-  std::cout << " Charge goal      " << charge_goal/1000.0    << " mC\n";
+  if( update ) {
+    std::string cmd =
+    "caput hcRunPlanChargeGoal " + std::to_string(charge_goal / 1000.0) + " &> /dev/null ";
+    system(cmd.c_str());
 
-  std::string cmd = "caput hcRunPlanChargeGoal " + std::to_string(charge_goal/1000.0)+" &> /dev/null";
-  system(cmd.c_str());
+    cmd = "caput hcRunPlanNTrigEventsGoal " + std::to_string(goal_Nevents) + " &> /dev/null ";
+    system(cmd.c_str());
 
-  cmd = "caput hcRunPlanNTrigEventsGoal " + std::to_string(goal_Nevents) +" &> /dev/null";
-  system(cmd.c_str());
-
-  cmd = "caput hcRunPlanCountGoal " + std::to_string(count_goal)+" &> /dev/null";
-  system(cmd.c_str());
+    cmd = "caput hcRunPlanCountGoal " + std::to_string(count_goal) + " &> /dev/null ";
+    system(cmd.c_str());
+  }
 
   // std::cout << " pions+kaons   : " << *coin_counts << "\n";
   // std::cout << " pions         : " << *pion_count << "\n";

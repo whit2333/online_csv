@@ -17,13 +17,16 @@ R__LOAD_LIBRARY(libGenVector.so)
 
 #include "THStack.h"
 
-#ifdef __cpp_lib_filesystem
-#include <filesystem>
-namespace fs = std::filesystem;
-#else
-#include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
-#endif
+//#include "THcParmList.h"
+// R__LOAD_LIBRARY(libPodd.so)
+// R__LOAD_LIBRARY(libHallA.so)
+// R__LOAD_LIBRARY(libdc.so)
+// R__LOAD_LIBRARY(libHallC.so)
+
+// fmt - string formatting library
+//#include "fmt/core.h"
+//#include "fmt/ostream.h"
+// R__LOAD_LIBRARY(libfmt.so)
 
 using Pvec3D = ROOT::Math::XYZVector;
 using Pvec4D = ROOT::Math::PxPyPzMVector;
@@ -35,18 +38,13 @@ using floaters = ROOT::VecOps::RVec<float>;
 using shorters = ROOT::VecOps::RVec<short>;
 using nlohmann::json;
 
-void good_hms_counter(int RunNumber = 6018, int nevents = -1, int prompt =0, int update = 1) {
+void good_hms_counter(int RunNumber = 6018, int nevents = -1) {
 
   using nlohmann::json;
   json j;
   {
     std::ifstream json_input_file("db2/run_list.json");
-    try {
-      json_input_file >> j;
-    } catch(json::parse_error)  {
-      std::cerr << "error: json file, db2/run_list.json, is incomplete or has broken syntax.\n";
-      std::quick_exit(-127);
-    }
+    json_input_file >> j;
   }
 
   auto runnum_str = std::to_string(RunNumber);
@@ -69,44 +67,16 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1, int prompt =0, int
   //    The way the input rates are prescaled follows:
   //         input-rate/(2^{val - 1} + 1)
   double singles_ps_value = std::pow(2.0,ps7-1.0);
-  //std::cout << "prescale value " << singles_ps_value << "\n";
+  std::cout << "prescale value " << singles_ps_value << "\n";
 
   std::string coda_type = "COIN";
-  std::string rootfile = "ROOTfiles_csv/";
+  std::string rootfile = "ROOTfiles_online/";
   rootfile += std::string("coin_replay_production_");
   rootfile +=
       std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
 
-  bool found_good_file = false; 
-  if(!gSystem->AccessPathName(rootfile.c_str())) {
-    TFile file(rootfile.c_str());
-    if (file.IsZombie()) {
-      std::cout << rootfile << " is a zombie.\n";
-      std::cout << " Did your replay finish?  Check that the it is done before running this script.\n";
-      //return;
-    } else {
-      found_good_file = true;
-    }
-  }
-  if(!found_good_file) {
-    rootfile = "ROOTfiles_online/";
-    rootfile += std::string("coin_replay_production_");
-    rootfile += std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
-
-    if(!gSystem->AccessPathName(rootfile.c_str())) {
-      TFile file(rootfile.c_str());
-      if (file.IsZombie()) {
-        std::cout << rootfile << " is a zombie.\n";
-        std::cout << " Did your replay finish?  Check that the it is done before running this script.\n";
-      } else {
-        found_good_file = true;
-      }
-    }
-  }
-  if(!found_good_file) {
-    std::cout << " Error: suitable root file not found\n";
-    return;
-  }
+  // auto file = new TFile(rootfile.c_str());
+  // new TBrowser;
 
   ROOT::EnableImplicitMT(24);
 
@@ -118,7 +88,7 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1, int prompt =0, int
   // HMS Scaler tree
   ROOT::RDataFrame d_sh("TSH", rootfile);
   //int N_scaler_events = *(d_sh.Count());
-
+  
   std::string hpdelta = "H.gtr.dp > -10 && H.gtr.dp < 10";
   std::string epiCut = "H.cer.npeSum > 1.0 && H.cal.etottracknorm > 0.6 && "
                        "H.cal.etottracknorm < 2.0 && P.cal.etottracknorm<1.0";
@@ -161,7 +131,6 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1, int prompt =0, int
   auto bcm4b_charge        = d_sh.Max("H.BCM4B.scalerChargeCut");
   auto el_real_scaler      = d_sh.Max("H.hEL_REAL.scaler");
   auto time_1MHz           = d_sh.Max("H.1MHz.scalerTime");
-  auto time_1MHz_cut       = d_sh.Max("H.1MHz.scalerTimeCut");
   //auto hTRIG1_ROC1_npassed = d_sh.Max("H.hTRIG1_ROC1.npassed");
   //auto H_hTRIG1_scaler     = d_sh.Max("H.hTRIG1.scaler");
 
@@ -182,7 +151,6 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1, int prompt =0, int
 
   double good_total_charge = *bcm4b_charge / 1000.0; // mC
   //double hms_live_time = double(*hTRIG1_ROC1_npassed) / double(*H_hTRIG1_scaler);
-  double good_time = *time_1MHz_cut; // s
 
   double hms_scaler_yield     = ((*el_real_scaler) / good_total_charge);
   double hms_scaler_yield_unc = (std::sqrt(*el_real_scaler) / good_total_charge);
@@ -201,36 +169,27 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1, int prompt =0, int
   json jruns;
   {
     std::ifstream input_file("db2/run_count_list.json");
-    try {
-      input_file >> jruns;
-    } catch(json::parse_error)  {
-      std::cerr << "error: json file is incomplete or has broken syntax.\n";
-      std::quick_exit(-127);
-    }
+    input_file >> jruns;
   }
-  std::string run_str                        = std::to_string(RunNumber);
-  jruns[run_str]["hms e raw counts"]         = int(*c_T2_yield_raw + *c_T6_yield_raw);
-  jruns[run_str]["hms e counts"]             = int(*c_T2_yield + *c_T6_yield);
-  jruns[run_str]["ps cor. hms e raw counts"] = int((*c_T2_yield_raw) * singles_ps_value + (*c_T6_yield_raw));
-  jruns[run_str]["ps cor. hms e counts"]     = int((*c_T2_yield_raw) * singles_ps_value + (*c_T6_yield_raw));
-  jruns[run_str]["charge bcm4b 2u cut"]      = good_total_charge;
-  jruns[run_str]["time 1MHz 2u cut"]         = good_time;
-  jruns[run_str]["hms e raw yield"]          = double((*c_T2_yield_raw) * singles_ps_value + (*c_T6_yield_raw)) / good_total_charge;
-  jruns[run_str]["hms e yield"]              = double((*c_T2_yield) * singles_ps_value + (*c_T6_yield)) / good_total_charge;
-  jruns[run_str]["hms e yield unc."]         = double(std::sqrt(*c_T2_yield) * singles_ps_value + std::sqrt(*c_T6_yield)) / good_total_charge;
-  jruns[run_str]["hms ps4 factor"]           = singles_ps_value;
-  jruns[run_str]["hms scaler yield"]         = hms_scaler_yield;
-  jruns[run_str]["hms scaler yield unc."]    = hms_scaler_yield_unc;
+  std::string run_str                = std::to_string(RunNumber);
+  jruns[run_str]["hms e raw counts"] = int(*c_T2_yield_raw + *c_T6_yield_raw);
+  jruns[run_str]["hms e counts"]     = int(*c_T2_yield + *c_T6_yield);
+  jruns[run_str]["ps cor. hms e raw counts"] = int((*c_T2_yield_raw)*singles_ps_value + (*c_T6_yield_raw));
+  jruns[run_str]["ps cor. hms e counts"]     = int((*c_T2_yield_raw)*singles_ps_value + (*c_T6_yield_raw));
+  jruns[run_str]["charge bcm4b 2u cut"]     = good_total_charge;
+  jruns[run_str]["hms e raw yield"] = double((*c_T2_yield_raw)*singles_ps_value + (*c_T6_yield_raw))/good_total_charge;
+  jruns[run_str]["hms e yield"]     = double((*c_T2_yield)*singles_ps_value + (*c_T6_yield))/good_total_charge;
+  jruns[run_str]["hms e yield unc."]     = double(std::sqrt(*c_T2_yield)*singles_ps_value + std::sqrt(*c_T6_yield))/good_total_charge;
+  jruns[run_str]["hms ps4 factor"]        = singles_ps_value;
+  jruns[run_str]["hms scaler yield"]      = hms_scaler_yield;
+  jruns[run_str]["hms scaler yield unc."] = hms_scaler_yield_unc;
   //jruns[run_str]["hms live time"]         = hms_live_time;
 
-  if( update ) {
-    std::cout << "Updating db2/run_count_list.json with hms counts\n" ;
-    std::ofstream json_output_file("db2/run_count_list.json");
-    json_output_file << std::setw(4) << jruns << "\n";
-  }
+  std::ofstream json_output_file("db2/run_count_list.json");
+  json_output_file << std::setw(4) << jruns << "\n";
 
   std::cout << " ----------------------------------------------    \n";
-  std::cout << " # of good hms triggers = "
+  std::cout << " # of good coin  = "
             << ps_cor_hms_e_yield2
             << "    \n";
   std::cout << " ----------------------------------------------    \n";
@@ -264,8 +223,6 @@ void good_hms_counter(int RunNumber = 6018, int nevents = -1, int prompt =0, int
   double hmax = 0.0;
   THStack *hs = nullptr;
   // TLatex latex;
-
-  gSystem->mkdir("results/good_hms_counter",true);
 
   // ---------------------------------------------------------
   //

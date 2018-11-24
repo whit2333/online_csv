@@ -27,7 +27,7 @@ using floaters = ROOT::VecOps::RVec<float>;
 using shorters = ROOT::VecOps::RVec<short>;
 using nlohmann::json;
 
-void good_coin_counter(int RunNumber = 6018, int nevents = -1, int prompt = 1, int update = 1, int default_count_goal = 30000) {
+void good_coin_counter3(int RunNumber = 6018, int nevents = -1, int prompt = 1, int update = 1, int default_count_goal = 30000) {
 
   using nlohmann::json;
   json j;
@@ -53,49 +53,19 @@ void good_coin_counter(int RunNumber = 6018, int nevents = -1, int prompt = 1, i
   double P0_shms = std::abs(P0_shms_setting);
 
   std::string coda_type = "COIN";
-  std::string rootfile = "ROOTfiles_csv/";
+  std::string rootfile = "ROOTfiles_online/";
+  //std::string rootfile = "ROOTfiles_csv/";
+
   rootfile += std::string("coin_replay_production_");
   rootfile +=
       std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
 
-  //{
-  //  TFile file(rootfile.c_str());
-  //  if (file.IsZombie()) {
-  //    std::cout << " Did your replay finish?  Check that the it is done before running this script.\n";
-  //    return;
-  //  }
-  //}
-  bool found_good_file = false; 
-  if(!gSystem->AccessPathName(rootfile.c_str())) {
+  {
     TFile file(rootfile.c_str());
     if (file.IsZombie()) {
-      std::cout << rootfile << " is a zombie.\n";
       std::cout << " Did your replay finish?  Check that the it is done before running this script.\n";
-      //return;
-    } else {
-      std::cout <<  " using : " << rootfile << "\n";
-      found_good_file = true;
+      return;
     }
-  }
-  if(!found_good_file) {
-    rootfile = "ROOTfiles_online/";
-    rootfile += std::string("coin_replay_production_");
-    rootfile += std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
-
-    if(!gSystem->AccessPathName(rootfile.c_str())) {
-      TFile file(rootfile.c_str());
-      if (file.IsZombie()) {
-        std::cout << rootfile << " is a zombie.\n";
-        std::cout << " Did your replay finish?  Check that the it is done before running this script.\n";
-      } else {
-        found_good_file = true;
-        std::cout <<  " using : " << rootfile << "\n";
-      }
-    }
-  }
-  if(!found_good_file) {
-    std::cout << " Error: suitable root file not found\n";
-    return;
   }
   // new TBrowser;
   //
@@ -243,7 +213,6 @@ void good_coin_counter(int RunNumber = 6018, int nevents = -1, int prompt = 1, i
   std::cout << " # of good coin  = " << int(pion_corrected) << "    \n";
   std::cout << "    out of  " << *c_n_events_total << " total triggers\n";
   std::cout << "        and " << *c_n_events_coin << " coin triggers\n";
-  std::cout << "  coin yield: " << coin_yield << " events/mC \n";
 
   json jruns;
   {
