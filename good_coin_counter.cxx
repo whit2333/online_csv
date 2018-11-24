@@ -58,12 +58,44 @@ void good_coin_counter(int RunNumber = 6018, int nevents = -1, int prompt = 1, i
   rootfile +=
       std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
 
-  {
+  //{
+  //  TFile file(rootfile.c_str());
+  //  if (file.IsZombie()) {
+  //    std::cout << " Did your replay finish?  Check that the it is done before running this script.\n";
+  //    return;
+  //  }
+  //}
+  bool found_good_file = false; 
+  if(!gSystem->AccessPathName(rootfile.c_str())) {
     TFile file(rootfile.c_str());
     if (file.IsZombie()) {
+      std::cout << rootfile << " is a zombie.\n";
       std::cout << " Did your replay finish?  Check that the it is done before running this script.\n";
-      return;
+      //return;
+    } else {
+      std::cout <<  " using : " << rootfile << "\n";
+      found_good_file = true;
     }
+  }
+  if(!found_good_file) {
+    rootfile = "ROOTfiles_online/";
+    rootfile += std::string("coin_replay_production_");
+    rootfile += std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
+
+    if(!gSystem->AccessPathName(rootfile.c_str())) {
+      TFile file(rootfile.c_str());
+      if (file.IsZombie()) {
+        std::cout << rootfile << " is a zombie.\n";
+        std::cout << " Did your replay finish?  Check that the it is done before running this script.\n";
+      } else {
+        found_good_file = true;
+        std::cout <<  " using : " << rootfile << "\n";
+      }
+    }
+  }
+  if(!found_good_file) {
+    std::cout << " Error: suitable root file not found\n";
+    return;
   }
   // new TBrowser;
   //

@@ -63,9 +63,9 @@ void plot_hms_singles(int start_run = 0){
     if (j2.find(it.key()) == j2.end()) {
       continue;
     }
-    //if (j2[it.key()]["target"]["target_id"].get<int>() != 3) {
-    //  continue;
-    //}
+    if (j2[it.key()]["target"]["target_id"].get<int>() != 3) {
+      continue;
+    }
 
     int run_number = std::stoi(it.key());
     int run_number2 = 0;
