@@ -1,5 +1,8 @@
 raw
 raw*
+bin
+DBASE
+analysis
 ROOTfiles
 REPORT_OUTPUT
 UTIL_SIDIS
