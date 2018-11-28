@@ -14,11 +14,43 @@ commands a replay directory can be created from these files.
 
 ## Guide
 
+### Environment
+
+Advice: use bash and tmux. 
+
+If you are on the farm and never have used bash. A good setup can be configured 
+by doing the following: (this will overwrite existing files)
 ```
-git clone
+cp /group/c-csv/local/stow/Templates/template.bashrc  $HOME/.bashrc
+cp /group/c-csv/local/stow/Templates/template.bash_aliases  $HOME/.bash_aliases
+cp /group/c-csv/local/stow/Templates/inputrc  $HOME/.inputrc
+cp /group/c-csv/local/stow/Templates/template.tmux.conf  $HOME/.tmux.conf
+cp -r /group/c-csv/local/stow/Templates/template.tmux  $HOME/.tmux
+```
+If you want to change the colors in `.tmux.conf` run
+```
+/group/c-csv/local/stow/Templates/print_colors
+```
+and change the colour number on the line that contains
+```
+set-option -g status-bg colour25
+```
+
+Type `bash` to start a bash session and `tmux` to start a new tmux session.
+
+Type `module avail` to see all the software modules and `module list` to see 
+those that are loaded.  See [this page for more 
+details](https://hallcweb.jlab.org/wiki/index.php/CSV_software#Working_on_the_farm).
+
+
+### Getting started as a replay directory
+
+```
+git clone git@github.com:whit2333/online_csv.git
 cd online_csv
 ls
 ```
+Then  (using hallc_tools)
 
 ```
 make_hallc_replay_symlinks -c
