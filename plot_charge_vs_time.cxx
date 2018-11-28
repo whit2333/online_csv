@@ -126,10 +126,10 @@ void plot_charge_vs_time(int start_run = 0){
         total_accumulated_charge2 += sign*double(run_charge/1000.0);
         runs2.push_back(double(run_number));
         double atime = a_tm.tm_mday+ double(a_tm.tm_hour)/24.0 + double(a_tm.tm_min)/60.0/24.0;
-        std::cout << atime << "\n";
-        std::cout << "d " <<  a_tm.tm_mday << "\n";
-        std::cout << "h " <<  a_tm.tm_hour << "\n";
-        std::cout << "m " <<  a_tm.tm_min << "\n";
+        //std::cout << atime << "\n";
+        //std::cout << "d " <<  a_tm.tm_mday << "\n";
+        //std::cout << "h " <<  a_tm.tm_hour << "\n";
+        //std::cout << "m " <<  a_tm.tm_min << "\n";
         time2.push_back(atime);
         charges.push_back(total_accumulated_charge);
         charges2.push_back(total_accumulated_charge2);
