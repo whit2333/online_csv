@@ -37,6 +37,7 @@ void make_human_table() {
       std::quick_exit(-127);
     }
   }
+  std::ofstream runs_text("csv_runs.txt");
 
   // std::cout << j.dump(2);
   auto print_header = [](){
@@ -89,6 +90,8 @@ void make_human_table() {
 
 
     old_target = target_lab;
+
+    runs_text << std::stoi(it.key()) << "\n";
 
     fmt::print(" {:<5} ", std::stoi(it.key()));
     fmt::print(" {:^5} ", target_lab);
