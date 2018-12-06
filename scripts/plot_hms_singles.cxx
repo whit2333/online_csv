@@ -127,7 +127,7 @@ void plot_hms_singles(int start_run = 0){
 
   // ------------------------------
   //
-  c  = new TCanvas();
+  c  = new TCanvas("c1","c1",1600,1200);
   c->Divide(1, 2);
 
   c->cd(1);

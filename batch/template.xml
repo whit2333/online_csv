@@ -1,0 +1,38 @@
+<Request>
+  <Email email="you@jlab.org" request="false" job="false"/>
+  <Project name="c-comm2017"/>
+  <Track  name="reconstruction"/>
+  <Name   name="sidis_2018"/>
+  <OS     name="centos7"/>
+  <Memory space="3024" unit="MB"/>
+  <List name="runs">
+6000
+6001
+etc...
+  </List>
+  <ForEach list="runs">
+    <Job>
+      <Input src="mss:/mss/hallc/spring17/raw/coin_all_0${runs}.dat" dest="coin_all_0${runs}.dat"/>
+      <Output src="ROOTfiles/coin_replay_production_${runs}_-1.root" 
+        dest="/volatile/hallc/your_volatile/ROOTfiles/coin_replay_production_${runs}_-1.root"/>
+      <Output src="REPORT_OUTPUT/COIN/PRODUCTION/replay_coin_production_${runs}_-1.report" 
+        dest="/volatile/hallc/your_work/REPORT_OUTPUT/COIN/PRODUCTION/replay_coin_production_${runs}_-1.report"/>
+      <Output src="REPORT_OUTPUT/COIN/PRODUCTION/summary_production_${runs}_-1.report" 
+        dest="/volatile/hallc/your_volatile/REPORT_OUTPUT/COIN/PRODUCTION/summary_production_${runs}_-1.report"/>
+      <Command><![CDATA[
+/bin/bash <<EOF
+echo " YOU SHOULD CHANGE THIS "
+#source /home/whit/.bashrc
+#make_hallc_replay_symlinks -c
+#make_hallc_replay -c
+#mkdir ROOTfiles
+#ls -lrth
+#./bin/hc_coin -n -1 -r ${runs}
+#ls -lrth ROOTfiles
+#ls -lrth 
+EOF
+        ]]></Command>
+    </Job>
+  </ForEach> 
+</Request>
+
