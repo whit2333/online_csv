@@ -1,9 +1,77 @@
-void replay_production_coin_sidis (Int_t RunNumber = 0, Int_t MaxEvent = 0) {
+
+R__LOAD_LIBRARY(libsimple_epics.so)
+#include "simple_epics/PVGetList.h"
+
+
+class SimplePostProcess : public THaPostProcess {
+public:
+  using Function_t     = std::function<int(const THaEvData*)>;
+  using InitFunction_t = std::function<int()>;
+  Function_t     _event_lambda;
+  InitFunction_t _init_lambda;
+
+public:
+  SimplePostProcess(Function_t&& f) : 
+    _event_lambda(std::forward<Function_t>(f)), 
+    _init_lambda([](){return 0;}) { }
+
+  SimplePostProcess(InitFunction_t&& initf, Function_t&& f) : 
+    _event_lambda(std::forward<Function_t>(f)), 
+    _init_lambda(std::forward<InitFunction_t>(initf)) { }
+
+  ofstream   _output_file;
+
+  hallc::PVGetList pv_list;
+
+  //SimplePostProcess()  { }
+  virtual ~SimplePostProcess(){ }
+
+  virtual Int_t Init(const TDatime& ) {
+    std::vector<std::string> pvs = {"whit:circle:angle","root:test"};
+    for(const auto& n : pvs) {
+      pv_list.AddPV(n);
+    }
+    //std::cout << derp;
+    //_output_file.open("derp");
+    return _init_lambda();
+  }
+  virtual Int_t Process( const THaEvData* evt, const THaRunBase*, Int_t code ){ 
+    _event_lambda(evt);
+    //_output_file << " Event : " << evt->GetEvNum() << "  ( " << evt->GetEvType() << ")\n";
+    if( evt->GetEvNum()%100 == 0) {
+      pv_list.TestPut("root:test",double(evt->GetEvNum())/1000.0);
+      gSystem->ProcessEvents();
+      _output_file.flush();
+    }
+    return 0;
+  }
+  virtual Int_t Close(){ 
+    std::cout << "close\n";
+    //_output_file.flush();
+    //_output_file.close();
+    return 0; 
+  }
+  ClassDef(SimplePostProcess,1)
+};
+
+
+void scandalizer_test(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
+
+  //std::string db_dir_env = std::getenv("DB_DIR");
+  //if (const char* env_p = std::getenv("DB_DIR")) {
+  //  std::cout << "Your DB_DIR is: " << env_p << '\n';
+  //} else {
+  //  db_dir_env = "DBASE";
+  //  if (setenv("DB_DIR", db_dir_env.c_str(), 1)) {
+  //    std::cout << "Failed to set env var DB_DIR\n";
+  //    std::exit(EXIT_FAILURE);
+  //  }
+  //  std::cout << "DB_DIR set to DBASE\n";
+  //}
 
   // Get RunNumber and MaxEvent if not provided.
   if(RunNumber == 0) {
     cout << "Enter a Run Number (-1 to exit): ";
-    cin >> RunNumber;
     if( RunNumber<=0 ) return;
   }
   if(MaxEvent == 0) {
@@ -41,13 +109,15 @@ void replay_production_coin_sidis (Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   gHcDetectorMap = new THcDetectorMap();
   gHcDetectorMap->Load(gHcParms->GetString("g_ctp_map_filename"));
 
+  //std::cout << "\n Printing all global variables...\n";
+  //gHcParms->Print();
+
   //=:=:=:=
   // SHMS 
   //=:=:=:=
 
   // Set up the equipment to be analyzed.
   THcHallCSpectrometer* SHMS = new THcHallCSpectrometer("P", "SHMS");
-  std::cout << " asdflkjasdflkj \n";
   SHMS->SetEvtType(1);
   SHMS->AddEvtType(4);
   SHMS->AddEvtType(5);
@@ -76,6 +146,9 @@ void replay_production_coin_sidis (Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   // Add rastered beam apparatus
   THaApparatus* pbeam = new THcRasteredBeam("P.rb", "Rastered Beamline");
   gHaApps->Add(pbeam);
+
+  auto trkEff = new hcana::TrackingEfficiency("P.trackEfficiency", "SHMS tracking Efficiency", "P.hod");
+  gHaPhysics->Add(trkEff);
   // Add physics modules
   // Calculate reaction point
   THaReactionPoint* prp = new THaReactionPoint("P.react", "SHMS reaction point", "P", "P.rb");
@@ -183,6 +256,11 @@ void replay_production_coin_sidis (Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   coin->SetEvtType(1);
   coin->AddEvtType(2);
   TRG->AddDetector(coin); 
+
+  // Add helicity detector to grigger apparatus
+  THcHelicity* helicity = new THcHelicity("helicity","Helicity Detector");
+  TRG->AddDetector(helicity);
+
   // Add event handler for prestart event 125.
   THcConfigEvtHandler* ev125 = new THcConfigEvtHandler("HC", "Config Event type 125");
   gHaEvtHandlers->Add(ev125);
@@ -194,12 +272,31 @@ void replay_production_coin_sidis (Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   THcCoinTime* coinTime = new THcCoinTime("CTime", "Coincidende Time Determination", "P", "H", "T.coin");
   gHaPhysics->Add(coinTime);
  
-  // Set up the analyzer - we use the standard one,
-  // but this could be an experiment-specific one as well.
-  // The Analyzer controls the reading of the data, executes
-  // tests/cuts, loops over Acpparatus's and PhysicsModules,
-  // and executes the output routines.
-  THcAnalyzer* analyzer = new THcAnalyzer;
+  // -----------------------------------------------------------
+  // Scandalizer 
+  // -----------------------------------------------------------
+  //
+  hcana::Scandalizer* analyzer = new hcana::Scandalizer;
+  //analyzer->_skip_events = 100;
+analyzer->SetCodaVersion(2);
+  SimplePostProcess* pp1 = new SimplePostProcess(
+    [&](){
+      return 0;
+    },
+    [&](const THaEvData* evt){
+      static int counter = 0;
+      if (evt->GetEvNum()%10 == 0 ) {
+        std::cout << " Event : " << evt->GetEvNum() << "  ( " << evt->GetEvType() << ")\n";
+      }
+      if( (evt->GetEvNum() > 1200) && (counter > 500) ) {
+        analyzer->_skip_events = 300;
+        counter = 0;
+      }
+      counter++;
+      return 0; 
+    });
+  analyzer->AddPostProcess(pp1);
+
 
   // A simple event class to be output to the resulting tree.
   // Creating your own descendant of THaEvent is one way of
@@ -217,7 +314,7 @@ void replay_production_coin_sidis (Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   run->SetEventRange(1, MaxEvent); // Physics Event number, does not include scaler or control events.
   run->SetNscan(1);
   run->SetDataRequired(0x7);
-  run->Print();
+  //run->Print();
 
   // Define the analysis parameters
   TString ROOTFileName = Form(ROOTFileNamePattern, RunNumber, MaxEvent);
