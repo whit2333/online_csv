@@ -1,6 +1,6 @@
 
 R__LOAD_LIBRARY(libsimple_epics.so)
-#include "simple_epics/PVGetList.h"
+#include "simple_epics/PVList.h"
 
 
 class SimplePostProcess : public THaPostProcess {
@@ -21,16 +21,11 @@ public:
 
   ofstream   _output_file;
 
-  hallc::PVGetList pv_list;
 
   //SimplePostProcess()  { }
   virtual ~SimplePostProcess(){ }
 
   virtual Int_t Init(const TDatime& ) {
-    std::vector<std::string> pvs = {"whit:circle:angle","root:test"};
-    for(const auto& n : pvs) {
-      pv_list.AddPV(n);
-    }
     //std::cout << derp;
     //_output_file.open("derp");
     return _init_lambda();
@@ -39,9 +34,8 @@ public:
     _event_lambda(evt);
     //_output_file << " Event : " << evt->GetEvNum() << "  ( " << evt->GetEvType() << ")\n";
     if( evt->GetEvNum()%100 == 0) {
-      pv_list.TestPut("root:test",double(evt->GetEvNum())/1000.0);
       gSystem->ProcessEvents();
-      _output_file.flush();
+      //_output_file.flush();
     }
     return 0;
   }
@@ -56,6 +50,12 @@ public:
 
 
 void scandalizer_test(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
+
+  hallc::PVList pv_list;
+  std::vector<std::string> pvs = {"hcSHMSTrackingEff","hcSHMSTrackingEff:Unc","root:test"};
+  for(const auto& n : pvs) {
+    pv_list.AddPV(n);
+  }
 
   //std::string db_dir_env = std::getenv("DB_DIR");
   //if (const char* env_p = std::getenv("DB_DIR")) {
@@ -278,18 +278,47 @@ void scandalizer_test(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   //
   hcana::Scandalizer* analyzer = new hcana::Scandalizer;
   //analyzer->_skip_events = 100;
-analyzer->SetCodaVersion(2);
+  analyzer->SetCodaVersion(2);
   SimplePostProcess* pp1 = new SimplePostProcess(
     [&](){
       return 0;
     },
     [&](const THaEvData* evt){
       static int counter = 0;
-      if (evt->GetEvNum()%10 == 0 ) {
-        std::cout << " Event : " << evt->GetEvNum() << "  ( " << evt->GetEvType() << ")\n";
+      static double eff_num             = 0.0000001;
+      static double eff_den             = 0.0;
+      static int    n_num               = 0;
+      static int    n_den               = 0;
+      int           shmsDC1Planes_nhits = 0;
+      int           shmsDC2Planes_nhits = 0;
+      for (int ip = 0; ip < 6; ip++) {
+        shmsDC1Planes_nhits += pdc->GetPlane(ip)->GetNHits();
       }
-      if( (evt->GetEvNum() > 1200) && (counter > 500) ) {
-        analyzer->_skip_events = 300;
+      for (int ip = 6; ip < 12; ip++) {
+        shmsDC2Planes_nhits += pdc->GetPlane(ip)->GetNHits();
+      }
+      bool   shms_DC_too_many_hits = (shmsDC1Planes_nhits > 8) || (shmsDC2Planes_nhits > 8);
+      double beta                  = phod->GetBetaNotrk();
+      bool   good_beta             = beta > 0.4;
+      bool   shms_good_hodoscope   = phod->fGoodScinHits;
+      bool   good_ntracks          = (pdc->GetNTracks() > 0);
+      bool   good_hgc              = phgcer->GetCerNPE() > 1;
+      if ((good_beta && shms_good_hodoscope) && (!shms_DC_too_many_hits) && good_hgc) {
+        eff_den = eff_den + 1.0;
+        n_den++;
+        if (good_ntracks) {
+          eff_num = eff_num + 1.0;
+          n_num++;
+        }
+      }
+      if ((evt->GetEvNum() > 1200) && (counter > 1000)) {
+        std::cout << " efficiency :  " << eff_num / eff_den << "\n";
+        //std::cout << " Event : " << evt->GetEvNum() << "  ( " << evt->GetEvType() << ")\n";
+        pv_list.Put("hcSHMSTrackingEff",eff_num/eff_den);
+        pv_list.Put("hcSHMSTrackingEff:Unc",std::sqrt(double(n_num))/(n_num+n_den+0.0000001));
+        eff_num                = 0.000000001;
+        eff_den                = 0.0;
+        //analyzer->_skip_events = 300;
         counter = 0;
       }
       counter++;
