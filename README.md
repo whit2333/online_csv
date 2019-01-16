@@ -16,7 +16,19 @@ commands a replay directory can be created from these files.
 
 The `scandalizer` is a modified analyzer that has numerous benefits.
 
-* `online_monitor/scandalizer_test.cxx`
+The current `scandalizer` is run through the replay script 
+`online_bin/scandalizer` which runs a replay script,
+`online_monitor/scandalizer_test.cxx` (for now).
+
+
+```
+online_bin/scandalizer -r <run_number> -n <num> OPTIONS: -r,--run        
+Required run number
+            -n,--n-events      Required number of eventsrun number
+            -c,--container     Run using singularity container 
+            -C,--calibrate     Replay N-calibrate events and run calibrations before full replay
+            --N-calibrate      Number of events to replay for calibration (Default: 50000)
+```
 
 
 ## A Beginners Guide
