@@ -22,8 +22,9 @@ The current `scandalizer` is run through the replay script
 
 
 ```
-online_bin/scandalizer -r <run_number> -n <num> OPTIONS: -r,--run        
-Required run number
+online_bin/scandalizer -r <run_number> -n <num>
+OPTIONS:
+            -r,--run           Required run number
             -n,--n-events      Required number of eventsrun number
             -c,--container     Run using singularity container 
             -C,--calibrate     Replay N-calibrate events and run calibrations before full replay
