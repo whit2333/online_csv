@@ -2,54 +2,58 @@
 R__LOAD_LIBRARY(libsimple_epics.so)
 #include "simple_epics/PVList.h"
 
+R__LOAD_LIBRARY(libScandalizer.so)
+#include "scandalizer/PostProcessors.h"
 
-class SimplePostProcess : public THaPostProcess {
-public:
-  using Function_t     = std::function<int(const THaEvData*)>;
-  using InitFunction_t = std::function<int()>;
-  Function_t     _event_lambda;
-  InitFunction_t _init_lambda;
-
-public:
-  SimplePostProcess(Function_t&& f) : 
-    _event_lambda(std::forward<Function_t>(f)), 
-    _init_lambda([](){return 0;}) { }
-
-  SimplePostProcess(InitFunction_t&& initf, Function_t&& f) : 
-    _event_lambda(std::forward<Function_t>(f)), 
-    _init_lambda(std::forward<InitFunction_t>(initf)) { }
-
-  ofstream   _output_file;
-
-
-  //SimplePostProcess()  { }
-  virtual ~SimplePostProcess(){ }
-
-  virtual Int_t Init(const TDatime& ) {
-    //std::cout << derp;
-    //_output_file.open("derp");
-    return _init_lambda();
-  }
-  virtual Int_t Process( const THaEvData* evt, const THaRunBase*, Int_t code ){ 
-    _event_lambda(evt);
-    //_output_file << " Event : " << evt->GetEvNum() << "  ( " << evt->GetEvType() << ")\n";
-    if( evt->GetEvNum()%100 == 0) {
-      gSystem->ProcessEvents();
-      //_output_file.flush();
-    }
-    return 0;
-  }
-  virtual Int_t Close(){ 
-    std::cout << "close\n";
-    //_output_file.flush();
-    //_output_file.close();
-    return 0; 
-  }
-  ClassDef(SimplePostProcess,1)
-};
+//class SimplePostProcess : public THaPostProcess {
+//public:
+//  using Function_t     = std::function<int(const THaEvData*)>;
+//  using InitFunction_t = std::function<int()>;
+//  Function_t     _event_lambda;
+//  InitFunction_t _init_lambda;
+//
+//public:
+//  SimplePostProcess(Function_t&& f) : 
+//    _event_lambda(std::forward<Function_t>(f)), 
+//    _init_lambda([](){return 0;}) { }
+//
+//  SimplePostProcess(InitFunction_t&& initf, Function_t&& f) : 
+//    _event_lambda(std::forward<Function_t>(f)), 
+//    _init_lambda(std::forward<InitFunction_t>(initf)) { }
+//
+//  ofstream   _output_file;
+//
+//
+//  //SimplePostProcess()  { }
+//  virtual ~SimplePostProcess(){ }
+//
+//  virtual Int_t Init(const TDatime& ) {
+//    //std::cout << derp;
+//    //_output_file.open("derp");
+//    return _init_lambda();
+//  }
+//  virtual Int_t Process( const THaEvData* evt, const THaRunBase*, Int_t code ){ 
+//    _event_lambda(evt);
+//    //_output_file << " Event : " << evt->GetEvNum() << "  ( " << evt->GetEvType() << ")\n";
+//    if( evt->GetEvNum()%100 == 0) {
+//      gSystem->ProcessEvents();
+//      //_output_file.flush();
+//    }
+//    return 0;
+//  }
+//  virtual Int_t Close(){ 
+//    std::cout << "close\n";
+//    //_output_file.flush();
+//    //_output_file.close();
+//    return 0; 
+//  }
+//  ClassDef(SimplePostProcess,1)
+//};
 
 
 void scandalizer_test(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
+
+  
 
   hallc::PVList pv_list;
   std::vector<std::string> pvs = {"hcSHMSTrackingEff","hcSHMSTrackingEff:Unc","root:test"};
@@ -279,7 +283,7 @@ void scandalizer_test(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   hcana::Scandalizer* analyzer = new hcana::Scandalizer;
   //analyzer->_skip_events = 100;
   analyzer->SetCodaVersion(2);
-  SimplePostProcess* pp1 = new SimplePostProcess(
+  hallc::scandalizer::SimplePostProcess* pp1 = new hallc::scandalizer::SimplePostProcess(
     [&](){
       return 0;
     },

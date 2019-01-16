@@ -12,7 +12,14 @@ The main files in the repository are found in the `db2` directory.
 Using `hallc_tools`'s `make_hallc_replay_symlinks` and `make_hallc_replay` 
 commands a replay directory can be created from these files.
 
-## Guide
+## Scandalizer 
+
+The `scandalizer` is a modified analyzer that has numerous benefits.
+
+* `online_monitor/scandalizer_test.cxx`
+
+
+## A Beginners Guide
 
 ### Environment
 
