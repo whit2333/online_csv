@@ -6,7 +6,7 @@ R__LOAD_LIBRARY(libScandalizer.so)
 #include "scandalizer/PostProcessors.h"
 
 
-void scandalizer_test(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
+void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
 
   hallc::PVList pv_list;
   std::vector<std::string> pvs = {"hcSHMSTrackingEff", "hcSHMSTrackingEff:Unc",
@@ -237,6 +237,26 @@ void scandalizer_test(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   hcana::Scandalizer* analyzer = new hcana::Scandalizer;
   //analyzer->_skip_events = 100;
   analyzer->SetCodaVersion(2);
+
+  // The following analyzes the first 2000 events (for pedestals, is required) 
+  // then  repeatedly skips 3000 events and processes 1000.
+  //auto pp0 = new hallc::scandalizer::SkipPeriodicAfterPedestal();
+  auto pp0 = new hallc::scandalizer::SkipAfterPedestal();
+  pp0->_analyzer = analyzer;
+  //SimplePostProcess([&]() { return 0; },
+  //                                                     [&](const THaEvData* evt) {
+  //                                                       static int counter = 0;
+  //                                                       if (evt->GetEvNum() > 2000) {
+  //                                                         if (counter == 0) {
+  //                                                           analyzer->_skip_events = 3000;
+  //                                                           counter                = 1000;
+  //                                                         } else {
+  //                                                           counter--;
+  //                                                         }
+  //                                                       }
+  //                                                       return 0;
+  //                                                     });
+
   hallc::scandalizer::SimplePostProcess* pp1 = new hallc::scandalizer::SimplePostProcess(
     [&](){
       return 0;
@@ -285,6 +305,8 @@ void scandalizer_test(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
       counter++;
       return 0; 
     });
+
+  analyzer->AddPostProcess(pp0);
   analyzer->AddPostProcess(pp1);
 
 
@@ -320,7 +342,7 @@ void scandalizer_test(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   // Define output ROOT file
   analyzer->SetOutFile(ROOTFileName.Data());
   // Define DEF-file+
-  analyzer->SetOdefFile("UTIL_SIDIS/DEF-files/coin_production_sidis.def");
+  analyzer->SetOdefFile("online_monitor/scandalizer_monitor.def");
   // Define cuts file
   analyzer->SetCutFile("UTIL_SIDIS/DEF-files/coin_production_sidis_cuts.def");  // optional
   // File to record accounting information for cuts

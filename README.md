@@ -32,7 +32,7 @@ OPTIONS:
 ```
 
 
-## A Beginners Guide
+## A Beginners Guide (to the basics)
 
 ### Environment
 

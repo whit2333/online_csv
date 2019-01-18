@@ -116,7 +116,8 @@ export DB_DIR=./DBASE
 #else 
 echo " derp " 
 mkdir -p results/${run_number}
-hcana  -b -q "online_monitor/scandalizer_test.cxx(${run_number},${n_events})"
+#hcana  -b -q "online_monitor/scandalizer_test.cxx(${run_number},${n_events})"
+hcana  -b -q "online_monitor/scandalizer_monitor.cxx(${run_number},${n_events})"
 #fi
 
   #perf record hcana -b -q "${hallc_home}/analysis/replay_coin.cxx(${run_number},${n_events})"
