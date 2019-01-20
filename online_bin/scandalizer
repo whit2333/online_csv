@@ -114,7 +114,6 @@ export DB_DIR=./DBASE
 #  singularity run -a hcana $(hallc_config -d)/cool_halls.simg \
 #                  -b -q "analysis/replay_coin.cxx(${run_number},${n_events})"
 #else 
-echo " derp " 
 mkdir -p results/${run_number}
 #hcana  -b -q "online_monitor/scandalizer_test.cxx(${run_number},${n_events})"
 hcana  -b -q "online_monitor/scandalizer_monitor.cxx(${run_number},${n_events})"

@@ -1,12 +1,13 @@
-
+// ----------------------------------------------
 R__LOAD_LIBRARY(libsimple_epics.so)
 #include "simple_epics/PVList.h"
 
 R__LOAD_LIBRARY(libScandalizer.so)
 #include "scandalizer/PostProcessors.h"
 
-
 void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
+
+  spdlog::set_level(spdlog::level::trace);
 
   hallc::PVList pv_list;
   std::vector<std::string> pvs = {"hcSHMSTrackingEff", "hcSHMSTrackingEff:Unc",
@@ -14,18 +15,6 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   for(const auto& n : pvs) {
     pv_list.AddPV(n);
   }
-
-  //std::string db_dir_env = std::getenv("DB_DIR");
-  //if (const char* env_p = std::getenv("DB_DIR")) {
-  //  std::cout << "Your DB_DIR is: " << env_p << '\n';
-  //} else {
-  //  db_dir_env = "DBASE";
-  //  if (setenv("DB_DIR", db_dir_env.c_str(), 1)) {
-  //    std::cout << "Failed to set env var DB_DIR\n";
-  //    std::exit(EXIT_FAILURE);
-  //  }
-  //  std::cout << "DB_DIR set to DBASE\n";
-  //}
 
   // Get RunNumber and MaxEvent if not provided.
   if(RunNumber == 0) {
@@ -67,12 +56,9 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   gHcDetectorMap = new THcDetectorMap();
   gHcDetectorMap->Load(gHcParms->GetString("g_ctp_map_filename"));
 
-  //std::cout << "\n Printing all global variables...\n";
-  //gHcParms->Print();
-
-  //=:=:=:=
-  // SHMS 
-  //=:=:=:=
+  // ========
+  //  SHMS 
+  // ========
 
   // Set up the equipment to be analyzed.
   THcHallCSpectrometer* SHMS = new THcHallCSpectrometer("P", "SHMS");
@@ -133,9 +119,9 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   pscaler->SetUseFirstEvent(kTRUE);
   gHaEvtHandlers->Add(pscaler);
 
-  //=:=:=
-  // HMS 
-  //=:=:=
+  // ========
+  //  HMS 
+  // ========
 
   // Set up the equipment to be analyzed.
   THcHallCSpectrometer* HMS = new THcHallCSpectrometer("H", "HMS");
@@ -190,9 +176,9 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   hscaler->SetUseFirstEvent(kTRUE);
   gHaEvtHandlers->Add(hscaler);
 
-  //=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=
-  // Kinematics Modules
-  //=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=
+  // =================================
+  //  Kinematics Modules
+  // =================================
 
   // Add Physics Module to calculate primary (scattered electrons) beam kinematics
   THcPrimaryKine* hkin_primary = new THcPrimaryKine("H.kin.primary", "HMS Single Arm Kinematics", "H", "H.rb");
@@ -201,9 +187,9 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   THcSecondaryKine* pkin_secondary = new THcSecondaryKine("P.kin.secondary", "SHMS Single Arm Kinematics", "P", "H.kin.primary");
   gHaPhysics->Add(pkin_secondary);
   
-  //=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=
-  // Global Objects & Event Handlers
-  //=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=
+  // =================================
+  //  Global Objects & Event Handlers
+  // =================================
 
   // Add trigger apparatus
   THaApparatus* TRG = new THcTrigApp("T", "TRG");
@@ -237,11 +223,12 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   hcana::Scandalizer* analyzer = new hcana::Scandalizer;
   //analyzer->_skip_events = 100;
   analyzer->SetCodaVersion(2);
+  //analyzer->EnableBenchmarks(true);
 
   // The following analyzes the first 2000 events (for pedestals, is required) 
   // then  repeatedly skips 3000 events and processes 1000.
-  //auto pp0 = new hallc::scandalizer::SkipPeriodicAfterPedestal();
-  auto pp0 = new hallc::scandalizer::SkipAfterPedestal();
+  auto pp0 = new hallc::scandalizer::SkipPeriodicAfterPedestal();
+  //auto pp0 = new hallc::scandalizer::SkipAfterPedestal();
   pp0->_analyzer = analyzer;
   //SimplePostProcess([&]() { return 0; },
   //                                                     [&](const THaEvData* evt) {
@@ -257,54 +244,57 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   //                                                       return 0;
   //                                                     });
 
-  hallc::scandalizer::SimplePostProcess* pp1 = new hallc::scandalizer::SimplePostProcess(
-    [&](){
-      return 0;
-    },
-    [&](const THaEvData* evt){
-      static int counter = 0;
-      static double eff_num             = 0.0000001;
-      static double eff_den             = 0.0;
-      static int    n_num               = 0;
-      static int    n_den               = 0;
-      int           shmsDC1Planes_nhits = 0;
-      int           shmsDC2Planes_nhits = 0;
-      for (int ip = 0; ip < 6; ip++) {
-        shmsDC1Planes_nhits += pdc->GetPlane(ip)->GetNHits();
-      }
-      for (int ip = 6; ip < 12; ip++) {
-        shmsDC2Planes_nhits += pdc->GetPlane(ip)->GetNHits();
-      }
-      bool   shms_DC_too_many_hits = (shmsDC1Planes_nhits > 8) || (shmsDC2Planes_nhits > 8);
-      double beta                  = phod->GetBetaNotrk();
-      bool   good_beta             = beta > 0.4;
-      bool   shms_good_hodoscope   = phod->fGoodScinHits;
-      bool   good_ntracks          = (pdc->GetNTracks() > 0);
-      bool   good_hgc              = phgcer->GetCerNPE() > 1;
-      if ((good_beta && shms_good_hodoscope) && (!shms_DC_too_many_hits) && good_hgc) {
-        eff_den = eff_den + 1.0;
-        n_den++;
-        if (good_ntracks) {
-          eff_num = eff_num + 1.0;
-          n_num++;
-        }
-      }
-      if ((evt->GetEvNum() > 1200) && (counter > 1000)) {
-        std::cout << " efficiency :  " << eff_num / eff_den << "\n";
-        //std::cout << " Event : " << evt->GetEvNum() << "  ( " << evt->GetEvType() << ")\n";
-        pv_list.Put("hcSHMSTrackingEff", eff_num/eff_den);
-        pv_list.Put("hcSHMSTrackingEff:Unc",std::sqrt(double(n_num))/(n_num+n_den+0.0000001));
-        pv_list.Put("hcSHMSTrackingEff.LOW",0.95);
-        pv_list.Put("hcSHMSTrackingEff.LOLO",0.93);
+  hallc::scandalizer::TrackingEfficiencyMonitor * pp1 = new hallc::scandalizer::TrackingEfficiencyMonitor(phod,phgcer,pdc);
+  pp1->_analyzer = analyzer;
 
-        eff_num                = 0.000000001;
-        eff_den                = 0.0;
-        //analyzer->_skip_events = 300;
-        counter = 0;
-      }
-      counter++;
-      return 0; 
-    });
+  //hallc::scandalizer::SimplePostProcess* pp1 = new hallc::scandalizer::SimplePostProcess(
+  //  [&](){
+  //    return 0;
+  //  },
+  //  [&](const THaEvData* evt){
+  //    static int counter = 0;
+  //    static double eff_num             = 0.0000001;
+  //    static double eff_den             = 0.0;
+  //    static int    n_num               = 0;
+  //    static int    n_den               = 0;
+  //    int           shmsDC1Planes_nhits = 0;
+  //    int           shmsDC2Planes_nhits = 0;
+  //    for (int ip = 0; ip < 6; ip++) {
+  //      shmsDC1Planes_nhits += pdc->GetPlane(ip)->GetNHits();
+  //    }
+  //    for (int ip = 6; ip < 12; ip++) {
+  //      shmsDC2Planes_nhits += pdc->GetPlane(ip)->GetNHits();
+  //    }
+  //    bool   shms_DC_too_many_hits = (shmsDC1Planes_nhits > 8) || (shmsDC2Planes_nhits > 8);
+  //    double beta                  = phod->GetBetaNotrk();
+  //    bool   good_beta             = beta > 0.4;
+  //    bool   shms_good_hodoscope   = phod->fGoodScinHits;
+  //    bool   good_ntracks          = (pdc->GetNTracks() > 0);
+  //    bool   good_hgc              = phgcer->GetCerNPE() > 1;
+  //    if ((good_beta && shms_good_hodoscope) && (!shms_DC_too_many_hits) && good_hgc) {
+  //      eff_den = eff_den + 1.0;
+  //      n_den++;
+  //      if (good_ntracks) {
+  //        eff_num = eff_num + 1.0;
+  //        n_num++;
+  //      }
+  //    }
+  //    if ((evt->GetEvNum() > 1200) && (counter > 1000)) {
+  //      std::cout << " efficiency :  " << eff_num / eff_den << "\n";
+  //      //std::cout << " Event : " << evt->GetEvNum() << "  ( " << evt->GetEvType() << ")\n";
+  //      pv_list.Put("hcSHMSTrackingEff", eff_num/eff_den);
+  //      pv_list.Put("hcSHMSTrackingEff:Unc",std::sqrt(double(n_num))/(n_num+n_den+0.0000001));
+  //      pv_list.Put("hcSHMSTrackingEff.LOW",0.95);
+  //      pv_list.Put("hcSHMSTrackingEff.LOLO",0.93);
+
+  //      eff_num                = 0.000000001;
+  //      eff_den                = 0.0;
+  //      //analyzer->_skip_events = 300;
+  //      counter = 0;
+  //    }
+  //    counter++;
+  //    return 0; 
+  //  });
 
   analyzer->AddPostProcess(pp0);
   analyzer->AddPostProcess(pp1);
