@@ -8,7 +8,7 @@ R__LOAD_LIBRARY(libScandalizer.so)
 void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
 
   spdlog::set_level(spdlog::level::trace);
-
+  spdlog::flush_every(std::chrono::seconds(5));
   hallc::PVList pv_list;
   std::vector<std::string> pvs = {"hcSHMSTrackingEff", "hcSHMSTrackingEff:Unc",
                                   "hcSHMSTrackingEff.LOW", "hcSHMSTrackingEff.LOLO"};
@@ -227,8 +227,8 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
 
   // The following analyzes the first 2000 events (for pedestals, is required) 
   // then  repeatedly skips 3000 events and processes 1000.
-  auto pp0 = new hallc::scandalizer::SkipPeriodicAfterPedestal();
-  //auto pp0 = new hallc::scandalizer::SkipAfterPedestal();
+  //auto pp0 = new hallc::scandalizer::SkipPeriodicAfterPedestal();
+  auto pp0 = new hallc::scandalizer::SkipAfterPedestal();
   pp0->_analyzer = analyzer;
   //SimplePostProcess([&]() { return 0; },
   //                                                     [&](const THaEvData* evt) {
@@ -343,4 +343,5 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   analyzer->PrintReport("TEMPLATES/COIN/PRODUCTION/coin_production.template",
   			Form("REPORT_OUTPUT/COIN/PRODUCTION/replay_coin_production_%d_%d.report", RunNumber, MaxEvent));  // optional
 
+  delete analyzer;
 }
