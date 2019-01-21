@@ -1,30 +1,30 @@
 # .tmuxinator/logs.yml
 name: online_csv
-root: ~/work/CSV/online_csv
+root: <%= ENV["PWD"] %>
 #socket_name: foo # Remove to use default socket
-#pre_window: rbenv shell 2.0.0-p247 # Runs in each tab and pane
+#pre_window: bash #rbenv shell 2.0.0-p247 # Runs in each tab and pane
 #tmux_options: -f ~/.tmux.mac.conf # Pass arguments to tmux
 #tmux_detached: false
 #tmux_command: set -g main-pane-width 200
 windows:
   - logging:
-      pre:
-        - echo "I get run in each pane, before each pane command!"
+    #pre:
+    #- echo "I get run in each pane, before each pane command!"
       layout:  339f,211x55,0,0[211x12,0,0{105x12,0,0,339,105x12,106,0,354},211x11,0,13{105x11,0,13,352,105x11,106,13,355},211x15,0,25{105x15,0,25,347,105x15,106,25,356},211x14,0,41{105x14,0,41,351,105x14,106,41,353}] 
       panes:
-        - tail -F logs/run.txt      | ccze
-        - tail -F logs/config.txt   | ccze
-        - tail -F logs/spec.txt     | ccze
-        - tail -F logs/det.txt   | ccze
-        - tail -F logs/param.txt | ccze
-        - tail -F logs/ana.txt   | ccze
-        - tail -F logs/cuts.txt  | ccze
-        - tail -F logs/hits.txt  | ccze
+        - touch logs/run.txt;    tail -F logs/run.txt      | ccze
+        - touch logs/config.txt; tail -F logs/config.txt   | ccze
+        - touch logs/spec.txt;   tail -F logs/spec.txt     | ccze
+        - touch logs/det.txt   ; tail -F logs/det.txt   | ccze
+        - touch logs/param.txt ; tail -F logs/param.txt | ccze
+        - touch logs/ana.txt   ; tail -F logs/ana.txt   | ccze
+        - touch logs/cuts.txt  ; tail -F logs/cuts.txt  | ccze
+        - touch logs/hits.txt  ; tail -F logs/hits.txt  | ccze
   - scandalizer:
       layout: tiled 
       panes:
-        - /home/whit/work/CSV/online_csv/online_bin/scandalizer -r 6216 -n 50000 -h
-        - /home/whit/work/CSV/online_csv/online_bin/scandalizer -r 6216 -n 50000 -h
+        - ./online_bin/scandalizer -r 6216 -n 50000 -h
+        - ./online_bin/scandalizer -r 6216 -n 50000 -h
 
 #1 + 3 vert
 #layout: 3666,211x55,0,0{113x55,0,0,163,97x55,114,0[97x16,114,0,165,97x15,114,17,166,97x22,114,33,167]}

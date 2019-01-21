@@ -104,7 +104,7 @@ fi
 #  exit 
 #fi
 
-export ROOT_INCLUDE_PATH=/opt/software/local/include:$HOME/include
+export ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$HOME/include
 export DB_DIR=./DBASE
 
 #config="hallc_replay/CONFIG/${SPEC}/PRODUCTION/${spec}_coin_production.cfg"
