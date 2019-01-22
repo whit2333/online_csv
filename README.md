@@ -1,6 +1,24 @@
 CSV online files
 ================
 
+## Quick Start
+
+[![asciicast](https://asciinema.org/a/222886.svg)](https://asciinema.org/a/222886)
+
+```
+git clone https://github.com/whit2333/online_csv.git
+git clone https://github.com/whit2333/hallc_replay_sidis_fall18.git
+cd online_csv
+make_hallc_replay_symlinks -b ../hallc_replay_sidis_fall18
+make_hallc_replay -c
+```
+Now  `online_csv`  is a replay directory that uses the "standard" 
+`hallc_replay`. It can be renamed (e.g., "official_offline_replay") and it 
+still has https://github.com/whit2333/online_csv.git as the upstream. Also, 
+changes made to the symlinked files will be in the replay. Good changes should 
+be pushed upstream for this repo too.
+
+
 ## Usage
 
 The main files in the repository are found in the `db2` directory.
