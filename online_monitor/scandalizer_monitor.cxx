@@ -7,7 +7,7 @@ R__LOAD_LIBRARY(libScandalizer.so)
 
 void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
 
-  spdlog::set_level(spdlog::level::trace);
+  spdlog::set_level(spdlog::level::warn);
   spdlog::flush_every(std::chrono::seconds(5));
   hallc::PVList pv_list;
   //std::vector<std::string> pvs = {"hcSHMSTrackingEff", "hcSHMSTrackingEff:Unc",
@@ -39,7 +39,7 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   pathList.push_back("./cache");
 
   //const char* RunFileNamePattern = "raw/coin_all_%05d.dat";
-  const char* ROOTFileNamePattern = "ROOTfiles_csv/coin_replay_production_%d_%d.root";
+  const char* ROOTFileNamePattern = "ROOTfiles/coin_replay_production_%d_%d.root";
   
   // Load global parameters
   gHcParms->Define("gen_run_number", "Run Number", RunNumber);
@@ -230,6 +230,7 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   //auto pp0 = new hallc::scandalizer::SkipPeriodicAfterPedestal();
   auto pp0 = new hallc::scandalizer::SkipAfterPedestal();
   pp0->_analyzer = analyzer;
+
   //SimplePostProcess([&]() { return 0; },
   //                                                     [&](const THaEvData* evt) {
   //                                                       static int counter = 0;
