@@ -229,7 +229,7 @@ void event_display(Int_t RunNumber = 6216, Int_t MaxEvent = 500000) {
   pp0->_analyzer = analyzer;
 
   
-  auto ddisplay = new hallc::DetectorDisplay(RunNumber);
+  auto ddisplay = new hallc::MonitoringDisplay(RunNumber);
   //auto exp_monitor = new hallc::ExperimentMonitor(RunNumber,"derp");
   ddisplay->_data._root_folder = "/event_display/";
 
