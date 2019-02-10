@@ -93,3 +93,8 @@ Then  (using hallc_tools)
 ```
 make_hallc_replay_symlinks -c
 ```
+
+## cdaq notes
+
+cdaql1 129.57.168.41
+
