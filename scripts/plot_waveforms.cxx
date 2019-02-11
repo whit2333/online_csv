@@ -39,33 +39,33 @@ using floaters = ROOT::VecOps::RVec<float>;
 using shorters = ROOT::VecOps::RVec<short>;
 using nlohmann::json;
 
-void plot_waveforms(int RunNumber = 7066, int nevents = -1) {
+void plot_waveforms(int RunNumber = 7111, int nevents = -1) {
 
-  using nlohmann::json;
-  json j;
-  {
-    std::ifstream json_input_file("db2/test.json");
-    try {
-      json_input_file >> j;
-    } catch (json::parse_error) {
-      std::cerr << "error: json file, db2/run_list.json, is incomplete or has broken syntax.\n";
-      std::quick_exit(-127);
-    }
-  }
+  //using nlohmann::json;
+  //json j;
+  //{
+  //  std::ifstream json_input_file("db2/test.json");
+  //  try {
+  //    json_input_file >> j;
+  //  } catch (json::parse_error) {
+  //    std::cerr << "error: json file, db2/run_list.json, is incomplete or has broken syntax.\n";
+  //    std::quick_exit(-127);
+  //  }
+  //}
 
-  auto runnum_str = std::to_string(RunNumber);
-  if (j.find(runnum_str) == j.end()) {
-    std::cout << "Run " << RunNumber << " not found in ddb2/run_list.json\n";
-    std::cout << "Check that run number and replay exists. \n";
-    std::cout << "If problem persists please contact Whit (717-341-1080)\n";
-    std::cout << "In the meantime use: good_coin_counter_old.cxx \n";
-  }
-  double P0_shms_setting = j[runnum_str]["spectrometers"]["shms_momentum"].get<double>();
-  double P0_shms         = std::abs(P0_shms_setting);
+  //auto runnum_str = std::to_string(RunNumber);
+  //if (j.find(runnum_str) == j.end()) {
+  //  std::cout << "Run " << RunNumber << " not found in ddb2/run_list.json\n";
+  //  std::cout << "Check that run number and replay exists. \n";
+  //  std::cout << "If problem persists please contact Whit (717-341-1080)\n";
+  //  std::cout << "In the meantime use: good_coin_counter_old.cxx \n";
+  //}
+  //double P0_shms_setting = j[runnum_str]["spectrometers"]["shms_momentum"].get<double>();
+  //double P0_shms         = std::abs(P0_shms_setting);
 
-  std::string coda_type = "COIN";
+  std::string coda_type = "SHMS";
   std::string rootfile  = "ROOTfiles/";
-  rootfile += std::string("coin_replay_production_");
+  rootfile += std::string("shms_replay_production_");
   rootfile += std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
 
   bool found_good_file = false;
@@ -83,7 +83,7 @@ void plot_waveforms(int RunNumber = 7066, int nevents = -1) {
   }
   if (!found_good_file) {
     rootfile = "ROOTfiles_online/";
-    rootfile += std::string("coin_replay_production_");
+    rootfile += std::string("shms_replay_production_");
     rootfile += std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
 
     if (!gSystem->AccessPathName(rootfile.c_str())) {
@@ -109,13 +109,13 @@ void plot_waveforms(int RunNumber = 7066, int nevents = -1) {
   // Detector tree
   ROOT::RDataFrame d("T", rootfile);
   // HMS Scaler tree
-  ROOT::RDataFrame d_sh("TSH", rootfile);
+  //ROOT::RDataFrame d_sh("TSH", rootfile);
 
-  auto bcm4b_charge   = d_sh.Max("H.BCM4B.scalerChargeCut");
-  auto el_real_scaler = d_sh.Max("H.hEL_REAL.scaler");
-  auto time_1MHz      = d_sh.Max("H.1MHz.scalerTime");
-  auto time_1MHz_cut  = d_sh.Max("H.1MHz.scalerTimeCut");
-  auto total_charge   = bcm4b_charge;
+  //auto bcm4b_charge   = d_sh.Max("H.BCM4B.scalerChargeCut");
+  //auto el_real_scaler = d_sh.Max("H.hEL_REAL.scaler");
+  //auto time_1MHz      = d_sh.Max("H.1MHz.scalerTime");
+  //auto time_1MHz_cut  = d_sh.Max("H.1MHz.scalerTimeCut");
+  //auto total_charge   = bcm4b_charge;
 
   std::string hpdelta = "P.gtr.dp > -10 && P.gtr.dp < 20 && "
                         "H.gtr.dp > -10 && H.gtr.dp < 10";
