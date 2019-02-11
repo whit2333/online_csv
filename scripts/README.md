@@ -7,7 +7,7 @@
     > The coin (bean) counter for CSV sidis.
 * [good_hms_counter.cxx](good_hms_counter.cxx)
     > The good HMS electron singles yield counter.
-   Also looks at scalers for monitoring
+    > Also looks at scalers for monitoring
 * [plot_hms_singles.cxx](plot_hms_singles.cxx)
      Plots the results of running `good_hms_counter.cxx` for a range of runs.
 
