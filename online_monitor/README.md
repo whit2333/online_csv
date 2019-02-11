@@ -1,23 +1,25 @@
 # Online Monitoring
 
 ## Scandalizer
+<dl>
+<dt>`scandalizer_monitor.cxx`</dt>
+<dd>   The main scandalizer script </dd>
+<dt>`scandalizer_monitor.def`</dt>
+<dd>   The def files for scandalizer</dd>
+<dt>`scandalizer_monitor_shms.cxx`</dt>
+<dd>   The shms singles runs scandalizer.</dd>
+<dt>`scandalizer_test.cxx`</dt>
+<dd>   The shms singles runs scandalizer.</dd>
+</dl>
 
-`scandalizer_monitor.cxx`
-:   The main scandalizer script 
-`scandalizer_monitor.def`
-:   The def files for scandalizer
-
-`scandalizer_monitor_shms.cxx`
-:   The shms singles runs scandalizer.
-
-`scandalizer_test.cxx`
-:   The shms singles runs scandalizer.
-
-
-`detector_monitor.cxx`
-`event_display.cxx`
-`exp_monitor.cxx`
-:   The shms singles runs scandalizer.
+<dl>
+<dt>`detector_monitor.cxx`</dt>
+<dd></dd>
+<dt>`event_display.cxx`</dt>
+<dd></dd>
+<dt>`exp_monitor.cxx`</dt>
+<dd>The shms singles runs scandalizer.</dd>
+<dl>
 
 ## Http Display Servers
 
