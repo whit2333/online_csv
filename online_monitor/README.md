@@ -19,20 +19,24 @@
 <dd></dd>
 <dt>`exp_monitor.cxx`</dt>
 <dd>The shms singles runs scandalizer.</dd>
-<dl>
+</dl>
 
 ## Http Display Servers
 
 The display server will typically be run on port 8888 from cdaql1.jlab.org (129.57.168.41)
-
-`display_server.cxx`
-`event_display_server.cxx`
-`monitor_display_server.cxx`
+<dl>
+<dt> `display_server.cxx` </dt>
+<dd> </dd>
+<dt>`event_display_server.cxx` </dt>
+<dd> </dd>
+<dt>`monitor_display_server.cxx` </dt>
+<dd> </dd>
+</dl>
 
 ## Tests
-
-`test_display.cxx`
-:    test http display
-`test_replay_coin_sidis.C`
-:    testing coin replay
-
+<dl>
+<dt>`test_display.cxx`</dt>
+<dd>    test http display</dd>
+<dt>`test_replay_coin_sidis.C`</dt>
+<dd>    testing coin replay</dd>
+</dl>
