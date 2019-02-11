@@ -2,32 +2,26 @@
 
 ## Data Quality  and Monitoring 
 
-<dl>
-<dt>
-<%= markdown("
-[good_coin_counter.cxx](good_coin_counter.cxx)
-  ") %>
-</dt>
-<dd>  The coin (bean) counter for CSV sidis.</dd>
+ 
+* [good_coin_counter.cxx](good_coin_counter.cxx)
+     * The coin (bean) counter for CSV sidis.
+* [good_hms_counter.cxx](good_hms_counter.cxx)</dt>
+     *   The good HMS electron singles yield counter.</dd>
+   Also looks at scalers for monitoring</dd>
+* [plot_hms_singles.cxx](plot_hms_singles.cxx)</dt>
+     *   Plots the results of running `good_hms_counter.cxx` for a range of runs.</dd>
 
-<dt>[good_hms_counter.cxx](good_hms_counter.cxx)</dt>
-<dd>   The good HMS electron singles yield counter.</dd>
-<dd>   Also looks at scalers for monitoring</dd>
-<dt>[plot_hms_singles.cxx](plot_hms_singles.cxx)</dt>
-<dd>   Plots the results of running `good_hms_counter.cxx` for a range of runs.</dd>
+* [make_human_table.cxx](make_human_table.cxx)
+     *   Prints run list in a nice table
 
-<dt>[make_human_table.cxx](make_human_table.cxx)</dt>
-<dd>   Prints run list in a nice table</dd>
+* [make_daves_table.cxx](make_daves_table.cxx)
+     *   Prints Dave's table
 
-<dt>[make_daves_table.cxx](make_daves_table.cxx)</dt>
-<dd>   Prints Dave's table</dd>
+* [plot_charge_vs_time.cxx](plot_charge_vs_time.cxx)
+     *   Plots the experiment charge/yields vs time or run number.
 
-<dt>[plot_charge_vs_time.cxx](plot_charge_vs_time.cxx)</dt>
-<dd>   Plots the experiment charge/yields vs time or run number.</dd>
-
-<dt>[plot_waveforms.cxx](plot_waveforms.cxx)</dt>
-<dd>   Plots waveforms on the display server.</dd>
-</dl>
+* [plot_waveforms.cxx](plot_waveforms.cxx)
+     *   Plots waveforms on the display server.
 
 ## Replay Scripts
 
