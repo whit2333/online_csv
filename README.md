@@ -1,6 +1,10 @@
 CSV online files
 ================
 
+## Quick links
+* [`scripts` directory](scripts/README.md)
+* [`online_monitor` directory](online_monitor/README.md)
+
 ## Quick Start
 
 [![asciicast](https://asciinema.org/a/222886.svg)](https://asciinema.org/a/222886)
