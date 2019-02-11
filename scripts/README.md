@@ -4,24 +4,24 @@
 
  
 * [good_coin_counter.cxx](good_coin_counter.cxx)
-     * The coin (bean) counter for CSV sidis.
+     The coin (bean) counter for CSV sidis.
 * [good_hms_counter.cxx](good_hms_counter.cxx)</dt>
-     *   The good HMS electron singles yield counter.</dd>
+     The good HMS electron singles yield counter.</dd>
    Also looks at scalers for monitoring</dd>
 * [plot_hms_singles.cxx](plot_hms_singles.cxx)</dt>
-     *   Plots the results of running `good_hms_counter.cxx` for a range of runs.</dd>
+     Plots the results of running `good_hms_counter.cxx` for a range of runs.</dd>
 
 * [make_human_table.cxx](make_human_table.cxx)
-     *   Prints run list in a nice table
+     Prints run list in a nice table
 
 * [make_daves_table.cxx](make_daves_table.cxx)
-     *   Prints Dave's table
+     Prints Dave's table
 
 * [plot_charge_vs_time.cxx](plot_charge_vs_time.cxx)
-     *   Plots the experiment charge/yields vs time or run number.
+     Plots the experiment charge/yields vs time or run number.
 
 * [plot_waveforms.cxx](plot_waveforms.cxx)
-     *   Plots waveforms on the display server.
+     Plots waveforms on the display server.
 
 ## Replay Scripts
 
