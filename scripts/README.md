@@ -4,12 +4,12 @@
 
  
 * [good_coin_counter.cxx](good_coin_counter.cxx)
-     The coin (bean) counter for CSV sidis.
-* [good_hms_counter.cxx](good_hms_counter.cxx)</dt>
-     The good HMS electron singles yield counter.</dd>
-   Also looks at scalers for monitoring</dd>
-* [plot_hms_singles.cxx](plot_hms_singles.cxx)</dt>
-     Plots the results of running `good_hms_counter.cxx` for a range of runs.</dd>
+    > The coin (bean) counter for CSV sidis.
+* [good_hms_counter.cxx](good_hms_counter.cxx)
+    > The good HMS electron singles yield counter.
+   Also looks at scalers for monitoring
+* [plot_hms_singles.cxx](plot_hms_singles.cxx)
+     Plots the results of running `good_hms_counter.cxx` for a range of runs.
 
 * [make_human_table.cxx](make_human_table.cxx)
      Prints run list in a nice table
