@@ -3,7 +3,11 @@
 ## Data Quality  and Monitoring 
 
 <dl>
-<dt>[good_coin_counter.cxx](good_coin_counter.cxx) </dt>
+<dt>
+<%= markdown("
+[good_coin_counter.cxx](good_coin_counter.cxx)
+  ") %>
+</dt>
 <dd>  The coin (bean) counter for CSV sidis.</dd>
 
 <dt>[good_hms_counter.cxx](good_hms_counter.cxx)</dt>
