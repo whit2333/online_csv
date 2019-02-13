@@ -1,42 +1,41 @@
 # Online Monitoring
 
 ## Scandalizer
-<dl>
-<dt>`scandalizer_monitor.cxx`</dt>
-<dd>   The main scandalizer script </dd>
-<dt>`scandalizer_monitor.def`</dt>
-<dd>   The def files for scandalizer</dd>
-<dt>`scandalizer_monitor_shms.cxx`</dt>
-<dd>   The shms singles runs scandalizer.</dd>
-<dt>`scandalizer_test.cxx`</dt>
-<dd>   The shms singles runs scandalizer.</dd>
-</dl>
 
-<dl>
-<dt>`detector_monitor.cxx`</dt>
-<dd></dd>
-<dt>`event_display.cxx`</dt>
-<dd></dd>
-<dt>`exp_monitor.cxx`</dt>
-<dd>The shms singles runs scandalizer.</dd>
-</dl>
+* `scandalizer_monitor.cxx`
+    > The main scandalizer script
+`scandalizer_monitor.def`
+    > The def files for scandalizer
+`scandalizer_monitor_shms.cxx`
+    > The shms singles runs scandalizer.
+`scandalizer_test.cxx`
+    > The shms singles runs scandalizer.
+
+
+
+* `detector_monitor.cxx`
+* `event_display.cxx`
+* `exp_monitor.cxx`
+    > The shms singles runs scandalizer.
 
 ## Http Display Servers
 
 The display server will typically be run on port 8888 from cdaql1.jlab.org (129.57.168.41)
-<dl>
-<dt> `display_server.cxx` </dt>
-<dd> </dd>
-<dt>`event_display_server.cxx` </dt>
-<dd> </dd>
-<dt>`monitor_display_server.cxx` </dt>
-<dd> </dd>
-</dl>
+
+* `display_server.cxx` 
+    > runs a display server 
+* `event_display_server.cxx`
+    > runs a display server for event display
+* `monitor_display_server.cxx`
+    > runs a display server for event display
 
 ## Tests
-<dl>
-<dt>`test_display.cxx`</dt>
-<dd>    test http display</dd>
-<dt>`test_replay_coin_sidis.C`</dt>
-<dd>    testing coin replay</dd>
-</dl>
+
+
+* `test_display.cxx`
+    > test http display
+* `test_replay_coin_sidis.C`
+    > testing coin replay
+
+
+
