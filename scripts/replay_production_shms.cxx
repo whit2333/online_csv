@@ -1,12 +1,28 @@
 // ----------------------------------------------
-R__LOAD_LIBRARY(libsimple_epics.so)
-#include "simple_epics/PVList.h"
+//R__LOAD_LIBRARY(libsimple_epics.so)
+//#include "simple_epics/PVList.h"
 
 R__LOAD_LIBRARY(libScandalizer.so)
 #include "scandalizer/PostProcessors.h"
+#include "scandalizer/ScriptHelpers.h"
 
-void replay_production_shms(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
+void replay_production_shms(Int_t RunNumber = 7160, Int_t MaxEvent = 50000) {
 
+  hallc::helper::script_requires_hcana();
+  //{
+  //  std::string process_name = "";
+  //  if (const char* env_p = std::getenv("_")) {
+  //    process_name = env_p ;
+  //  }
+  //  std::cout << "running program : " << process_name << "\n";
+  //  auto last_part = process_name.substr(process_name.size()-4,4);
+  //  std::cout << last_part << "\n";
+  //  if( last_part == "root" ) {
+  //    std::cout << " You are running this script with root!\n";
+  //    std::cout << " Use hcana instead. \n";
+  //    std::quick_exit(1);
+  //  }
+  //}
   spdlog::set_level(spdlog::level::warn);
   spdlog::flush_every(std::chrono::seconds(5));
 
@@ -280,7 +296,7 @@ void replay_production_shms(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   // Define output ROOT file
   analyzer->SetOutFile(ROOTFileName.Data());
   // Define DEF-file+
-  analyzer->SetOdefFile("DEF-files/SHMS/PRODUCTION/pstackana_production_all.def");
+  //analyzer->SetOdefFile("DEF-files/SHMS/PRODUCTION/pstackana_production_all.def");
   analyzer->SetOdefFile("DEF-files/SHMS/PRODUCTION/pstackana_production.def");
   // Define cuts file
   analyzer->SetCutFile("DEF-files/SHMS/PRODUCTION/CUTS/pstackana_production_cuts.def");  // optional

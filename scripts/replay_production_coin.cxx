@@ -1,4 +1,5 @@
-void replay_production_coin_sidis (Int_t RunNumber = 0, Int_t MaxEvent = 0) {
+
+void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
 
   // Get RunNumber and MaxEvent if not provided.
   if(RunNumber == 0) {
