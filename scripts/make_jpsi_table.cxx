@@ -14,7 +14,7 @@ namespace fs = std::experimental::filesystem;
 
 #include "TObject.h"
 
-void make_human_table() {
+void make_jpsi_table() {
 
   using nlohmann::json;
   json j;
@@ -32,31 +32,31 @@ void make_human_table() {
     std::ifstream json_input_file("db2/run_list_extra.json");
     try {
       json_input_file >> j3;
-    } catch(json::parse_error)  {
+    } catch (json::parse_error) {
       std::cerr << "error: json file, db2/run_list.json, is incomplete or has broken syntax.\n";
       std::quick_exit(-127);
     }
   }
-  std::ofstream runs_text("csv_runs.txt");
+  std::ofstream runs_text("jpsi_runs.txt");
 
   // std::cout << j.dump(2);
-  auto print_header = [](){
-  // print header
+  auto print_header = []() {
+    // print header
     std::cout << "\n";
     fmt::print(" {:<5} ", "Run");
-  fmt::print(" {:^5} ", "Target");
-  fmt::print(" {:^7} ", "P_hms");
-  fmt::print(" {:^7} ", "th_hms");
-  fmt::print(" {:^7} ", "P_shms");
-  fmt::print(" {:^7} ", "th_shms");
-  fmt::print(" {:^21} ", "start time");
-  fmt::print(" {:^21} ", "end time");
-  fmt::print(" {:>9} ", "pi_count");
-  fmt::print(" {:>9} ", "charge");
-  fmt::print(" {:>9} ", "yield");
-  fmt::print(" {:>9} ", "triggers");
-  fmt::print(" {:<} ", "comment");
-  std::cout << "\n";
+    fmt::print(" {:^5} ", "Target");
+    fmt::print(" {:^7} ", "P_hms");
+    fmt::print(" {:^7} ", "th_hms");
+    fmt::print(" {:^7} ", "P_shms");
+    fmt::print(" {:^7} ", "th_shms");
+    fmt::print(" {:^21} ", "start time");
+    fmt::print(" {:^21} ", "end time");
+    fmt::print(" {:>9} ", "count");
+    fmt::print(" {:>9} ", "charge");
+    fmt::print(" {:>9} ", "yield");
+    fmt::print(" {:>9} ", "triggers");
+    fmt::print(" {:<} ", "comment");
+    std::cout << "\n";
   };
 
   std::cout << " runs : \n";
@@ -72,8 +72,8 @@ void make_human_table() {
     auto runjs = it.value();
 
     std::string target_lab = runjs["target"]["target_label"].get<std::string>();
-    if(target_lab != old_target) { 
-      print_header(); 
+    if (target_lab != old_target) {
+      print_header();
     }
 
     if ((p_hms != runjs["spectrometers"]["hms_momentum"].get<double>()) ||
@@ -86,8 +86,7 @@ void make_human_table() {
     p_hms   = runjs["spectrometers"]["hms_momentum"].get<double>();
     th_hms  = runjs["spectrometers"]["hms_angle"].get<double>();
     p_shms  = runjs["spectrometers"]["shms_momentum"].get<double>();
-    th_shms  = runjs["spectrometers"]["shms_angle"].get<double>();
-
+    th_shms = runjs["spectrometers"]["shms_angle"].get<double>();
 
     old_target = target_lab;
 
@@ -99,42 +98,46 @@ void make_human_table() {
     fmt::print(" {:>7.2f} ", runjs["spectrometers"]["hms_angle"].get<double>());
     fmt::print(" {:>7.3f} ", runjs["spectrometers"]["shms_momentum"].get<double>());
     fmt::print(" {:>7.2f} ", runjs["spectrometers"]["shms_angle"].get<double>());
-    if (runjs.find("start_time") != runjs.end()) {
-      fmt::print(" {:^21} ", runjs["start_time"].get<std::string>());
+    if (runjs["run_info"].find("start_time") != runjs["run_info"].end()) {
+      fmt::print(" {:^21} ", runjs["run_info"]["start_time"].get<std::string>());
     } else {
       fmt::print(" {:21} ", "");
     }
-    if (runjs.find("end_time") != runjs.end()) {
-      fmt::print(" {:^21} ", runjs["end_time"].get<std::string>());
-    }else{
+    if (runjs["run_info"].find("end_time") != runjs["run_info"].end()) {
+      fmt::print(" {:^21} ", runjs["run_info"]["end_time"].get<std::string>());
+    } else {
       fmt::print(" {:21} ", "");
     }
 
     double total_charge = 0.0001;
     if (runjs.find("total_charge") != runjs.end()) {
       total_charge = runjs["total_charge"].get<double>() / 1000.0;
-      //fmt::print("/ {:>10.1f} ", total_charge);
+      // fmt::print("/ {:>10.1f} ", total_charge);
     }
-    //else {
+    // else {
     //  fmt::print(" {:>11} ", "");
     //}
     if (j2.count(it.key()) != 0) {
       try {
-        double pi_yield = j2[it.key()]["pion bg sub. counts"].get<double>();
-        fmt::print(" {:>9.1f} ", pi_yield);
-    if (runjs.find("total_charge") != runjs.end()) {
-      //total_charge = runjs["total_charge"].get<double>() / 1000.0;
-      fmt::print("/ {:<6.1f} ", total_charge);
-    } else {
-      fmt::print(" {:>11} ", "");
-    }
-        fmt::print(" {:>9.1f} ", pi_yield / total_charge);
+
+        double shms_yield = j2[it.key()]["shms e counts"].get<double>();
+        // double pi_yield = j2[it.key()]["pion bg sub. counts"].get<double>();
+        fmt::print(" {:>9.1f} ", shms_yield);
+        if (j2[it.key()].find("charge bcm4b 2u cut") != j2[it.key()].end()) {
+          total_charge = j2[it.key()]["charge bcm4b 2u cut"].get<double>();
+          // total_charge = runjs["total_charge"].get<double>() / 1000.0;
+          fmt::print("/ {:<6.1f} ", total_charge);
+        } else {
+          fmt::print(" {:>11} ", "");
+        }
+        fmt::print(" {:>9.1f} ", shms_yield / total_charge);
         int n_events = j2[it.key()]["total trigger events"].get<int>();
         fmt::print(" {:>9d} ", n_events);
-      } catch(std::domain_error ) {
-        //you suck
+      } catch (std::domain_error) {
+        // you suck
+        //std::cout << "you suck\n";
       }
-      //double live_time = j2[it.key()]["live time"].get<int>();
+      // double live_time = j2[it.key()]["live time"].get<int>();
     } else {
       fmt::print(" {:>9} ", "");
       fmt::print(" {:>9} ", "");
@@ -145,15 +148,13 @@ void make_human_table() {
       if (j3[it.key()].find("comment") != j3[it.key()].end()) {
         try {
           comment = j3[it.key()]["comment"].get<std::string>();
-        } catch(std::domain_error ) {
-          //you suck
+        } catch (std::domain_error) {
+          // you suck
         }
       }
     }
     fmt::print(" {:<} ", comment);
     std::cout << "\n";
   }
-  print_header(); 
-
-
+  print_header();
 }

@@ -1,7 +1,6 @@
 */*.nfs*
 raw
 raw*
-bin
 DBASE
 analysis
 ROOTfiles

@@ -5,6 +5,22 @@ CSV online files
 * [`scripts` directory](scripts/README.md)
 * [`online_monitor` directory](online_monitor/README.md)
 
+## COIN/SHMS/HMS replay
+
+```
+./bin/hc_shms_replay -r run_number -n Nevents
+./bin/hc_shms_replay -h
+./bin/hc_coin_replay -r run_number -n Nevents
+```
+
+### Tips
+
+#### Running 10 replays in parallel using gnu parallel
+```
+parallel -N1 -j10 ./bin/hc_shms_replay -r {}  ::: $(seq 7100 7142)
+```
+
+
 ## Quick Start
 
 [![asciicast](https://asciinema.org/a/222886.svg)](https://asciinema.org/a/222886)
