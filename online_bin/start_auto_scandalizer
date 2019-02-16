@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+
+from hallc.run_daemon import RunDaemon
+import subprocess
+import sys
+import os
+import libtmux
+import time
+
+def launch_full_shms_replay(run_number):
+    global p
+    #command=' pwd && sleep 200 '
+    replay_dir = "/home/cdaq/whit/"
+    try:
+        replay_dir = os.environ['CURRENT_REPLAY_DIR']
+    except KeyError:
+        print("CURRENT_REPLAY_DIR is NOT SET! Why not?")
+        sys.exit(1)
+         
+    server = libtmux.Server(socket_name="replay")
+    sesh = server.find_where({"session_name":"full_replay"})
+    if not sesh:
+        sesh = server.new_session(session_name="full_replay",start_directory=replay_dir)
+ 
+    window = sesh.find_where({"window_name":"shms_run_{}".format(run_number)})
+    if window :
+        window.kill_window()
+    print("waiting 100 seconds to start full SHMS replay for run {}".format(run_number))
+    time.sleep(100)
+    window = sesh.new_window(window_name="shms_run_{}".format(run_number), start_directory=replay_dir, attach=False,
+            window_shell="./bin/hc_shms_replay -r {} -n -1".format(run_number))
+    #p = subprocess.Popen(
+    #        [full_command ],
+    #        cwd='/home/cdaq/whit/online_jpsi/replay_jpsi/',
+    #        stdout = sys.stdout,
+    #        stderr = sys.stderr,
+    #        shell = True)
+        
+def launch_scan_coin_replay(run_number):
+    global p
+    time.sleep(100)
+    #command=' pwd && sleep 200 '
+    replay_dir = "/home/cdaq/whit/"
+    try:
+        replay_dir = os.environ['CURRENT_REPLAY_DIR']
+    except KeyError:
+        print("CURRENT_REPLAY_DIR is NOT SET! Why not?")
+        sys.exit(1)
+         
+    server = libtmux.Server(socket_name="replay")
+    sesh = server.find_where({"session_name":"scan_monitor"})
+    if not sesh:
+        sesh = server.new_session(session_name="scan_monitor",start_directory=replay_dir)
+ 
+    window = sesh.find_where({"window_name":"scan_coin_{}".format(run_number)})
+    if window :
+        window.kill_window()
+    window = sesh.new_window(window_name="scan_coin_{}".format(run_number), start_directory=replay_dir, attach=False,
+            window_shell="./online_bin/scandalizer -r {} -n -1".format(run_number))
+
+def launch_full_hms_replay(run_number):
+    global p
+    time.sleep(100)
+    #command=' pwd && sleep 200 '
+    replay_dir = "/home/cdaq/whit/"
+    try:
+        replay_dir = os.environ['CURRENT_REPLAY_DIR']
+    except KeyError:
+        print("CURRENT_REPLAY_DIR is NOT SET! Why not?")
+        sys.exit(1)
+         
+    server = libtmux.Server(socket_name="replay")
+    sesh = server.find_where({"session_name":"full_replay"})
+    if not sesh:
+        sesh = server.new_session(session_name="full_replay",start_directory=replay_dir)
+ 
+    window = sesh.find_where({"window_name":"hms_run_{}".format(run_number)})
+    if window :
+        window.kill_window()
+    window = sesh.new_window(window_name="hms_run_{}".format(run_number), start_directory=replay_dir, attach=False,
+            window_shell="./bin/hc_hms_replay -r {} -n -1".format(run_number))
+
+d = RunDaemon()
+#d.on_event('run_start', launch_full_shms_replay, run_type='shms')
+#d.on_event('run_start', launch_full_hms_replay, run_type='hms')
+d.on_event('run_start', launch_scan_coin_replay, run_type='coin')
+d.start()
+
