@@ -104,20 +104,21 @@ fi
 #  exit 
 #fi
 
-export ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$HOME/include
-export DB_DIR=./DBASE
 
-#config="hallc_replay/CONFIG/${SPEC}/PRODUCTION/${spec}_coin_production.cfg"
-#script="analysis/coin_replay.cxx"
+# For some reason the module files need to put in a specific order.
+# This is probably because we are using the old TCL version.
+module unload csv/dev
+module load csv/dev
+module load tmux/latest
+module load python/latest
+module load python/2.7.15
+module load python3/latest
+module load vim/latest
+module load git/latest
+module load ruby/2.5.3
 
-#if [[ -n ${container} ]] ; then
-#  singularity run -a hcana $(hallc_config -d)/cool_halls.simg \
-#                  -b -q "analysis/replay_coin.cxx(${run_number},${n_events})"
-#else 
 mkdir -p results/${run_number}
-#hcana  -b -q "online_monitor/scandalizer_test.cxx(${run_number},${n_events})"
-hcana  -b -q "online_monitor/scandalizer_monitor.cxx(${run_number},${n_events})"
-#fi
 
-  #perf record hcana -b -q "${hallc_home}/analysis/replay_coin.cxx(${run_number},${n_events})"
+hcana  -b -q "online_monitor/scandalizer_monitor.cxx(${run_number},${n_events})"
+
 

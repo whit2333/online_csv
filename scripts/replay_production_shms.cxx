@@ -187,8 +187,8 @@ void replay_production_shms(Int_t RunNumber = 7160, Int_t MaxEvent = 50000) {
   // The following analyzes the first 2000 events (for pedestals, is required) 
   // then  repeatedly skips 3000 events and processes 1000.
   //auto pp0 = new hallc::scandalizer::SkipPeriodicAfterPedestal();
-  auto pp0 = new hallc::scandalizer::SkipAfterPedestal();
-  pp0->_analyzer = analyzer;
+  //auto pp0 = new hallc::scandalizer::SkipAfterPedestal();
+  //pp0->_analyzer = analyzer;
 
   //SimplePostProcess([&]() { return 0; },
   //                                                     [&](const THaEvData* evt) {
@@ -260,7 +260,7 @@ void replay_production_shms(Int_t RunNumber = 7160, Int_t MaxEvent = 50000) {
   //    return 0; 
   //  });
 
-  analyzer->AddPostProcess(pp0);
+  //analyzer->AddPostProcess(pp0);
   analyzer->AddPostProcess(pp1);
   //analyzer->AddPostProcess(pp1a);
 

@@ -1,32 +1,41 @@
 
-void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
+R__LOAD_LIBRARY(libScandalizer.so)
+#include "scandalizer/PostProcessors.h"
+#include "scandalizer/ScriptHelpers.h"
+
+void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 50000) {
+
+  hallc::helper::script_requires_hcana();
 
   // Get RunNumber and MaxEvent if not provided.
-  if(RunNumber == 0) {
+  if (RunNumber == 0) {
     cout << "Enter a Run Number (-1 to exit): ";
     cin >> RunNumber;
-    if( RunNumber<=0 ) return;
+    if (RunNumber <= 0)
+      return;
   }
-  if(MaxEvent == 0) {
+  if (MaxEvent == 0) {
     cout << "\nNumber of Events to analyze: ";
     cin >> MaxEvent;
-    if(MaxEvent == 0) {
+    if (MaxEvent == 0) {
       cerr << "...Invalid entry\n";
       exit;
     }
   }
 
   // Create file name patterns.
-  const char* RunFileNamePattern = "coin_all_%05d.dat";
+  const char*     RunFileNamePattern = "coin_all_%05d.dat";
   vector<TString> pathList;
   pathList.push_back(".");
+  pathList.push_back("./raw_coda");
   pathList.push_back("./raw");
+  pathList.push_back("./raw.copiedtotape");
   pathList.push_back("./raw/../raw.copiedtotape");
   pathList.push_back("./cache");
 
-  //const char* RunFileNamePattern = "raw/coin_all_%05d.dat";
-  const char* ROOTFileNamePattern = "ROOTfiles_csv/coin_replay_production_%d_%d.root";
-  
+  // const char* RunFileNamePattern = "raw/coin_all_%05d.dat";
+  const char* ROOTFileNamePattern = "ROOTfiles_jpsi/coin_replay_production_%d_%d.root";
+
   // Load global parameters
   gHcParms->Define("gen_run_number", "Run Number", RunNumber);
   gHcParms->AddString("g_ctp_database_filename", "DBASE/COIN/standard.database");
@@ -34,7 +43,7 @@ void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   gHcParms->Load(gHcParms->GetString("g_ctp_parm_filename"));
   gHcParms->Load(gHcParms->GetString("g_ctp_kinematics_filename"), RunNumber);
   // Load params for COIN trigger configuration
-    gHcParms->Load(gHcParms->GetString("g_ctp_trigdet_filename"));
+  gHcParms->Load(gHcParms->GetString("g_ctp_trigdet_filename"));
   // Load fadc debug parameters
   gHcParms->Load("PARAM/HMS/GEN/h_fadc_debug.param");
   gHcParms->Load("PARAM/SHMS/GEN/p_fadc_debug.param");
@@ -43,12 +52,11 @@ void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   gHcDetectorMap->Load(gHcParms->GetString("g_ctp_map_filename"));
 
   //=:=:=:=
-  // SHMS 
+  // SHMS
   //=:=:=:=
 
   // Set up the equipment to be analyzed.
   THcHallCSpectrometer* SHMS = new THcHallCSpectrometer("P", "SHMS");
-  std::cout << " asdflkjasdflkj \n";
   SHMS->SetEvtType(1);
   SHMS->AddEvtType(4);
   SHMS->AddEvtType(5);
@@ -82,14 +90,15 @@ void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   THaReactionPoint* prp = new THaReactionPoint("P.react", "SHMS reaction point", "P", "P.rb");
   gHaPhysics->Add(prp);
   // Calculate extended target corrections
-  THcExtTarCor* pext = new THcExtTarCor("P.extcor", "HMS extended target corrections", "P", "P.react");
+  THcExtTarCor* pext =
+      new THcExtTarCor("P.extcor", "HMS extended target corrections", "P", "P.react");
   gHaPhysics->Add(pext);
   // Calculate golden track quantites
   THaGoldenTrack* pgtr = new THaGoldenTrack("P.gtr", "SHMS Golden Track", "P");
   gHaPhysics->Add(pgtr);
   // Calculate the hodoscope efficiencies
   THcHodoEff* peff = new THcHodoEff("phodeff", "SHMS hodo efficiency", "P.hod");
-  gHaPhysics->Add(peff);   
+  gHaPhysics->Add(peff);
 
   // Add event handler for scaler events
   THcScalerEvtHandler* pscaler = new THcScalerEvtHandler("P", "Hall C scaler event type 1");
@@ -104,7 +113,7 @@ void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   gHaEvtHandlers->Add(pscaler);
 
   //=:=:=
-  // HMS 
+  // HMS
   //=:=:=
 
   // Set up the equipment to be analyzed.
@@ -133,13 +142,14 @@ void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
 
   // Add rastered beam apparatus
   THaApparatus* hbeam = new THcRasteredBeam("H.rb", "Rastered Beamline");
-  gHaApps->Add(hbeam);  
+  gHaApps->Add(hbeam);
   // Add physics modules
   // Calculate reaction point
   THaReactionPoint* hrp = new THaReactionPoint("H.react", "HMS reaction point", "H", "H.rb");
   gHaPhysics->Add(hrp);
   // Calculate extended target corrections
-  THcExtTarCor* hext = new THcExtTarCor("H.extcor", "HMS extended target corrections", "H", "H.react");
+  THcExtTarCor* hext =
+      new THcExtTarCor("H.extcor", "HMS extended target corrections", "H", "H.react");
   gHaPhysics->Add(hext);
   // Calculate golden track quantities
   THaGoldenTrack* hgtr = new THaGoldenTrack("H.gtr", "HMS Golden Track", "H");
@@ -149,7 +159,7 @@ void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   gHaPhysics->Add(heff);
 
   // Add event handler for scaler events
-  THcScalerEvtHandler *hscaler = new THcScalerEvtHandler("H", "Hall C scaler event type 4");  
+  THcScalerEvtHandler* hscaler = new THcScalerEvtHandler("H", "Hall C scaler event type 4");
   hscaler->AddEvtType(2);
   hscaler->AddEvtType(4);
   hscaler->AddEvtType(5);
@@ -165,12 +175,14 @@ void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   //=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=
 
   // Add Physics Module to calculate primary (scattered electrons) beam kinematics
-  THcPrimaryKine* hkin_primary = new THcPrimaryKine("H.kin.primary", "HMS Single Arm Kinematics", "H", "H.rb");
+  THcPrimaryKine* hkin_primary =
+      new THcPrimaryKine("H.kin.primary", "HMS Single Arm Kinematics", "H", "H.rb");
   gHaPhysics->Add(hkin_primary);
   // Add Physics Module to calculate secondary (scattered hadrons) beam kinematics
-  THcSecondaryKine* pkin_secondary = new THcSecondaryKine("P.kin.secondary", "SHMS Single Arm Kinematics", "P", "H.kin.primary");
+  THcSecondaryKine* pkin_secondary =
+      new THcSecondaryKine("P.kin.secondary", "SHMS Single Arm Kinematics", "P", "H.kin.primary");
   gHaPhysics->Add(pkin_secondary);
-  
+
   //=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=
   // Global Objects & Event Handlers
   //=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=
@@ -183,7 +195,7 @@ void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   // Suppress missing reference time warnings for these event types
   coin->SetEvtType(1);
   coin->AddEvtType(2);
-  TRG->AddDetector(coin); 
+  TRG->AddDetector(coin);
   // Add event handler for prestart event 125.
   THcConfigEvtHandler* ev125 = new THcConfigEvtHandler("HC", "Config Event type 125");
   gHaEvtHandlers->Add(ev125);
@@ -191,10 +203,11 @@ void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   THaEpicsEvtHandler* hcepics = new THaEpicsEvtHandler("epics", "HC EPICS event type 180");
   gHaEvtHandlers->Add(hcepics);
 
-  // Add coin physics module 
-  THcCoinTime* coinTime = new THcCoinTime("CTime", "Coincidende Time Determination", "P", "H", "T.coin");
+  // Add coin physics module
+  THcCoinTime* coinTime =
+      new THcCoinTime("CTime", "Coincidende Time Determination", "P", "H", "T.coin");
   gHaPhysics->Add(coinTime);
- 
+
   // Set up the analyzer - we use the standard one,
   // but this could be an experiment-specific one as well.
   // The Analyzer controls the reading of the data, executes
@@ -209,11 +222,11 @@ void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
 
   // Define the run(s) that we want to analyze.
   // We just set up one, but this could be many.
-  THcRun* run = new THcRun( pathList, Form(RunFileNamePattern, RunNumber) );
+  THcRun* run = new THcRun(pathList, Form(RunFileNamePattern, RunNumber));
 
   // Set to read in Hall C run database parameters
   run->SetRunParamClass("THcRunParameters");
-  
+
   // Eventually need to learn to skip over, or properly analyze the pedestal events
   run->SetEventRange(1, MaxEvent); // Physics Event number, does not include scaler or control events.
   run->SetNscan(1);
@@ -222,9 +235,9 @@ void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
 
   // Define the analysis parameters
   TString ROOTFileName = Form(ROOTFileNamePattern, RunNumber, MaxEvent);
-  analyzer->SetCountMode(2);  // 0 = counter is # of physics triggers
-                              // 1 = counter is # of all decode reads
-                              // 2 = counter is event number
+  analyzer->SetCountMode(2); // 0 = counter is # of physics triggers
+                             // 1 = counter is # of all decode reads
+                             // 2 = counter is event number
 
   analyzer->SetEvent(event);
   // Set EPICS event type
@@ -234,17 +247,18 @@ void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   // Define output ROOT file
   analyzer->SetOutFile(ROOTFileName.Data());
   // Define DEF-file+
-  //analyzer->SetOdefFile("UTIL_SIDIS/DEF-files/coin_production_sidis.def");
+  // analyzer->SetOdefFile("UTIL_SIDIS/DEF-files/coin_production_sidis.def");
   analyzer->SetOdefFile("DEF-files/COIN/PRODUCTION/coin_production_hElec_pProt.def");
   // Define cuts file
-  //analyzer->SetCutFile("UTIL_SIDIS/DEF-files/coin_production_sidis_cuts.def");  // optional
-  analyzer->SetCutFile("DEF-files/COIN/PRODUCTION/CUTS/coin_production_cuts.def");  // optional
+  // analyzer->SetCutFile("UTIL_SIDIS/DEF-files/coin_production_sidis_cuts.def");  // optional
+  analyzer->SetCutFile("DEF-files/COIN/PRODUCTION/CUTS/coin_production_cuts.def"); // optional
   // File to record accounting information for cuts
-  analyzer->SetSummaryFile(Form("REPORT_OUTPUT/COIN/PRODUCTION/summary_production_%d_%d.report", RunNumber, MaxEvent));  // optional
+  analyzer->SetSummaryFile(Form("REPORT_OUTPUT/COIN/PRODUCTION/summary_production_%d_%d.report",
+                                RunNumber, MaxEvent)); // optional
   // Start the actual analysis.
   analyzer->Process(run);
   // Create report file from template
   analyzer->PrintReport("TEMPLATES/COIN/PRODUCTION/coin_production.template",
-  			Form("REPORT_OUTPUT/COIN/PRODUCTION/replay_coin_production_%d_%d.report", RunNumber, MaxEvent));  // optional
-
+                        Form("REPORT_OUTPUT/COIN/PRODUCTION/replay_coin_production_%d_%d.report",
+                             RunNumber, MaxEvent)); // optional
 }

@@ -78,7 +78,7 @@ void tracking_eff(int RunNumber = 6244, int nevents = -1) {
   ROOT::Experimental::TTaskGroup tg;
 
   std::string coda_type = "COIN";
-  std::string rootfile  = "ROOTfiles_csv/";
+  std::string rootfile  = "ROOTfiles_jpsi/";
   rootfile += std::string("coin_replay_production_");
   rootfile += std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
 

@@ -18,5 +18,4 @@ PARAM
 ROOTfiles*
 DEF-files
 *.cast
-*.json
 

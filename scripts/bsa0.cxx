@@ -64,7 +64,7 @@ void bsa0(int RunNumber = 6018, int nevents = -1, int prompt = 1, int update = 1
   double theta_hms = j[runnum_str]["spectrometers"]["hms_angle"].get<double>()*M_PI/180.0;
 
   std::string coda_type = "COIN";
-  std::string rootfile = "ROOTfiles_csv/";
+  std::string rootfile = "ROOTfiles_jpsi/";
   rootfile += std::string("coin_replay_production_");
   rootfile +=
       std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";

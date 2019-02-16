@@ -34,13 +34,14 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   const char* RunFileNamePattern = "coin_all_%05d.dat";
   vector<TString> pathList;
   pathList.push_back(".");
+  pathList.push_back("./raw_coda");
   pathList.push_back("./raw");
   pathList.push_back("./raw.copiedtotape");
   pathList.push_back("./raw/../raw.copiedtotape");
   pathList.push_back("./cache");
 
   //const char* RunFileNamePattern = "raw/coin_all_%05d.dat";
-  const char* ROOTFileNamePattern = "ROOTfiles/coin_replay_production_%d_%d.root";
+  const char* ROOTFileNamePattern = "ROOTfiles/coin_scandalizer_%d_%d.root";
   
   // Load global parameters
   gHcParms->Define("gen_run_number", "Run Number", RunNumber);
@@ -229,8 +230,11 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   // The following analyzes the first 2000 events (for pedestals, is required) 
   // then  repeatedly skips 3000 events and processes 1000.
   //auto pp0 = new hallc::scandalizer::SkipPeriodicAfterPedestal();
-  auto pp0 = new hallc::scandalizer::SkipAfterPedestal();
-  pp0->_analyzer = analyzer;
+  auto pp0 = new hallc::scandalizer::SkipPeriodicToEOF(1000,1000);
+  pp0->_analyzer = analyzer; /// \todo: fix these 2 lines
+  analyzer->AddPostProcess(pp0);
+  //auto pp0 = new hallc::scandalizer::SkipAfterPedestal();
+  //pp0->_analyzer = analyzer;
 
   //SimplePostProcess([&]() { return 0; },
   //                                                     [&](const THaEvData* evt) {
@@ -252,6 +256,7 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
 
   hallc::scandalizer::SpectrometerMonitor * pp1 = new hallc::scandalizer::SpectrometerMonitor(phod,phgcer,pdc);
   pp1->_analyzer = analyzer;
+  pp1->_spectrometer_name = "SHMS";
 
   //hallc::scandalizer::SimplePostProcess* pp1 = new hallc::scandalizer::SimplePostProcess(
   //  [&](){

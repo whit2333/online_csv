@@ -20,6 +20,12 @@ CSV online files
 parallel -N1 -j10 ./bin/hc_shms_replay -r {}  ::: $(seq 7100 7142)
 ```
 
+###
+```
+camonitor ibcm1 | stdbuf -o0 awk '{print $4}' | feedgnuplot  --stream --lines  \
+--points --title "Test plot" --xlen 100  --unset grid --terminal 'dumb'
+```
+
 
 ## Quick Start
 

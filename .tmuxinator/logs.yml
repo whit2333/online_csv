@@ -12,14 +12,14 @@ windows:
     #- echo "I get run in each pane, before each pane command!"
       layout:  339f,211x55,0,0[211x12,0,0{105x12,0,0,339,105x12,106,0,354},211x11,0,13{105x11,0,13,352,105x11,106,13,355},211x15,0,25{105x15,0,25,347,105x15,106,25,356},211x14,0,41{105x14,0,41,351,105x14,106,41,353}] 
       panes:
-        - touch logs/run.txt;    tail -F logs/run.txt     #| ccze
-        - touch logs/config.txt; tail -F logs/config.txt  #| ccze
-        - touch logs/spec.txt;   tail -F logs/spec.txt    #| ccze
-        - touch logs/det.txt   ; tail -F logs/det.txt   #| ccze
-        - touch logs/param.txt ; tail -F logs/param.txt #| ccze
-        - touch logs/ana.txt   ; tail -F logs/ana.txt   #| ccze
-        - touch logs/cuts.txt  ; tail -F logs/cuts.txt  #| ccze
-        - touch logs/hits.txt  ; tail -F logs/hits.txt  #| ccze
+        - touch logs/run.txt;    tail -F logs/run.txt    # | ccze -o nolookups
+        - touch logs/config.txt; tail -F logs/config.txt # | ccze -o nolookups
+        - touch logs/spec.txt;   tail -F logs/spec.txt   # | ccze -o nolookups
+        - touch logs/det.txt   ; tail -F logs/det.txt   #| ccze -o nolookups
+        - touch logs/param.txt ; tail -F logs/param.txt #| ccze -o nolookups
+        - touch logs/ana.txt   ; tail -F logs/ana.txt   #| ccze -o nolookups
+        - touch logs/cuts.txt  ; tail -F logs/cuts.txt  #| ccze -o nolookups
+        - touch logs/hits.txt  ; tail -F logs/hits.txt  #| ccze -o nolookups
           #  - scandalizer:
           #      layout: tiled 
           #      panes:

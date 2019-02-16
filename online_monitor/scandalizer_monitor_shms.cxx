@@ -4,12 +4,15 @@ R__LOAD_LIBRARY(libsimple_epics.so)
 
 R__LOAD_LIBRARY(libScandalizer.so)
 #include "scandalizer/PostProcessors.h"
+#include "scandalizer/ScriptHelpers.h"
+#include "scandalizer/SpectrometerMonitor.h"
 
-void scandalizer_monitor_shms(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
+void scandalizer_monitor_shms(Int_t RunNumber = 7150, Int_t MaxEvent = 500000) {
+
+  hallc::helper::script_requires_hcana();
 
   spdlog::set_level(spdlog::level::warn);
   spdlog::flush_every(std::chrono::seconds(5));
-
 
   // Get RunNumber and MaxEvent if not provided.
   if(RunNumber == 0) {
@@ -171,8 +174,10 @@ void scandalizer_monitor_shms(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   // The following analyzes the first 2000 events (for pedestals, is required) 
   // then  repeatedly skips 3000 events and processes 1000.
   //auto pp0 = new hallc::scandalizer::SkipPeriodicAfterPedestal();
-  auto pp0 = new hallc::scandalizer::SkipAfterPedestal();
-  pp0->_analyzer = analyzer;
+  //auto pp0 = new hallc::scandalizer::SkipAfterPedestal();
+  auto pp0 = new hallc::scandalizer::SkipPeriodicToEOF(200000,5000);
+  pp0->_analyzer = analyzer; /// \todo: fix these 2 lines
+  analyzer->AddPostProcess(pp0);
 
   //SimplePostProcess([&]() { return 0; },
   //                                                     [&](const THaEvData* evt) {
@@ -192,60 +197,11 @@ void scandalizer_monitor_shms(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   //pp1a->_analyzer = analyzer;
   //pp1a->_spectrometer_name = "HMS";
 
+
   hallc::scandalizer::SpectrometerMonitor * pp1 = new hallc::scandalizer::SpectrometerMonitor(phod,phgcer,pdc);
-  pp1->_analyzer = analyzer;
-
-  //hallc::scandalizer::SimplePostProcess* pp1 = new hallc::scandalizer::SimplePostProcess(
-  //  [&](){
-  //    return 0;
-  //  },
-  //  [&](const THaEvData* evt){
-  //    static int counter = 0;
-  //    static double eff_num             = 0.0000001;
-  //    static double eff_den             = 0.0;
-  //    static int    n_num               = 0;
-  //    static int    n_den               = 0;
-  //    int           shmsDC1Planes_nhits = 0;
-  //    int           shmsDC2Planes_nhits = 0;
-  //    for (int ip = 0; ip < 6; ip++) {
-  //      shmsDC1Planes_nhits += pdc->GetPlane(ip)->GetNHits();
-  //    }
-  //    for (int ip = 6; ip < 12; ip++) {
-  //      shmsDC2Planes_nhits += pdc->GetPlane(ip)->GetNHits();
-  //    }
-  //    bool   shms_DC_too_many_hits = (shmsDC1Planes_nhits > 8) || (shmsDC2Planes_nhits > 8);
-  //    double beta                  = phod->GetBetaNotrk();
-  //    bool   good_beta             = beta > 0.4;
-  //    bool   shms_good_hodoscope   = phod->fGoodScinHits;
-  //    bool   good_ntracks          = (pdc->GetNTracks() > 0);
-  //    bool   good_hgc              = phgcer->GetCerNPE() > 1;
-  //    if ((good_beta && shms_good_hodoscope) && (!shms_DC_too_many_hits) && good_hgc) {
-  //      eff_den = eff_den + 1.0;
-  //      n_den++;
-  //      if (good_ntracks) {
-  //        eff_num = eff_num + 1.0;
-  //        n_num++;
-  //      }
-  //    }
-  //    if ((evt->GetEvNum() > 1200) && (counter > 1000)) {
-  //      std::cout << " efficiency :  " << eff_num / eff_den << "\n";
-  //      //std::cout << " Event : " << evt->GetEvNum() << "  ( " << evt->GetEvType() << ")\n";
-  //      pv_list.Put("hcSHMSTrackingEff", eff_num/eff_den);
-  //      pv_list.Put("hcSHMSTrackingEff:Unc",std::sqrt(double(n_num))/(n_num+n_den+0.0000001));
-  //      pv_list.Put("hcSHMSTrackingEff.LOW",0.95);
-  //      pv_list.Put("hcSHMSTrackingEff.LOLO",0.93);
-
-  //      eff_num                = 0.000000001;
-  //      eff_den                = 0.0;
-  //      //analyzer->_skip_events = 300;
-  //      counter = 0;
-  //    }
-  //    counter++;
-  //    return 0; 
-  //  });
-
-  analyzer->AddPostProcess(pp0);
+  pp1->_analyzer = analyzer; /// \todo fix
   analyzer->AddPostProcess(pp1);
+  pp1->_spectrometer_name = "SHMS";
   //analyzer->AddPostProcess(pp1a);
 
   // A simple event class to be output to the resulting tree.
@@ -280,7 +236,7 @@ void scandalizer_monitor_shms(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   // Define output ROOT file
   analyzer->SetOutFile(ROOTFileName.Data());
   // Define DEF-file+
-  analyzer->SetOdefFile("DEF-files/SHMS/PRODUCTION/pstackana_production_all.def");
+  analyzer->SetOdefFile("DEF-files/SHMS/PRODUCTION/pstackana_production.def");
   // Define cuts file
   analyzer->SetCutFile("DEF-files/SHMS/PRODUCTION/CUTS/pstackana_production_cuts.def");  // optional
   // File to record accounting information for cuts

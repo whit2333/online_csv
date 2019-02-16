@@ -62,6 +62,7 @@ void good_shms_counter(int RunNumber = 7146, int nevents = -1, int prompt =0, in
   int ps2 = 0;
   if (j[runnum_str].find("daq") != j[runnum_str].end()) {
     ps2 = j[runnum_str]["daq"]["ps2"].get<int>();
+    std::cout << "ps2 = " << ps2 << "\n";
   } else {
     std::cout << " using default ps2 = 0 \n";
   }
@@ -158,7 +159,7 @@ void good_shms_counter(int RunNumber = 7146, int nevents = -1, int prompt =0, in
   auto h_hgc_1 = d_spec_cuts.Histo1D<doublers>( {"shms_hgcer2","SHMS HGC; nped", 100, 0, 30}, "P.hgcer.npeSum");
 
   auto bcm4b_charge        = d_sh.Max("P.BCM4B.scalerChargeCut");
-  auto el_real_scaler      = d_sh.Max("P.hEL_REAL.scaler");
+  auto el_real_scaler      = d_sh.Max("P.pEL_REAL.scaler");
   auto time_1MHz           = d_sh.Max("P.1MHz.scalerTime");
   auto time_1MHz_cut       = d_sh.Max("P.1MHz.scalerTimeCut");
   //auto hTRIG1_ROC1_npassed = d_sh.Max("P.hTRIG1_ROC1.npassed");

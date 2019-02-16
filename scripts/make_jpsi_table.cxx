@@ -103,8 +103,8 @@ void make_jpsi_table() {
     } else {
       fmt::print(" {:21} ", "");
     }
-    if (runjs["run_info"].find("end_time") != runjs["run_info"].end()) {
-      fmt::print(" {:^21} ", runjs["run_info"]["end_time"].get<std::string>());
+    if (runjs["run_info"].find("stop_time") != runjs["run_info"].end()) {
+      fmt::print(" {:^21} ", runjs["run_info"]["stop_time"].get<std::string>());
     } else {
       fmt::print(" {:21} ", "");
     }

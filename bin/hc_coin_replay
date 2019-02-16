@@ -104,6 +104,6 @@ module load git/latest
 module load ruby/2.5.3
 
 
-hcana -b -q "scripts/replay_production.cxx(${run_number},${n_events})"
+hcana -b -q "scripts/replay_production_coin.cxx(${run_number},${n_events})"
 
 
