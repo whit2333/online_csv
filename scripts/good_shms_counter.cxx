@@ -72,24 +72,48 @@ void good_shms_counter(int RunNumber = 7146, int nevents = -1, const std::string
     std::cout << "If problem persists please contact Sylvester (217-848-0565)\n";
   }
 
-  // was this data taken with ps1 or ps2?
-  int ps1 = -1;
-  int ps2 = -1;
+  // was this data taken with ps1 or ps2 or coin?
+  int  ps1             = -1;
+  int  ps2             = -1;
+  int  ps5             = -1;
+  int  ps6             = -1;
+  bool singles_trigger = true;
   if (j[runnum_str].find("daq") != j[runnum_str].end()) {
     ps1 = j[runnum_str]["daq"]["ps1"].get<int>();
     ps2 = j[runnum_str]["daq"]["ps2"].get<int>();
+    ps5 = j[runnum_str]["daq"]["ps1"].get<int>();
+    ps6 = j[runnum_str]["daq"]["ps2"].get<int>();
     std::cout << "ps1 = " << ps1 << " and ps2 = " << ps2 << "\n";
+    std::cout << "ps5 = " << ps1 << " and ps6 = " << ps2 << "\n";
   } else {
     std::cout << "Error: pre-scaler unspecified in " << run_list_fname << std::endl;
     std::quick_exit(-127);
   }
 
-  if (ps1 == ps2 || (ps1 > 0 && ps2 > 0) || (ps1 < 0 && ps2 < 0)) {
+  int ps = std::max(ps1, ps2);
+  if (ps1 > 0 && ps2 > 0) {
     std::cout << "Incorrect values for ps1 and ps2, only one should be set to be > 0\n";
     std::cout << "(ps1 = " << ps1 << " and ps2 = " << ps2 << ")" << std::endl;
     std::quick_exit(-127);
+  } else if (ps == -1) {
+    std::cout
+        << "Warning: no data with singles pre-scaler taking, using coincidence trigger instead\n";
+    singles_trigger = false;
+    ps              = std::max(ps5, ps6);
+    if (ps5 > 0 && ps6 > 0) {
+      std::cout << "Incorrect values for ps5 and ps6, only one should be set to be > 0\n";
+      std::cout << "(ps5 = " << ps5 << " and ps6 = " << ps6 << ")" << std::endl;
+      std::quick_exit(-127);
+    }
+    std::cout << "Selected " << ((ps5 > ps6) ? "ps5" : "ps6") << std::endl;
+  } else {
+    std::cout << "Selected " << ((ps1 > ps2) ? "ps1" : "ps2") << std::endl;
   }
-  const int    ps        = std::max(ps1, ps2);
+
+  if (ps == -1) {
+    std::cout << "ERROR: no pre-scaler was set for the HMS, unable to proceed." << std::endl;
+    std::quick_exit(-127);
+  }
   const double ps_factor = (ps == 0) ? 1. : (std::pow(2, ps - 1) + 1);
   std::cout << "Using prescale factor " << ps_factor << std::endl;
 
