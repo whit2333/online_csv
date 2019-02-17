@@ -111,7 +111,7 @@ void good_shms_counter(int RunNumber = 7146, int nevents = -1, const std::string
   }
 
   if (ps == -1) {
-    std::cout << "ERROR: no pre-scaler was set for the HMS, unable to proceed." << std::endl;
+    std::cout << "ERROR: no pre-scaler was set for the SHMS, unable to proceed." << std::endl;
     std::quick_exit(-127);
   }
   const double ps_factor = (ps == 0) ? 1. : (std::pow(2, ps - 1) + 1);
@@ -142,11 +142,11 @@ void good_shms_counter(int RunNumber = 7146, int nevents = -1, const std::string
   //---------------------------------------------------------------------------
   // Detector tree
   ROOT::RDataFrame d("T", rootfile);
-  // SSHMS Scaler tree
+  // SHMS Scaler tree
   ROOT::RDataFrame d_sh("TSP", rootfile);
 
   // Select SHMS singles only
-  auto dSHMS = d.Filter("fEvtHdr.fEvtType == 1");
+  auto dSHMS = d.Filter(singles_trigger ? "fEvtHdr.fEvtType == 1" : "fEvtHdr.fEvtType == 4");
 
   // Good track cuts
   auto dGoodTrack = dSHMS.Filter(goodTrack);
