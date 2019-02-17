@@ -67,7 +67,7 @@ void good_shms_counter(int RunNumber = 7146, int nevents = -1, const std::string
 
   auto runnum_str = std::to_string(RunNumber);
   if (j.find(runnum_str) == j.end()) {
-    std::cout << "Run " << RunNumber << " not found in " << run_list_fname << ".json\n";
+    std::cout << "Run " << RunNumber << " not found in " << run_list_fname << "\n";
     std::cout << "Check that run number and replay exists. \n";
     std::cout << "If problem persists please contact Sylvester (217-848-0565)\n";
   }
@@ -122,7 +122,7 @@ void good_shms_counter(int RunNumber = 7146, int nevents = -1, const std::string
   ROOT::RDataFrame d_sh("TSP", rootfile);
 
   // Select SHMS singles only
-  auto dSHMS = d.Filter("fEvtHdr.fEvtType == 2");
+  auto dSHMS = d.Filter("fEvtHdr.fEvtType == 1");
 
   // Good track cuts
   auto dGoodTrack = dSHMS.Filter(goodTrack);
