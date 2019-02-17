@@ -24,6 +24,7 @@ R__LOAD_LIBRARY(libScandalizer.so)
 using RDFNode = decltype(ROOT::RDataFrame{0}.Filter(""));
 using Histo1DProxy =
     decltype(ROOT::RDataFrame{0}.Histo1D(ROOT::RDF::TH1DModel{"", "", 128u, 0., 0.}, ""));
+
 struct RDFInfo {
   RDFNode&          df;
   const std::string title;
@@ -77,8 +78,7 @@ void good_hms_counter(int RunNumber = 7146, int nevents = -1, const std::string&
   if (j[runnum_str].find("daq") != j[runnum_str].end()) {
     ps3 = j[runnum_str]["daq"]["ps3"].get<int>();
     ps4 = j[runnum_str]["daq"]["ps4"].get<int>();
-    std::cout << "ps3 = " << ps3 << "\n";
-    std::cout << "ps4 = " << ps4 << "\n";
+    std::cout << "ps3 = " << ps3 << " and ps4 = " << ps4 << "\n";
   } else {
     std::cout << "Error: pre-scaler unspecified in " << run_list_fname << std::endl;
     std::quick_exit(-127);
@@ -95,33 +95,15 @@ void good_hms_counter(int RunNumber = 7146, int nevents = -1, const std::string&
 
   std::string rootfile = "ROOTfiles/" + mode + "_replay_production_" + std::to_string(RunNumber) +
                          "_" + std::to_string(nevents) + ".root ";
-
   bool found_good_file = false;
-  if (!gSystem->AccessPathName(rootfile.c_str())) {
-    TFile file(rootfile.c_str());
-    if (file.IsZombie()) {
-      std::cout << rootfile << " is a zombie.\n";
-      std::cout
-          << " Did your replay finish?  Check that the it is done before running this script.\n";
-      // return;
-    } else {
-      found_good_file = true;
-    }
-  }
-  if (!found_good_file) {
-    rootfile = "ROOTfiles_online/" + mode + "_replay_production_" + std::to_string(RunNumber) +
-               "_" + std::to_string(nevents) + ".root ";
-
-    if (!gSystem->AccessPathName(rootfile.c_str())) {
-      TFile file(rootfile.c_str());
-      if (file.IsZombie()) {
-        std::cout << rootfile << " is a zombie.\n";
-        std::cout << " Did your replay finish?  Check that the it is done before running this "
-                     "script.\n";
-      } else {
-        found_good_file = true;
-      }
-    }
+  std::cout << "Loading " << rootfile << "\n";
+  TFile file(rootfile.c_str());
+  if (file.IsZombie()) {
+    std::cout << rootfile << " is a zombie.\n";
+    std::cout
+        << " Did your replay finish?  Check that the it is done before running this script.\n";
+  } else {
+    found_good_file = true;
   }
   if (!found_good_file) {
     std::cout << " Error: suitable root file not found\n";
@@ -175,7 +157,7 @@ void good_hms_counter(int RunNumber = 7146, int nevents = -1, const std::string&
     hHcerNphe[name] =
         df_info.df.Histo1D({("H.cer.npeSum_" + name).c_str(),
                             (df_info.title + "; HMS Cer #phe; counts ").c_str(), 200, -1, 15},
-                           " H.cer.npeSum ");
+                           "H.cer.npeSum");
     // H.gtr.dp
     hHdp[name] = df_info.df.Histo1D({("H.gtr.dp_" + name).c_str(),
                                      (df_info.title + ";#deltap [%];counts").c_str(), 200, -30, 40},
@@ -191,10 +173,9 @@ void good_hms_counter(int RunNumber = 7146, int nevents = -1, const std::string&
                             (df_info.title + ";#phi_{HMS};counts ").c_str(), 200, -0.1, 0.1},
                            "H.gtr.ph");
     // H.gtr.y
-    hHy[name] =
-        df_info.df.Histo1D({("H.gtr.y_" + name).c_str(),
-                            (df_info.title + ";ytar_{HMS};counts ").c_str(), 200, -0.1, 0.1},
-                           "H.gtr.y");
+    hHy[name] = df_info.df.Histo1D({("H.gtr.y_" + name).c_str(),
+                                    (df_info.title + ";ytar_{HMS};counts ").c_str(), 200, -10, 10},
+                                   "H.gtr.y");
   }
 
   // scalers
@@ -235,25 +216,29 @@ void good_hms_counter(int RunNumber = 7146, int nevents = -1, const std::string&
   std::string run_str = std::to_string(RunNumber);
   std::cout << "----------------------------------------------------------" << std::endl;
   for (const auto& kv : counts) {
-    std::cout << " " << kv.first << ": " << kv.second << "\n";
+    if (kv.first.find("pscorr") != std::string::npos && ps_factor == 1) {
+      continue;
+    }
+    std::cout << " " << kv.first << ": " << kv.second;
     if (kv.first.find("count") != std::string::npos) {
       if (kv.first.find("pscorr") == std::string::npos) {
         std::cout << " --> yield (counts / mC): " << kv.second / good_total_charge << " +- "
-                  << sqrt(kv.second) / good_total_charge << "\n";
+                  << sqrt(kv.second) / good_total_charge;
       } else {
         std::cout << " --> yield (counts / mC): " << kv.second / good_total_charge << " +- "
-                  << (1 / sqrt(kv.second / ps_factor)) * kv.second / good_total_charge << "\n";
+                  << (1 / sqrt(kv.second / ps_factor)) * kv.second / good_total_charge;
       }
     }
+    std::cout << "\n";
     jruns[run_str][kv.first] = kv.second;
   }
 
   jruns[run_str]["charge bcm4b 2u cut"] = good_total_charge;
   jruns[run_str]["time 1MHz 2u cut"]    = good_time;
-  jruns[run_str]["hms ps factor"]       = ps_factor;
+  jruns[run_str]["ps_factor"]           = ps_factor;
 
   if (update) {
-    std::cout << "Updating db2/jpsi_run_count_list.json with shms counts\n";
+    std::cout << "Updating db2/hms_run_count_list.json with hms counts\n";
     std::ofstream json_output_file("db2/hms_run_count_list.json");
     json_output_file << std::setw(4) << jruns << "\n";
   }
