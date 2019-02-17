@@ -21,6 +21,15 @@ namespace fs = std::experimental::filesystem;
 #include "monitor/MonitoringDisplay.h"
 R__LOAD_LIBRARY(libScandalizer.so)
 
+using RDFNode = decltype(ROOT::RDataFrame{0}.Filter(""));
+using Histo1DProxy =
+    decltype(ROOT::RDataFrame{0}.Histo1D(ROOT::RDF::TH1DModel{"", "", 128u, 0., 0.}, ""));
+struct RDFInfo {
+  RDFNode&          df;
+  const std::string title;
+  RDFInfo(RDFNode& df, std::string_view title) : df{df}, title{title} {}
+};
+
 // =================================================================================
 // Cuts
 // =================================================================================
@@ -30,7 +39,7 @@ std::string goodTrack = "H.gtr.dp > -8 && H.gtr.dp < 8 && H.tr.n == 1&&"
                         "&& TMath::Abs(H.gtr.y) < 2.0";
 std::string eCut = "H.cal.etottracknorm > 0.80 && H.cal.etottracknorm < 2.&&"
                    "H.cer.npeSum > 1.";
-void good_hms_counter(int RunNumber = 7146, int nevents = -1, std::string_view mode = "coin",
+void good_hms_counter(int RunNumber = 7146, int nevents = -1, const std::string& mode = "coin",
                       int update = 1) {
 
   if (mode != "coin" && mode != "hms") {
@@ -67,32 +76,25 @@ void good_hms_counter(int RunNumber = 7146, int nevents = -1, std::string_view m
   int ps4 = -1;
   if (j[runnum_str].find("daq") != j[runnum_str].end()) {
     ps3 = j[runnum_str]["daq"]["ps3"].get<int>();
-    ps4 = j[runnum_str]["daq"]["ps3"].get<int>();
-    std::cout << "ps3 = " << ps1 << "\n";
-    std::cout << "ps4 = " << ps1 << "\n";
+    ps4 = j[runnum_str]["daq"]["ps4"].get<int>();
+    std::cout << "ps3 = " << ps3 << "\n";
+    std::cout << "ps4 = " << ps4 << "\n";
   } else {
     std::cout << "Error: pre-scaler unspecified in " << run_list_fname << std::endl;
     std::quick_exit(-127);
   }
 
-  //  The way the input rates are prescaled follows:
-  //       input-rate/(2^{val - 1} + 1)
-  double shms_singles_ps_value = (ps1 >= 0) ? std::pow(2.0, ps1) : 0.;
-  std::cout << "prescale value " << shms_singles_ps_value << "\n";
-  int ps4 = 0;
-  if (j[runnum_str].find("daq") != j[runnum_str].end()) {
-    ps4 = j[runnum_str]["daq"]["ps4"].get<int>();
-    std::cout << "ps4 = " << ps4 << "\n";
-  } else {
-    std::cout << " using default ps4 = 0 \n";
+  if (ps3 == ps4 || (ps3 > 0 && ps4 > 0) || (ps3 < 0 && ps4 < 0)) {
+    std::cout << "Incorrect values for ps3 and ps4, only one should be set to be > 0\n";
+    std::cout << "(ps3 = " << ps3 << " and ps4 = " << ps4 << ")" << std::endl;
+    std::quick_exit(-127);
   }
-  double hms_singles_ps_value = (ps4 >= 0) ? std::pow(2.0, ps4) : 0.;
-  std::cout << "prescale value " << hms_singles_ps_value << "\n";
+  const int    ps        = std::max(ps3, ps4);
+  const double ps_factor = (ps == 0) ? 1. : (std::pow(2, ps - 1) + 1);
+  std::cout << "Using prescale factor " << ps_factor << std::endl;
 
-  std::string coda_type = "COIN";
-  std::string rootfile  = "ROOTfiles/";
-  rootfile += std::string("coin_replay_production_");
-  rootfile += std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
+  std::string rootfile = "ROOTfiles/" + mode + "_replay_production_" + std::to_string(RunNumber) +
+                         "_" + std::to_string(nevents) + ".root ";
 
   bool found_good_file = false;
   if (!gSystem->AccessPathName(rootfile.c_str())) {
@@ -107,16 +109,15 @@ void good_hms_counter(int RunNumber = 7146, int nevents = -1, std::string_view m
     }
   }
   if (!found_good_file) {
-    rootfile = "ROOTfiles_online/";
-    rootfile += std::string("shms_replay_production_");
-    rootfile += std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
+    rootfile = "ROOTfiles_online/" + mode + "_replay_production_" + std::to_string(RunNumber) +
+               "_" + std::to_string(nevents) + ".root ";
 
     if (!gSystem->AccessPathName(rootfile.c_str())) {
       TFile file(rootfile.c_str());
       if (file.IsZombie()) {
         std::cout << rootfile << " is a zombie.\n";
-        std::cout
-            << " Did your replay finish?  Check that the it is done before running this script.\n";
+        std::cout << " Did your replay finish?  Check that the it is done before running this "
+                     "script.\n";
       } else {
         found_good_file = true;
       }
@@ -135,354 +136,95 @@ void good_hms_counter(int RunNumber = 7146, int nevents = -1, std::string_view m
   //---------------------------------------------------------------------------
   // Detector tree
   ROOT::RDataFrame d("T", rootfile);
-
   // SHMS Scaler tree
   ROOT::RDataFrame d_sh("TSP", rootfile);
-  // int N_scaler_events = *(d_sh.Count());
 
-  auto d_coin = d.Filter("fEvtHdr.fEvtType == 4");
-  auto d_shms = d.Filter("fEvtHdr.fEvtType == 1");
-  auto d_hms  = d.Filter("fEvtHdr.fEvtType == 2");
+  // Select HMS singles only
+  auto dHMS = d.Filter("fEvtHdr.fEvtType == 2");
 
   // Good track cuts
-  auto dHMSGoodTrack_hms   = d_hms.Filter(goodTrackHMS);
-  auto dHMSGoodTrack       = d_coin.Filter(goodTrackHMS);
-  auto dSHMSGoodTrack_shms = d_shms.Filter(goodTrackSHMS);
-  auto dSHMSGoodTrack      = d_coin.Filter(goodTrackSHMS);
-  auto dCOINGoodTrack      = dHMSGoodTrack.Filter(goodTrackSHMS)
-                            .Define("p_electron", p_electron, {"P.gtr.px", "P.gtr.py", "P.gtr.pz"})
-                            .Define("p_positron", p_electron, {"H.gtr.px", "H.gtr.py", "H.gtr.pz"})
-                            .Define("p_jpsi", p_jpsi, {"p_electron", "p_positron"})
-                            .Define("M_jpsi", "p_jpsi.M()")
-                            .Define("E_gamma", E_gamma, {"p_jpsi"})
-                            .Define("E_gamma_free", E_gamma_free, {"p_jpsi"})
-                            .Define("t", t, {"E_gamma", "p_jpsi"})
-                            .Define("abst", "fabs(t)");
+  auto dGoodTrack = dHMS.Filter(goodTrack);
+
   // PID cuts
-  auto dHMSEl       = dHMSGoodTrack.Filter(eCutHMS);
-  auto dSHMSEl      = dSHMSGoodTrack.Filter(eCutSHMS);
-  auto dCOINEl      = dCOINGoodTrack.Filter(eCutHMS + " && " + eCutSHMS);
-  auto dHMSEl_hms   = dHMSGoodTrack_hms.Filter(eCutHMS);
-  auto dSHMSEl_shms = dSHMSGoodTrack_shms.Filter(eCutSHMS);
+  auto dEl = dGoodTrack.Filter(eCut);
 
-  // Timing cuts
-  // Find the timing peak
-  // Find the coin peak
-  auto h_coin_time =
-      dCOINEl.Histo1D({"coin_time", "coin_time", 8000, 0, 1000}, "CTime.ePositronCoinTime_ROC2");
-  h_coin_time->DrawClone();
-  int    coin_peak_bin    = h_coin_time->GetMaximumBin();
-  double coin_peak_center = h_coin_time->GetBinCenter(coin_peak_bin);
-  // timing cut lambdas
-  // TODO: evaluate timing cut and offset for random background
-  auto timing_cut = [=](double coin_time) { return std::abs(coin_time - coin_peak_center) < 2.; };
-  auto anti_timing_cut = [=](double coin_time) {
-    return std::abs(coin_time - coin_peak_center - 28.) < 2.;
-  };
-
-  // timing counts
-  auto dHMSElInTime  = dHMSEl.Filter(timing_cut, {"CTime.ePositronCoinTime_ROC2"});
-  auto dHMSElRandom  = dHMSEl.Filter(anti_timing_cut, {"CTime.ePositronCoinTime_ROC2"});
-  auto dSHMSElInTime = dSHMSEl.Filter(timing_cut, {"CTime.ePositronCoinTime_ROC2"});
-  auto dSHMSElRandom = dSHMSEl.Filter(anti_timing_cut, {"CTime.ePositronCoinTime_ROC2"});
-  auto dCOINElInTime = dCOINEl.Filter(timing_cut, {"CTime.ePositronCoinTime_ROC2"});
-  auto dCOINElRandom = dCOINEl.Filter(anti_timing_cut, {"CTime.ePositronCoinTime_ROC2"});
-
-  // J/psi cut
-  auto dJpsi       = dCOINElInTime.Filter(Jpsi_cut);
-  auto dJpsiRandom = dCOINElRandom.Filter(Jpsi_cut);
+  // Data frame index
+  std::vector<std::pair<std::string, RDFInfo>> dfs = {{"raw", {dHMS, "HMS"}},
+                                                      {"tracked", {dGoodTrack, "Cuts: tracking"}},
+                                                      {"identified", {dEl, "Cuts: tracking+PID"}}};
 
   // =========================================================================================
   // Histograms
   // =========================================================================================
-  // 2D correlations
-  auto hTheta2DNoCuts = d_coin.Histo2D(
-      {"theta2D", "No cuts;#theta_{SHMS};#theta_{HMS};#counts", 50, -.1, .1, 50, -.1, .1},
-      "P.gtr.th", "H.gtr.th");
-  auto hTheta2DTracking = dCOINGoodTrack.Histo2D(
-      {"theta2D", "Cuts: tracking;#theta_{SHMS};#theta_{HMS};#counts", 50, -.1, .1, 50, -.1, .1},
-      "P.gtr.th", "H.gtr.th");
-  auto hTheta2DPID =
-      dCOINEl.Histo2D({"theta2D", "Cuts: tracking+PID;#theta_{SHMS};#theta_{HMS};#counts", 50, -.1,
-                       .1, 50, -.1, .1},
-                      "P.gtr.th", "H.gtr.th");
-  auto hTheta2DTiming =
-      dCOINElInTime.Histo2D({"theta2D", "Cuts: tracking+PID;#theta_{SHMS};#theta_{HMS};#counts", 50,
-                             -.1, .1, 50, -.1, .1},
-                            "P.gtr.th", "H.gtr.th");
-  // timing
-  auto hCoinTimeNoCuts =
-      d_coin.Histo1D({"coin_time.NoCuts", "No Cuts;coin_time;counts", 8000, 0, 1000},
-                     "CTime.ePositronCoinTime_ROC2");
-  auto hCoinTimeTracking = dCOINGoodTrack.Histo1D(
-      {"coin_time.Tracking", "Cuts: Tracking;coin_time;counts", 8000, 0, 1000},
-      "CTime.ePositronCoinTime_ROC2");
-  auto hCoinTimePID =
-      dCOINEl.Histo1D({"coin_time.PID", "Cuts: Tracking+PID;coin_time;counts", 8000, 0, 1000},
-                      "CTime.ePositronCoinTime_ROC2");
-  auto hCoinTimeTiming = dCOINElInTime.Histo1D(
-      {"coin_time.Timing", "Cuts: Tracking+PID+Timing;coin_time;counts", 8000, 0, 1000},
-      "CTime.ePositronCoinTime_ROC2");
-  // P.gtr.dp
-  auto hPdpNoCuts =
-      d_coin.Histo1D({"P.gtr.dp.NoCuts", "No Cuts;#deltap [%];counts", 200, -30, 40}, "P.gtr.dp");
-  auto hPdpTracking = dSHMSGoodTrack.Histo1D(
-      {"P.gtr.dp.Tracking", "Cuts: Tracking;#deltap [%];counts", 200, -30, 40}, "P.gtr.dp");
-  auto hPdpPID = dSHMSEl.Histo1D(
-      {"P.gtr.dp.PID", "Cuts: Tracking+PID;#deltap [%];counts", 200, -30, 40}, "P.gtr.dp");
-  auto hPdpTiming = dSHMSElInTime.Histo1D(
-      {"P.gtr.dp.Timing", "Cuts: Tracking+PID+Timing;#deltap [%];counts", 200, -30, 40},
-      "P.gtr.dp");
-  // P.gtr.th
-  auto hPthNoCuts = d_coin.Histo1D(
-      {"P.gtr.th.NoCuts", "No Cuts;#theta_{SHMS};counts", 200, -0.1, 0.1}, "P.gtr.th");
-  auto hPthTracking = dSHMSGoodTrack.Histo1D(
-      {"P.gtr.th.Tracking", "Cuts: Tracking;#theta_{SHMS};counts", 200, -0.1, 0.1}, "P.gtr.th");
-  auto hPthPID = dSHMSEl.Histo1D(
-      {"P.gtr.th.PID", "Cuts: Tracking+PID;#theta_{SHMS};counts", 200, -0.1, 0.1}, "P.gtr.th");
-  auto hPthTiming = dSHMSElInTime.Histo1D(
-      {"P.gtr.th.Timing", "Cuts: Tracking+PID+Timing;#theta_{SHMS};counts", 200, -0.1, 0.1},
-      "P.gtr.th");
-  // P.gtr.ph
-  auto hPphNoCuts =
-      d_coin.Histo1D({"P.gtr.ph.NoCuts", "No Cuts;#phi_{SHMS};counts", 200, -0.1, 0.1}, "P.gtr.ph");
-  auto hPphTracking = dSHMSGoodTrack.Histo1D(
-      {"P.gtr.ph.Tracking", "Cuts: Tracking;#phi_{SHMS};counts", 200, -0.1, 0.1}, "P.gtr.ph");
-  auto hPphPID = dSHMSEl.Histo1D(
-      {"P.gtr.ph.PID", "Cuts: Tracking+PID;#phi_{SHMS};counts", 200, -0.1, 0.1}, "P.gtr.ph");
-  auto hPphTiming = dSHMSElInTime.Histo1D(
-      {"P.gtr.ph.Timing", "Cuts: Tracking+PID+Timing;#phi_{SHMS};counts", 200, -0.1, 0.1},
-      "P.gtr.ph");
-  // P.gtr.y
-  auto hPyNoCuts =
-      d_coin.Histo1D({"P.gtr.y.NoCuts", "No Cuts;ytar;counts", 200, -10., 10.}, "P.gtr.y");
-  auto hPyTracking = dSHMSGoodTrack.Histo1D(
-      {"P.gtr.y.Tracking", "Cuts: Tracking;ytar;counts", 200, -10., 10.}, "P.gtr.y");
-  auto hPyPID =
-      dSHMSEl.Histo1D({"P.gtr.y.PID", "Cuts: Tracking+PID;ytar;counts", 200, -10., 10.}, "P.gtr.y");
-  auto hPyTiming = dSHMSElInTime.Histo1D(
-      {"P.gtr.y.Timing", "Cuts: Tracking+PID+Timing;ytar;counts", 200, -10., 10.}, "P.gtr.y");
-  // P.cal.etottracknorm
-  auto hPcalEPNoCuts =
-      d_coin.Histo1D({"P.cal.etottracknorm.NoCuts", "No Cuts;SHMS E/P;counts", 200, -.5, 1.5},
-                     "P.cal.etottracknorm");
-  auto hPcalEPTracking = dSHMSGoodTrack.Histo1D(
-      {"P.cal.etottracknorm.Tracking", "Cuts: Tracking;SHMS E/P;counts", 200, -.5, 1.5},
-      "P.cal.etottracknorm");
-  auto hPcalEPPID = dSHMSEl.Histo1D(
-      {"P.cal.etottracknorm.PID", "Cuts: Tracking+PID;SHMS E/P;counts", 200, -.5, 1.5},
-      "P.cal.etottracknorm");
-  auto hPcalEPAll = dCOINElInTime.Histo1D(
-      {"P.cal.etottracknorm.All", "Cuts: Tracking+PID+Coincidence;SHMS E/P;counts", 200, -.5, 1.5},
-      "P.cal.etottracknorm");
-  // P.ngcer.npeSum
-  auto hPcerNpheNoCuts = d_coin.Histo1D(
-      {"P.ngcer.npeSum.NoCuts", "No Cuts;SHMS NGC #phe;counts", 200, -5, 76}, "P.ngcer.npeSum");
-  auto hPcerNpheTracking = dSHMSGoodTrack.Histo1D(
-      {"P.ngcer.npeSum.Tracking", "Cuts: Tracking;SHMS NGC #phe;counts", 200, -5, 76},
-      "P.ngcer.npeSum");
-  auto hPcerNphePID = dSHMSEl.Histo1D(
-      {"P.ngcer.npeSum.PID", "Cuts: Tracking+PID;SHMS NGC #phe;counts", 200, -5, 76},
-      "P.ngcer.npeSum");
-  auto hPcerNpheAll = dCOINElInTime.Histo1D(
-      {"P.ngcer.npeSum.All", "Cuts: Tracking+PID+Coincidence;SHMS NGC #phe;counts", 200, -5, 76},
-      "P.ngcer.npeSum");
   // H.cal.etottracknorm
-  auto hHcalEPNoCuts =
-      d_coin.Histo1D({"H.cal.etottracknorm.NoCuts", "No Cuts;HMS E/P;counts", 200, -.5, 1.5},
-                     "H.cal.etottracknorm");
-  auto hHcalEPTracking = dHMSGoodTrack.Histo1D(
-      {"H.cal.etottracknorm.Tracking", "Cuts: Tracking;HMS E/P;counts", 200, -.5, 1.5},
-      "H.cal.etottracknorm");
-  auto hHcalEPPID = dHMSEl.Histo1D(
-      {"H.cal.etottracknorm.PID", "Cuts: Tracking+PID;HMS E/P;counts", 200, -.5, 1.5},
-      "H.cal.etottracknorm");
-  auto hHcalEPAll = dCOINElInTime.Histo1D(
-      {"H.cal.etottracknorm.All", "Cuts: Tracking+PID+Coincidence;HMS E/P;counts", 200, -.5, 1.5},
-      "H.cal.etottracknorm");
-  // H.cer.npeSum
-  auto hHcerNpheNoCuts = d_coin.Histo1D(
-      {"H.cer.npeSum.NoCuts", "No Cuts;HMS Cer #phe;counts", 200, -1, 15}, "H.cer.npeSum");
-  auto hHcerNpheTracking = dHMSGoodTrack.Histo1D(
-      {"H.cer.npeSum.Tracking", "Cuts: Tracking;HMS Cer #phe;counts", 200, -1, 15}, "H.cer.npeSum");
-  auto hHcerNphePID = dHMSEl.Histo1D(
-      {"H.cer.npeSum.PID", "Cuts: Tracking+PID+Coincidence;HMS Cer #phe;counts", 200, -1, 15},
-      "H.cer.npeSum");
-  auto hHcerNpheAll = dCOINElInTime.Histo1D(
-      {"H.cer.npeSum.PID", "Cuts: Tracking+PID+Coincidence;HMS Cer #phe;counts", 200, -1, 15},
-      "H.cer.npeSum");
-  // H.gtr.dp
-  auto hHdpNoCuts =
-      d_coin.Histo1D({"H.gtr.dp.NoCuts", "No Cuts;#deltap [%];counts", 200, -30, 40}, "H.gtr.dp");
-  auto hHdpTracking = dHMSGoodTrack.Histo1D(
-      {"H.gtr.dp.Tracking", "Cuts: Tracking;#deltap [%];counts", 200, -30, 40}, "H.gtr.dp");
-  auto hHdpPID = dHMSEl.Histo1D(
-      {"H.gtr.dp.PID", "Cuts: Tracking+PID;#deltap [%];counts", 200, -30, 40}, "H.gtr.dp");
-  auto hHdpTiming = dHMSElInTime.Histo1D(
-      {"H.gtr.dp.Timing", "Cuts: Tracking+PID+Timing;#deltap [%];counts", 200, -30, 40},
-      "H.gtr.dp");
-  // H.gtr.th
-  auto hHthNoCuts = d_coin.Histo1D(
-      {"H.gtr.th.NoCuts", "No Cuts;#theta_{HMS};counts", 200, -0.1, 0.1}, "H.gtr.th");
-  auto hHthTracking = dHMSGoodTrack.Histo1D(
-      {"H.gtr.th.Tracking", "Cuts: Tracking;#theta_{HMS};counts", 200, -0.1, 0.1}, "H.gtr.th");
-  auto hHthPID = dHMSEl.Histo1D(
-      {"H.gtr.th.PID", "Cuts: Tracking+PID;#theta_{HMS};counts", 200, -0.1, 0.1}, "H.gtr.th");
-  auto hHthTiming = dHMSElInTime.Histo1D(
-      {"H.gtr.th.Timing", "Cuts: Tracking+PID+Timing;#theta_{HMS};counts", 200, -0.1, 0.1},
-      "H.gtr.th");
-  // H.gtr.ph
-  auto hHphNoCuts =
-      d_coin.Histo1D({"H.gtr.ph.NoCuts", "No Cuts;#phi_{HMS};counts", 200, -0.1, 0.1}, "H.gtr.ph");
-  auto hHphTracking = dHMSGoodTrack.Histo1D(
-      {"H.gtr.ph.Tracking", "Cuts: Tracking;#phi_{HMS};counts", 200, -0.1, 0.1}, "H.gtr.ph");
-  auto hHphPID = dHMSEl.Histo1D(
-      {"H.gtr.ph.PID", "Cuts: Tracking+PID;#phi_{HMS};counts", 200, -0.1, 0.1}, "H.gtr.ph");
-  auto hHphTiming = dHMSElInTime.Histo1D(
-      {"H.gtr.ph.Timing", "Cuts: Tracking+PID+Timing;#phi_{HMS};counts", 200, -0.1, 0.1},
-      "H.gtr.ph");
-  // H.gtr.y
-  auto hHyNoCuts =
-      d_coin.Histo1D({"H.gtr.y.NoCuts", "No Cuts;ytar;counts", 200, -10., 10.}, "H.gtr.y");
-  auto hHyTracking = dHMSGoodTrack.Histo1D(
-      {"H.gtr.y.Tracking", "Cuts: Tracking;ytar;counts", 200, -10., 10.}, "H.gtr.y");
-  auto hHyPID =
-      dHMSEl.Histo1D({"H.gtr.y.PID", "Cuts: Tracking+PID;ytar;counts", 200, -10., 10.}, "H.gtr.y");
-  auto hHyTiming = dHMSElInTime.Histo1D(
-      {"H.gtr.y.Timing", "Cuts: Tracking+PID+Timing;ytar;counts", 200, -10., 10.}, "H.gtr.y");
-  // J/psi invariant mass
-  auto hJpsiMassNoCuts = dCOINGoodTrack.Histo1D(
-      {"JpsiMassNoCuts", "Cuts: Tracking;M_{J/#psi} [GeV];counts", 100, 2.5, 3.5}, "M_jpsi");
-  auto hJpsiMassAfterPID = dCOINEl.Histo1D(
-      {"JpsiMassAfterPID", "Cuts: Tracking+PID;M_{J/#psi} [GeV];counts", 100, 2.5, 3.5}, "M_jpsi");
-  auto hJpsiMassAfterTiming = dCOINElInTime.Histo1D(
-      {"JpsiMassAfterTiming", "Cuts: Tracking+PID+Timing;M_{J/#psi} [GeV];counts", 100, 2.5, 3.5},
-      "M_jpsi");
-  auto hJpsiMassAfterCuts = dJpsi.Histo1D(
-      {"JpsiMassAfterCuts", "Cuts: Tracking+PID+Timing+J/#psi Mass;M_{J/#psi} [GeV];counts", 100,
-       2.5, 3.5},
-      "M_jpsi");
-  // E_gamma spectrum
-  auto hJpsiEgammaNoCuts = dCOINGoodTrack.Histo1D(
-      {"JpsiEgammaNoCuts", "Cuts: Tracking;E_{#gamma} [GeV];counts", 60, 8, 11}, "E_gamma");
-  auto hJpsiEgammaAfterPID = dCOINEl.Histo1D(
-      {"JpsiEgammaAfterPID", "Cuts: Tracking+PID;E_{#gamma} [GeV];counts", 60, 8, 11}, "E_gamma");
-  auto hJpsiEgammaAfterTiming = dCOINElInTime.Histo1D(
-      {"JpsiEgammaAfterTiming", "Cuts: Tracking+PID+Timing;E_{#gamma} [GeV];counts", 60, 8, 11},
-      "E_gamma");
-  auto hJpsiEgammaAfterCuts =
-      dJpsi.Histo1D({"JpsiEgammaAfterCuts",
-                     "Cuts: Tracking+PID+Timing+J/#psi Mass;E_{#gamma} [GeV];counts", 60, 8, 11},
-                    "E_gamma");
-  // E_gamma_free spectrum
-  auto hJpsiEgammaFreeNoCuts = dCOINGoodTrack.Histo1D(
-      {"JpsiEgammaFreeNoCuts", "Cuts: Tracking;E_{#gamma} [GeV];counts", 60, 8, 11},
-      "E_gamma_free");
-  auto hJpsiEgammaFreeAfterPID = dCOINEl.Histo1D(
-      {"JpsiEgammaFreeAfterPID", "Cuts: Tracking+PID;E_{#gamma} [GeV];counts", 60, 8, 11},
-      "E_gamma_free");
-  auto hJpsiEgammaFreeAfterTiming = dCOINElInTime.Histo1D(
-      {"JpsiEgammaFreeAfterTiming", "Cuts: Tracking+PID+Timing;E_{#gamma} [GeV];counts", 60, 8, 11},
-      "E_gamma_free");
-  auto hJpsiEgammaFreeAfterCuts =
-      dJpsi.Histo1D({"JpsiEgammaFreeAfterCuts",
-                     "Cuts: Tracking+PID+Timing+J/#psi Mass;E_{#gamma} [GeV];counts", 60, 8, 11},
-                    "E_gamma_free");
-  // |t| spectrum
-  auto hJpsiAbstNoCuts = dCOINGoodTrack.Histo1D(
-      {"JpsiAbstNoCuts", "Cuts: Tracking;|t| [GeV^{2}];counts", 60, 0, 6}, "abst");
-  auto hJpsiAbstAfterPID = dCOINEl.Histo1D(
-      {"JpsiAbstAfterPID", "Cuts: Tracking+PID;|t| [GeV^{2}];counts", 60, 0, 6}, "abst");
-  auto hJpsiAbstAfterTiming = dCOINElInTime.Histo1D(
-      {"JpsiAbstAfterPID", "Cuts: Tracking+PID+Timing;|t| [GeV^{2}];counts", 60, 0, 6}, "abst");
-  auto hJpsiAbstAfterCuts = dJpsi.Histo1D(
-      {"JpsiAbstAfterCuts", "Cuts: Tracking+PID+Timing+J/#psi Mass;|t| [GeV^{2}];counts", 60, 0, 6},
-      "abst");
+  using HistoMap = std::map<std::string, Histo1DProxy>;
+  HistoMap hHcalEP;
+  HistoMap hHcerNphe;
+  HistoMap hHdp;
+  HistoMap hHth;
+  HistoMap hHph;
+  HistoMap hHy;
+  for (auto& kval : dfs) {
+    std::string name{kval.first};
+    RDFInfo&    df_info{kval.second};
+    // Calorimeter
+    hHcalEP[name] = df_info.df.Histo1D({("H.cal.etottracknorm_" + name).c_str(),
+                                        (df_info.title + ";HMS E/P;counts").c_str(), 200, -.5, 2.},
+                                       "H.cal.etottracknorm");
+    // H.cer.npeSum
+    hHcerNphe[name] =
+        df_info.df.Histo1D({("H.cer.npeSum_" + name).c_str(),
+                            (df_info.title + "; HMS Cer #phe; counts ").c_str(), 200, -1, 15},
+                           " H.cer.npeSum ");
+    // H.gtr.dp
+    hHdp[name] = df_info.df.Histo1D({("H.gtr.dp_" + name).c_str(),
+                                     (df_info.title + ";#deltap [%];counts").c_str(), 200, -30, 40},
+                                    "H.gtr.dp");
+    // H.gtr.th
+    hHth[name] =
+        df_info.df.Histo1D({("H.gtr.th_" + name).c_str(),
+                            (df_info.title + ";#theta_{HMS};counts ").c_str(), 200, -0.1, 0.1},
+                           "H.gtr.th");
+    // H.gtr.ph
+    hHph[name] =
+        df_info.df.Histo1D({("H.gtr.ph_" + name).c_str(),
+                            (df_info.title + ";#phi_{HMS};counts ").c_str(), 200, -0.1, 0.1},
+                           "H.gtr.ph");
+    // H.gtr.y
+    hHy[name] =
+        df_info.df.Histo1D({("H.gtr.y_" + name).c_str(),
+                            (df_info.title + ";ytar_{HMS};counts ").c_str(), 200, -0.1, 0.1},
+                           "H.gtr.y");
+  }
 
   // scalers
-  auto total_charge        = d_sh.Max("P.BCM4B.scalerChargeCut");
-  auto shms_el_real_scaler = d_sh.Max("P.pEL_REAL.scaler");
-  auto hms_el_real_scaler  = d_sh.Max("P.hEL_REAL.scaler");
-  auto time_1MHz           = d_sh.Max("P.1MHz.scalerTime");
-  auto time_1MHz_cut       = d_sh.Max("P.1MHz.scalerTimeCut");
+  auto total_charge  = d_sh.Max("P.BCM4B.scalerChargeCut");
+  auto time_1MHz_cut = d_sh.Max("P.1MHz.scalerTimeCut");
 
-  auto yield_all = d.Count();
-  // 5 timing cut widths worth of random backgrounds
-  auto yield_shms               = d_shms.Count();
-  auto yield_hms                = d_hms.Count();
-  auto yield_coin               = d_coin.Count();
-  auto yield_HMSGoodTrack_hms   = dHMSGoodTrack_hms.Count();
-  auto yield_HMSGoodTrack       = dHMSGoodTrack.Count();
-  auto yield_SHMSGoodTrack_shms = dSHMSGoodTrack_shms.Count();
-  auto yield_SHMSGoodTrack      = dSHMSGoodTrack.Count();
-  auto yield_COINGoodTrack      = dCOINGoodTrack.Count();
-  auto yield_HMSEl_hms          = dHMSEl_hms.Count();
-  auto yield_HMSEl              = dHMSEl.Count();
-  auto yield_SHMSEl_shms        = dSHMSEl_shms.Count();
-  auto yield_SHMSEl             = dSHMSEl.Count();
-  auto yield_COINEl             = dCOINEl.Count();
-  auto yield_HMSElInTime        = dHMSElInTime.Count();
-  auto yield_HMSElRandom        = dHMSElRandom.Count();
-  auto yield_SHMSElInTime       = dSHMSElInTime.Count();
-  auto yield_SHMSElRandom       = dSHMSElRandom.Count();
-  auto yield_COINElInTime       = dCOINElInTime.Count();
-  auto yield_COINElRandom       = dCOINElRandom.Count();
-  auto yield_jpsi_raw           = dJpsi.Count();
-  auto yield_jpsi_random        = dJpsiRandom.Count();
+  auto count_raw        = dHMS.Count();
+  auto count_tracked    = dGoodTrack.Count();
+  auto count_identified = dEl.Count();
 
   // -------------------------------------
   // End lazy eval
   // -------------------------------------
-  auto n_jpsi_good  = *yield_jpsi_raw - *yield_jpsi_random / 5.;
-  auto n_HMSElGood  = *yield_HMSElInTime - *yield_HMSElRandom / 5;
-  auto n_SHMSElGood = *yield_SHMSElInTime - *yield_SHMSElRandom / 5;
-  auto n_COINElGood = *yield_COINElInTime - *yield_COINElRandom / 5;
-
   double good_total_charge = *total_charge / 1000.0; // mC
   double good_time         = *time_1MHz_cut;         // s
 
-#if 0
-  // Not sure what we want from this TODO
-  double shms_scaler_yield     = ((*shms_el_real_scaler) / good_total_charge);
-  double hms_scaler_yield      = ((*hms_el_real_scaler) / good_total_charge);
-  double shms_scaler_yield_unc = (std::sqrt(*shms_el_real_scaler) / good_total_charge);
-  double shms_scaler_yield_unc = (std::sqrt(*hms_el_real_scaler) / good_total_charge);
-#endif
-
   std::map<std::string, double> counts = {
-      {"shms_raw_yield_coin", (*yield_SHMSGoodTrack) / (good_total_charge)},
-      {"shms_raw_yield_shms ", (*yield_SHMSGoodTrack_shms) / (good_total_charge)},
-      {"hms_raw_yield_coin", (*yield_HMSGoodTrack) / (good_total_charge)},
-      {"hms_raw_yield_hms", (*yield_HMSGoodTrack_hms) / (good_total_charge)},
-      {"coin_raw_yield", (*yield_COINGoodTrack) / (good_total_charge)},
-      {"shms_e_yield_coin", (*yield_SHMSEl) / (good_total_charge)},
-      {"shms_e_yield_shms", (*yield_SHMSEl_shms) / (good_total_charge)},
-      {"hms_e_yield_coin", (*yield_HMSEl) / (good_total_charge)},
-      {"hms_e_yield_hms", (*yield_HMSEl_hms) / (good_total_charge)},
-      {"coin_ee_yield", (*yield_COINEl) / (good_total_charge)},
-      {"hms_e_intime", (*yield_HMSElInTime) / (good_total_charge)},
-      {"shms_e_intime", (*yield_SHMSElInTime) / (good_total_charge)},
-      {"coin_e_intime", (*yield_COINElInTime) / (good_total_charge)},
-      {"hms_e_random", (*yield_HMSElRandom) / (good_total_charge) / 5.},
-      {"shms_e_random", (*yield_SHMSElRandom) / (good_total_charge) / 5.},
-      {"coin_e_random", (*yield_COINElRandom) / (good_total_charge) / 5.},
-      {"hms_e_good", (n_HMSElGood) / (good_total_charge)},
-      {"shms_e_good", (n_SHMSElGood) / (good_total_charge)},
-      {"coin_e_good", (n_COINElGood) / (good_total_charge)},
-      {"ps_cor_shms_e_good", (n_SHMSElGood / good_total_charge) * shms_singles_ps_value},
-      {"ps_cor_hms_e_good", (n_HMSElGood / good_total_charge) * hms_singles_ps_value},
-      {"J/psi count", *yield_jpsi_raw},
-      {"J/psi yield", *yield_jpsi_raw / (good_total_charge)},
-      {"J/psi random background count", *yield_jpsi_random / 5.},
-      {"J/psi random background", *yield_jpsi_random / (good_total_charge) / 5.},
-      {"J/psi Good event count", n_jpsi_good},
-      {"J/psi Good event yield", n_jpsi_good / (good_total_charge)},
-      {"good_total_charge", good_total_charge}};
+      {"count_identified", (*count_identified)},
+      {"count_tracked", (*count_tracked)},
+      {"count_raw", (*count_raw)},
+      {"count_identified_pscorr", (*count_identified) * ps_factor},
+      {"count_tracked_pscorr", (*count_tracked) * ps_factor},
+      {"count_raw_pscorr", (*count_raw) * ps_factor},
+      {"good_total_charge", good_total_charge},
+      {"good_time", good_time}};
 
   // Update counts list
   json jruns;
   {
-    std::ifstream input_file("db2/jpsi_run_count_list.json");
+    std::ifstream input_file("db2/hms_run_count_list.json");
     try {
       input_file >> jruns;
     } catch (json::parse_error) {
@@ -493,23 +235,26 @@ void good_hms_counter(int RunNumber = 7146, int nevents = -1, std::string_view m
   std::string run_str = std::to_string(RunNumber);
   std::cout << "----------------------------------------------------------" << std::endl;
   for (const auto& kv : counts) {
-    std::cout << " " << kv.first;
-    if (kv.first.find("yield") != std::string::npos) {
-      std::cout << " (counts / mC)";
+    std::cout << " " << kv.first << ": " << kv.second << "\n";
+    if (kv.first.find("count") != std::string::npos) {
+      if (kv.first.find("pscorr") == std::string::npos) {
+        std::cout << " --> yield (counts / mC): " << kv.second / good_total_charge << " +- "
+                  << sqrt(kv.second) / good_total_charge << "\n";
+      } else {
+        std::cout << " --> yield (counts / mC): " << kv.second / good_total_charge << " +- "
+                  << (1 / sqrt(kv.second / ps_factor)) * kv.second / good_total_charge << "\n";
+      }
     }
-    std::cout << ": " << kv.second;
-    std::cout << "\n";
     jruns[run_str][kv.first] = kv.second;
   }
 
   jruns[run_str]["charge bcm4b 2u cut"] = good_total_charge;
   jruns[run_str]["time 1MHz 2u cut"]    = good_time;
-  jruns[run_str]["shms ps1 factor"]     = shms_singles_ps_value;
-  jruns[run_str]["hms ps4 factor"]      = hms_singles_ps_value;
+  jruns[run_str]["hms ps factor"]       = ps_factor;
 
   if (update) {
     std::cout << "Updating db2/jpsi_run_count_list.json with shms counts\n";
-    std::ofstream json_output_file("db2/jpsi_run_count_list.json");
+    std::ofstream json_output_file("db2/hms_run_count_list.json");
     json_output_file << std::setw(4) << jruns << "\n";
   }
   // =====================================================================================
@@ -517,204 +262,23 @@ void good_hms_counter(int RunNumber = 7146, int nevents = -1, std::string_view m
   // =====================================================================================
   // This is a naked pointer that we 'leak' on purpose so the connection stays alive
   // as long as the root session is running
-  auto ddisplay = new hallc::MonitoringDisplay(RunNumber);
-  auto JpsiMass = ddisplay->CreateDisplayPlot(
-      "Jpsi", "Invariant Mass",
-      [&](hallc::DisplayPlot& plt) {
-        auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
-        plt.SetPersist();
-        c->SetLogy();
-        hJpsiMassNoCuts->SetLineColor(kGreen + 2);
-        hJpsiMassNoCuts->SetLineWidth(2);
-        hJpsiMassNoCuts->DrawClone();
-        hJpsiMassAfterPID->SetLineColor(kMagenta + 2);
-        hJpsiMassAfterPID->SetLineWidth(2);
-        hJpsiMassAfterPID->DrawClone("same");
-        hJpsiMassAfterTiming->SetLineColor(kBlue + 1);
-        hJpsiMassAfterTiming->SetLineWidth(2);
-        hJpsiMassAfterTiming->DrawClone("same");
-        hJpsiMassAfterCuts->SetLineColor(kBlack);
-        hJpsiMassAfterCuts->SetLineWidth(2);
-        hJpsiMassAfterCuts->DrawClone("same");
-        c->BuildLegend();
-        return 0;
-      },
-      [](hallc::DisplayPlot& plt) { return 0; });
-  auto JpsiEgamma = ddisplay->CreateDisplayPlot(
-      "Jpsi", "Photon Energy",
-      [&](hallc::DisplayPlot& plt) {
-        auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
-        plt.SetPersist();
-        // c->SetLogy();
-        hJpsiEgammaNoCuts->SetLineColor(kGreen + 2);
-        hJpsiEgammaNoCuts->SetLineWidth(2);
-        hJpsiEgammaNoCuts->DrawClone();
-        hJpsiEgammaAfterPID->SetLineColor(kMagenta + 2);
-        hJpsiEgammaAfterPID->SetLineWidth(2);
-        hJpsiEgammaAfterPID->DrawClone("same");
-        hJpsiEgammaAfterTiming->SetLineColor(kBlue + 1);
-        hJpsiEgammaAfterTiming->SetLineWidth(2);
-        hJpsiEgammaAfterTiming->DrawClone("same");
-        hJpsiEgammaAfterCuts->SetLineColor(kBlack);
-        hJpsiEgammaAfterCuts->SetLineWidth(2);
-        hJpsiEgammaAfterCuts->DrawClone("same");
-        c->BuildLegend();
-        return 0;
-      },
-      [](hallc::DisplayPlot& plt) { return 0; });
-#if 0
-#endif
-#if 0
-  auto JpsiEgammaFree = ddisplay->CreateDisplayPlot(
-      "Jpsi", "Photon Energy (Unconstrained)",
-      [&](hallc::DisplayPlot& plt) {
-        auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
-        plt.SetPersist();
-        c->SetLogy();
-        hJpsiEgammaFreeNoCuts->SetLineColor(kGreen + 2);
-        hJpsiEgammaFreeNoCuts->SetLineWidth(2);
-        hJpsiEgammaFreeNoCuts->DrawClone();
-        hJpsiEgammaFreeAfterPID->SetLineColor(kMagenta + 2);
-        hJpsiEgammaFreeAfterPID->SetLineWidth(2);
-        hJpsiEgammaFreeAfterPID->DrawClone("same");
-        hJpsiEgammaFreeAfterTiming->SetLineColor(kBlue + 1);
-        hJpsiEgammaFreeAfterTiming->SetLineWidth(2);
-        hJpsiEgammaFreeAfterTiming->DrawClone("same");
-        hJpsiEgammaFreeAfterCuts->SetLineColor(kBlack);
-        hJpsiEgammaFreeAfterCuts->SetLineWidth(2);
-        hJpsiEgammaFreeAfterCuts->DrawClone("same");
-        c->BuildLegend();
-        return 0;
-      },
-      [](hallc::DisplayPlot& plt) { return 0; });
-  auto JpsiAbst = ddisplay->CreateDisplayPlot(
-      "Jpsi", "|t|",
-      [&](hallc::DisplayPlot& plt) {
-        auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
-        c->SetLogy();
-        hJpsiAbstNoCuts->SetLineColor(kGreen + 2);
-        hJpsiAbstNoCuts->SetLineWidth(2);
-        hJpsiAbstNoCuts->DrawClone();
-        hJpsiAbstAfterPID->SetLineColor(kMagenta + 2);
-        hJpsiAbstAfterPID->SetLineWidth(2);
-        hJpsiAbstAfterPID->DrawClone("same");
-        hJpsiAbstAfterTiming->SetLineColor(kBlue + 1);
-        hJpsiAbstAfterTiming->SetLineWidth(2);
-        hJpsiAbstAfterTiming->DrawClone("same");
-        hJpsiAbstAfterCuts->SetLineColor(kBlack);
-        hJpsiAbstAfterCuts->SetLineWidth(2);
-        hJpsiAbstAfterCuts->DrawClone("same");
-        c->BuildLegend();
-        return 0;
-      },
-      [](hallc::DisplayPlot& plt) { return 0; });
-#endif
-  auto TrackingPdp = ddisplay->CreateDisplayPlot(
-      "Tracking", "P.gtr.dp",
-      [&](hallc::DisplayPlot& plt) {
-        auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
-        plt.SetPersist();
-        c->SetLogy();
-        hPdpNoCuts->SetLineColor(kGreen + 2);
-        hPdpNoCuts->SetLineWidth(2);
-        hPdpNoCuts->DrawClone();
-        hPdpTracking->SetLineColor(kMagenta + 2);
-        hPdpTracking->SetLineWidth(2);
-        hPdpTracking->DrawClone("same");
-        hPdpPID->SetLineColor(kBlue + 1);
-        hPdpPID->SetLineWidth(2);
-        hPdpPID->DrawClone("same");
-        hPdpTiming->SetLineColor(kBlack);
-        hPdpTiming->SetLineWidth(2);
-        hPdpTiming->DrawClone("same");
-        c->BuildLegend();
-        return 0;
-      },
-      [](hallc::DisplayPlot& plt) { return 0; });
-  auto TrackingPth = ddisplay->CreateDisplayPlot(
-      "Tracking", "P.gtr.th",
-      [&](hallc::DisplayPlot& plt) {
-        auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
-        plt.SetPersist();
-        c->SetLogy();
-        hPthNoCuts->SetLineColor(kGreen + 2);
-        hPthNoCuts->SetLineWidth(2);
-        hPthNoCuts->DrawClone();
-        hPthTracking->SetLineColor(kMagenta + 2);
-        hPthTracking->SetLineWidth(2);
-        hPthTracking->DrawClone("same");
-        hPthPID->SetLineColor(kBlue + 1);
-        hPthPID->SetLineWidth(2);
-        hPthPID->DrawClone("same");
-        hPthTiming->SetLineColor(kBlack);
-        hPthTiming->SetLineWidth(2);
-        hPthTiming->DrawClone("same");
-        c->BuildLegend();
-        return 0;
-      },
-      [](hallc::DisplayPlot& plt) { return 0; });
-  auto TrackingPph = ddisplay->CreateDisplayPlot(
-      "Tracking", "P.gtr.ph",
-      [&](hallc::DisplayPlot& plt) {
-        auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
-        plt.SetPersist();
-        c->SetLogy();
-        hPphNoCuts->SetLineColor(kGreen + 2);
-        hPphNoCuts->SetLineWidth(2);
-        hPphNoCuts->DrawClone();
-        hPphTracking->SetLineColor(kMagenta + 2);
-        hPphTracking->SetLineWidth(2);
-        hPphTracking->DrawClone("same");
-        hPphPID->SetLineColor(kBlue + 1);
-        hPphPID->SetLineWidth(2);
-        hPphPID->DrawClone("same");
-        hPphTiming->SetLineColor(kBlack);
-        hPphTiming->SetLineWidth(2);
-        hPphTiming->DrawClone("same");
-        c->BuildLegend();
-        return 0;
-      },
-      [](hallc::DisplayPlot& plt) { return 0; });
-  auto TrackingPy = ddisplay->CreateDisplayPlot(
-      "Tracking", "P.gtr.y",
-      [&](hallc::DisplayPlot& plt) {
-        auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
-        plt.SetPersist();
-        c->SetLogy();
-        hPyNoCuts->SetLineColor(kGreen + 2);
-        hPyNoCuts->SetLineWidth(2);
-        hPyNoCuts->DrawClone();
-        hPyTracking->SetLineColor(kMagenta + 2);
-        hPyTracking->SetLineWidth(2);
-        hPyTracking->DrawClone("same");
-        hPyPID->SetLineColor(kBlue + 1);
-        hPyPID->SetLineWidth(2);
-        hPyPID->DrawClone("same");
-        hPyTiming->SetLineColor(kBlack);
-        hPyTiming->SetLineWidth(2);
-        hPyTiming->DrawClone("same");
-        c->BuildLegend();
-        return 0;
-      },
-      [](hallc::DisplayPlot& plt) { return 0; });
+  auto ddisplay    = new hallc::MonitoringDisplay(RunNumber);
   auto TrackingHdp = ddisplay->CreateDisplayPlot(
       "Tracking", "H.gtr.dp",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
         plt.SetPersist();
         c->SetLogy();
-        hHdpNoCuts->SetLineColor(kGreen + 2);
-        hHdpNoCuts->SetLineWidth(2);
-        hHdpNoCuts->DrawClone();
-        hHdpTracking->SetLineColor(kMagenta + 2);
-        hHdpTracking->SetLineWidth(2);
-        hHdpTracking->DrawClone("same");
-        hHdpPID->SetLineColor(kBlue + 1);
-        hHdpPID->SetLineWidth(2);
-        hHdpPID->DrawClone("same");
-        hHdpTiming->SetLineColor(kBlack);
-        hHdpTiming->SetLineWidth(2);
-        hHdpTiming->DrawClone("same");
+        hHdp["raw"]->SetLineColor(kGreen + 2);
+        hHdp["raw"]->SetLineColor(kGreen + 2);
+        hHdp["raw"]->SetLineWidth(2);
+        hHdp["raw"]->DrawClone();
+        hHdp["tracked"]->SetLineColor(kMagenta + 2);
+        hHdp["tracked"]->SetLineWidth(2);
+        hHdp["tracked"]->DrawClone("same");
+        hHdp["identified"]->SetLineColor(kBlue + 1);
+        hHdp["identified"]->SetLineWidth(2);
+        hHdp["identified"]->DrawClone("same");
         c->BuildLegend();
         return 0;
       },
@@ -725,18 +289,15 @@ void good_hms_counter(int RunNumber = 7146, int nevents = -1, std::string_view m
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
         plt.SetPersist();
         c->SetLogy();
-        hHthNoCuts->SetLineColor(kGreen + 2);
-        hHthNoCuts->SetLineWidth(2);
-        hHthNoCuts->DrawClone();
-        hHthTracking->SetLineColor(kMagenta + 2);
-        hHthTracking->SetLineWidth(2);
-        hHthTracking->DrawClone("same");
-        hHthPID->SetLineColor(kBlue + 1);
-        hHthPID->SetLineWidth(2);
-        hHthPID->DrawClone("same");
-        hHthTiming->SetLineColor(kBlack);
-        hHthTiming->SetLineWidth(2);
-        hHthTiming->DrawClone("same");
+        hHth["raw"]->SetLineColor(kGreen + 2);
+        hHth["raw"]->SetLineWidth(2);
+        hHth["raw"]->DrawClone();
+        hHth["tracked"]->SetLineColor(kMagenta + 2);
+        hHth["tracked"]->SetLineWidth(2);
+        hHth["tracked"]->DrawClone("same");
+        hHth["identified"]->SetLineColor(kBlue + 1);
+        hHth["identified"]->SetLineWidth(2);
+        hHth["identified"]->DrawClone("same");
         c->BuildLegend();
         return 0;
       },
@@ -747,18 +308,15 @@ void good_hms_counter(int RunNumber = 7146, int nevents = -1, std::string_view m
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
         plt.SetPersist();
         c->SetLogy();
-        hHphNoCuts->SetLineColor(kGreen + 2);
-        hHphNoCuts->SetLineWidth(2);
-        hHphNoCuts->DrawClone();
-        hHphTracking->SetLineColor(kMagenta + 2);
-        hHphTracking->SetLineWidth(2);
-        hHphTracking->DrawClone("same");
-        hHphPID->SetLineColor(kBlue + 1);
-        hHphPID->SetLineWidth(2);
-        hHphPID->DrawClone("same");
-        hHphTiming->SetLineColor(kBlack);
-        hHphTiming->SetLineWidth(2);
-        hHphTiming->DrawClone("same");
+        hHph["raw"]->SetLineColor(kGreen + 2);
+        hHph["raw"]->SetLineWidth(2);
+        hHph["raw"]->DrawClone();
+        hHph["tracked"]->SetLineColor(kMagenta + 2);
+        hHph["tracked"]->SetLineWidth(2);
+        hHph["tracked"]->DrawClone("same");
+        hHph["identified"]->SetLineColor(kBlue + 1);
+        hHph["identified"]->SetLineWidth(2);
+        hHph["identified"]->DrawClone("same");
         c->BuildLegend();
         return 0;
       },
@@ -769,133 +327,58 @@ void good_hms_counter(int RunNumber = 7146, int nevents = -1, std::string_view m
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
         plt.SetPersist();
         c->SetLogy();
-        hHyNoCuts->SetLineColor(kGreen + 2);
-        hHyNoCuts->SetLineWidth(2);
-        hHyNoCuts->DrawClone();
-        hHyTracking->SetLineColor(kMagenta + 2);
-        hHyTracking->SetLineWidth(2);
-        hHyTracking->DrawClone("same");
-        hHyPID->SetLineColor(kBlue + 1);
-        hHyPID->SetLineWidth(2);
-        hHyPID->DrawClone("same");
-        hHyTiming->SetLineColor(kBlack);
-        hHyTiming->SetLineWidth(2);
-        hHyTiming->DrawClone("same");
+        hHy["raw"]->SetLineColor(kGreen + 2);
+        hHy["raw"]->SetLineWidth(2);
+        hHy["raw"]->DrawClone();
+        hHy["tracked"]->SetLineColor(kMagenta + 2);
+        hHy["tracked"]->SetLineWidth(2);
+        hHy["tracked"]->DrawClone("same");
+        hHy["identified"]->SetLineColor(kBlue + 1);
+        hHy["identified"]->SetLineWidth(2);
+        hHy["identified"]->DrawClone("same");
         c->BuildLegend();
         return 0;
       },
       [](hallc::DisplayPlot& plt) { return 0; });
-  auto TimingCoinTime = ddisplay->CreateDisplayPlot(
-      "Timing", "coin_time",
-      [&](hallc::DisplayPlot& plt) {
-        auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
-        plt.SetPersist();
-        c->SetLogy();
-        hCoinTimeNoCuts->SetLineColor(kGreen + 2);
-        hCoinTimeNoCuts->SetLineWidth(2);
-        hCoinTimeNoCuts->DrawClone();
-        hCoinTimeTracking->SetLineColor(kMagenta + 2);
-        hCoinTimeTracking->SetLineWidth(2);
-        hCoinTimeTracking->DrawClone("same");
-        hCoinTimePID->SetLineColor(kBlue + 1);
-        hCoinTimePID->SetLineWidth(2);
-        hCoinTimePID->DrawClone("same");
-        hCoinTimeTiming->SetLineColor(kBlack);
-        hCoinTimeTiming->SetLineWidth(2);
-        hCoinTimeTiming->DrawClone("same");
-        c->BuildLegend();
-        return 0;
-      },
-      [](hallc::DisplayPlot& plt) { return 0; });
-  auto PIDHcalEP = ddisplay->CreateDisplayPlot(
+  auto PIDcalEP = ddisplay->CreateDisplayPlot(
       "PID", "H.cal.etottracknorm",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
         plt.SetPersist();
         c->SetLogy();
-        hHcalEPNoCuts->SetLineColor(kGreen + 2);
-        hHcalEPNoCuts->SetLineWidth(2);
-        hHcalEPNoCuts->DrawClone();
-        hHcalEPTracking->SetLineColor(kMagenta + 2);
-        hHcalEPTracking->SetLineWidth(2);
-        hHcalEPTracking->DrawClone("same");
-        hHcalEPPID->SetLineColor(kBlue + 1);
-        hHcalEPPID->SetLineWidth(2);
-        hHcalEPPID->DrawClone("same");
-        hHcalEPAll->SetLineColor(kBlack);
-        hHcalEPAll->SetLineWidth(2);
-        hHcalEPAll->DrawClone("same");
+        hHcalEP["raw"]->SetLineColor(kGreen + 2);
+        hHcalEP["raw"]->SetLineWidth(2);
+        hHcalEP["raw"]->DrawClone();
+        hHcalEP["tracked"]->SetLineColor(kMagenta + 2);
+        hHcalEP["tracked"]->SetLineWidth(2);
+        hHcalEP["tracked"]->DrawClone("same");
+        hHcalEP["identified"]->SetLineColor(kBlue + 1);
+        hHcalEP["identified"]->SetLineWidth(2);
+        hHcalEP["identified"]->DrawClone("same");
         c->BuildLegend();
         return 0;
       },
       [](hallc::DisplayPlot& plt) { return 0; });
-  auto PIDHcerNphe = ddisplay->CreateDisplayPlot(
+  auto PIDcerNphe = ddisplay->CreateDisplayPlot(
       "PID", "H.cer.nphe",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
         plt.SetPersist();
         c->SetLogy();
-        hHcerNpheNoCuts->SetLineColor(kGreen + 2);
-        hHcerNpheNoCuts->SetLineWidth(2);
-        hHcerNpheNoCuts->DrawClone();
-        hHcerNpheTracking->SetLineColor(kMagenta + 2);
-        hHcerNpheTracking->SetLineWidth(2);
-        hHcerNpheTracking->DrawClone("same");
-        hHcerNphePID->SetLineColor(kBlue + 1);
-        hHcerNphePID->SetLineWidth(2);
-        hHcerNphePID->DrawClone("same");
-        hHcerNpheAll->SetLineColor(kBlack);
-        hHcerNpheAll->SetLineWidth(2);
-        hHcerNpheAll->DrawClone("same");
+        hHcerNphe["raw"]->SetLineColor(kGreen + 2);
+        hHcerNphe["raw"]->SetLineWidth(2);
+        hHcerNphe["raw"]->DrawClone();
+        hHcerNphe["tracked"]->SetLineColor(kMagenta + 2);
+        hHcerNphe["tracked"]->SetLineWidth(2);
+        hHcerNphe["tracked"]->DrawClone("same");
+        hHcerNphe["identified"]->SetLineColor(kBlue + 1);
+        hHcerNphe["identified"]->SetLineWidth(2);
+        hHcerNphe["identified"]->DrawClone("same");
         c->BuildLegend();
         return 0;
       },
       [](hallc::DisplayPlot& plt) { return 0; });
-  auto PIDPcalEP = ddisplay->CreateDisplayPlot(
-      "PID", "P.cal.etottracknorm",
-      [&](hallc::DisplayPlot& plt) {
-        auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
-        plt.SetPersist();
-        c->SetLogy();
-        hPcalEPNoCuts->SetLineColor(kGreen + 2);
-        hPcalEPNoCuts->SetLineWidth(2);
-        hPcalEPNoCuts->DrawClone();
-        hPcalEPTracking->SetLineColor(kMagenta + 2);
-        hPcalEPTracking->SetLineWidth(2);
-        hPcalEPTracking->DrawClone("same");
-        hPcalEPPID->SetLineColor(kBlue + 1);
-        hPcalEPPID->SetLineWidth(2);
-        hPcalEPPID->DrawClone("same");
-        hPcalEPAll->SetLineColor(kBlack);
-        hPcalEPAll->SetLineWidth(2);
-        hPcalEPAll->DrawClone("same");
-        c->BuildLegend();
-        return 0;
-      },
-      [](hallc::DisplayPlot& plt) { return 0; });
-  auto PIDPcerNphe = ddisplay->CreateDisplayPlot(
-      "PID", "P.ngcer.nphe",
-      [&](hallc::DisplayPlot& plt) {
-        auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
-        plt.SetPersist();
-        c->SetLogy();
-        hPcerNpheNoCuts->SetLineColor(kGreen + 2);
-        hPcerNpheNoCuts->SetLineWidth(2);
-        hPcerNpheNoCuts->DrawClone();
-        hPcerNpheTracking->SetLineColor(kMagenta + 2);
-        hPcerNpheTracking->SetLineWidth(2);
-        hPcerNpheTracking->DrawClone("same");
-        hPcerNphePID->SetLineColor(kBlue + 1);
-        hPcerNphePID->SetLineWidth(2);
-        hPcerNphePID->DrawClone("same");
-        hPcerNpheAll->SetLineColor(kBlack);
-        hPcerNpheAll->SetLineWidth(2);
-        hPcerNpheAll->DrawClone("same");
-        c->BuildLegend();
-        return 0;
-      },
-      [](hallc::DisplayPlot& plt) { return 0; });
-  ddisplay->_data._root_folder = "/good_jpsi_counter/";
+  ddisplay->_data._root_folder = "/good_hms_counter/";
   ddisplay->InitAll();
   ddisplay->UpdateAll();
 }
