@@ -246,7 +246,7 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   hallc::PVList pv_list;
   pv_list.AddPV("hcDAQMissingRefTime");
   //hallc::PVList pv_list2;
-  pv_list.AddPV("hcYield:SHMS:EL_CLEAN:Count");
+  //pv_list.AddPV("hcYield:SHMS:EL_CLEAN:Count");
   //pv_list2.AddPV("hcYield:SHMS:EL_CLEAN:Charge");
   //pv_list2.AddPV("hcYield:HMS:EL_CLEAN:Count");
   //pv_list2.AddPV("hcYield:HMS:EL_CLEAN:Charge");

@@ -71,7 +71,8 @@ void good_hms_counter(int RunNumber = 7146, int nevents = -1, std::string_view m
     std::cout << "ps3 = " << ps1 << "\n";
     std::cout << "ps4 = " << ps1 << "\n";
   } else {
-    std::cout << "Error: pre-scaler unspecified in run_list_" << mode << ".json"
+    std::cout << "Error: pre-scaler unspecified in " << run_list_fname << std::endl;
+    std::quick_exit(-127);
   }
 
   //  The way the input rates are prescaled follows:
