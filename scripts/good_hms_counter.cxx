@@ -193,7 +193,7 @@ void good_hms_counter(int RunNumber = 7146, int nevents = -1, const std::string&
   double good_time         = *time_1MHz_cut;         // s
 
   std::map<std::string, double> counts = {
-      {"count_identified", (*count_identified)},
+      {"count_e", (*count_identified)},
       {"count_tracked", (*count_tracked)},
       {"count_raw", (*count_raw)},
       {"count_identified_pscorr", (*count_identified) * ps_factor},
