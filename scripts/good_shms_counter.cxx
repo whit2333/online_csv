@@ -81,8 +81,8 @@ void good_shms_counter(int RunNumber = 7146, int nevents = -1, const std::string
   if (j[runnum_str].find("daq") != j[runnum_str].end()) {
     ps1 = j[runnum_str]["daq"]["ps1"].get<int>();
     ps2 = j[runnum_str]["daq"]["ps2"].get<int>();
-    ps5 = j[runnum_str]["daq"]["ps1"].get<int>();
-    ps6 = j[runnum_str]["daq"]["ps2"].get<int>();
+    ps5 = j[runnum_str]["daq"]["ps5"].get<int>();
+    ps6 = j[runnum_str]["daq"]["ps6"].get<int>();
     std::cout << "ps1 = " << ps1 << " and ps2 = " << ps2 << "\n";
     std::cout << "ps5 = " << ps1 << " and ps6 = " << ps2 << "\n";
   } else {

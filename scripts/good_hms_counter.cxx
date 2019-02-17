@@ -81,8 +81,8 @@ void good_hms_counter(int RunNumber = 7146, int nevents = -1, const std::string&
   if (j[runnum_str].find("daq") != j[runnum_str].end()) {
     ps3 = j[runnum_str]["daq"]["ps3"].get<int>();
     ps4 = j[runnum_str]["daq"]["ps4"].get<int>();
-    ps5 = j[runnum_str]["daq"]["ps3"].get<int>();
-    ps6 = j[runnum_str]["daq"]["ps4"].get<int>();
+    ps5 = j[runnum_str]["daq"]["ps5"].get<int>();
+    ps6 = j[runnum_str]["daq"]["ps6"].get<int>();
     std::cout << "ps3 = " << ps3 << " and ps4 = " << ps4 << "\n";
     std::cout << "ps5 = " << ps3 << " and ps6 = " << ps4 << "\n";
   } else {
