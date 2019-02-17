@@ -84,7 +84,7 @@ void good_hms_counter(int RunNumber = 7146, int nevents = -1, const std::string&
     ps5 = j[runnum_str]["daq"]["ps5"].get<int>();
     ps6 = j[runnum_str]["daq"]["ps6"].get<int>();
     std::cout << "ps3 = " << ps3 << " and ps4 = " << ps4 << "\n";
-    std::cout << "ps5 = " << ps3 << " and ps6 = " << ps4 << "\n";
+    std::cout << "ps5 = " << ps5 << " and ps6 = " << ps6 << "\n";
   } else {
     std::cout << "Error: pre-scaler unspecified in " << run_list_fname << std::endl;
     std::quick_exit(-127);
