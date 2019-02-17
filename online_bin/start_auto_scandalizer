@@ -26,7 +26,7 @@ def launch_full_shms_replay(run_number):
     if window :
         window.kill_window()
     print("waiting 100 seconds to start full SHMS replay for run {}".format(run_number))
-    time.sleep(100)
+    time.sleep(500)
     window = sesh.new_window(window_name="shms_run_{}".format(run_number), start_directory=replay_dir, attach=False,
             window_shell="./bin/hc_shms_replay -r {} -n -1".format(run_number))
     #p = subprocess.Popen(
@@ -38,7 +38,7 @@ def launch_full_shms_replay(run_number):
         
 def launch_scan_coin_replay(run_number):
     global p
-    time.sleep(100)
+    time.sleep(500)
     #command=' pwd && sleep 200 '
     replay_dir = "/home/cdaq/whit/"
     try:
@@ -60,7 +60,7 @@ def launch_scan_coin_replay(run_number):
 
 def launch_full_hms_replay(run_number):
     global p
-    time.sleep(100)
+    time.sleep(500)
     #command=' pwd && sleep 200 '
     replay_dir = "/home/cdaq/whit/"
     try:

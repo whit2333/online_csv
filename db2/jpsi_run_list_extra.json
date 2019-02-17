@@ -4,5 +4,32 @@
   },
   "7156": {
     "comment": "cosmics"
+  },
+  "7219": {
+    "comment": "short mode 10"
+  },
+  "7223": {
+    "comment": "junk"
+  },
+  "7224": {
+    "comment": "junk"
+  },
+  "7225": {
+    "comment": "mode 10"
+  },
+  "7227": {
+    "comment": "junk? SHMS magnet problem"
+  },
+  "7229": {
+    "comment": "bad DAQ"
+  },
+  "7230": {
+    "comment": "bad DAQ"
+  },
+  "7231": {
+    "comment": "bad DAQ"
+  },
+  "7232": {
+    "comment": "bad DAQ"
   }
 }

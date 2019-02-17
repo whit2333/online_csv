@@ -106,4 +106,12 @@ module load ruby/2.5.3
 
 hcana -b -q "scripts/replay_production_coin.cxx(${run_number},${n_events})"
 
+./bin/do_good_jpsi -r ${run_number}
+
+#root -b -q "scripts/good_jpsi_counter.cxx(${run_number})"
+#sleep 1
+#mkdir -p monitoring/${run_number}
+#http_proxy=  wget http://cdaql1.jlab.org:8888/good_jpsi_counter/${run_number}/Jpsi/Invariant_Mass/fPrimitives/JpsiMassAfterTiming/root.json -O monitoring/${run_number}/Invariant_Mass_after_timing.json
+
+
 

@@ -9,7 +9,6 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
 
   spdlog::set_level(spdlog::level::warn);
   spdlog::flush_every(std::chrono::seconds(5));
-  hallc::PVList pv_list;
   //std::vector<std::string> pvs = {"hcSHMSTrackingEff", "hcSHMSTrackingEff:Unc",
   //  "hcSHMSTrackingEff.LOW", "hcSHMSTrackingEff.LOLO","hcSHMSDCMultiplicity"};
   //for(const auto& n : pvs) {
@@ -205,7 +204,7 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
 
   // Add helicity detector to grigger apparatus
   THcHelicity* helicity = new THcHelicity("helicity","Helicity Detector");
-  TRG->AddDetector(helicity);
+  //TRG->AddDetector(helicity);
 
   // Add event handler for prestart event 125.
   THcConfigEvtHandler* ev125 = new THcConfigEvtHandler("HC", "Config Event type 125");
@@ -230,25 +229,11 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   // The following analyzes the first 2000 events (for pedestals, is required) 
   // then  repeatedly skips 3000 events and processes 1000.
   //auto pp0 = new hallc::scandalizer::SkipPeriodicAfterPedestal();
-  auto pp0 = new hallc::scandalizer::SkipPeriodicToEOF(1000,1000);
+  auto pp0 = new hallc::scandalizer::SkipPeriodicToEOF(5000,8000);
   pp0->_analyzer = analyzer; /// \todo: fix these 2 lines
   analyzer->AddPostProcess(pp0);
   //auto pp0 = new hallc::scandalizer::SkipAfterPedestal();
   //pp0->_analyzer = analyzer;
-
-  //SimplePostProcess([&]() { return 0; },
-  //                                                     [&](const THaEvData* evt) {
-  //                                                       static int counter = 0;
-  //                                                       if (evt->GetEvNum() > 2000) {
-  //                                                         if (counter == 0) {
-  //                                                           analyzer->_skip_events = 3000;
-  //                                                           counter                = 1000;
-  //                                                         } else {
-  //                                                           counter--;
-  //                                                         }
-  //                                                       }
-  //                                                       return 0;
-  //                                                     });
 
   hallc::scandalizer::SpectrometerMonitor * pp1a = new hallc::scandalizer::SpectrometerMonitor(hhod,hcer,hdc);
   pp1a->_analyzer = analyzer;
@@ -258,12 +243,80 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   pp1->_analyzer = analyzer;
   pp1->_spectrometer_name = "SHMS";
 
-  //hallc::scandalizer::SimplePostProcess* pp1 = new hallc::scandalizer::SimplePostProcess(
-  //  [&](){
-  //    return 0;
-  //  },
-  //  [&](const THaEvData* evt){
-  //    static int counter = 0;
+  hallc::PVList pv_list;
+  pv_list.AddPV("hcDAQMissingRefTime");
+  //hallc::PVList pv_list2;
+  pv_list.AddPV("hcYield:SHMS:EL_CLEAN:Count");
+  //pv_list2.AddPV("hcYield:SHMS:EL_CLEAN:Charge");
+  //pv_list2.AddPV("hcYield:HMS:EL_CLEAN:Count");
+  //pv_list2.AddPV("hcYield:HMS:EL_CLEAN:Charge");
+
+  std::map<std::string, int> scalers_wanted;
+
+  hallc::scandalizer::SimplePostProcess* scaler_yield_monitors = new hallc::scandalizer::SimplePostProcess(
+    [&](){
+      for(auto aloc : hscaler->scalerloc) {
+        if( aloc ) {
+          std::cout << aloc->name << "\n";
+          if( std::string("H.pEL_CLEAN.scaler") == aloc->name.Data()){
+            size_t ivar = aloc->ivar;
+            scalers_wanted["H.pEL_CLEAN.scaler"] = ivar;
+          }
+          if( std::string("H.BCM2.scalerCharge") == aloc->name.Data()){
+            size_t ivar = aloc->ivar;
+            scalers_wanted["H.BCM2.scalerCharge"] = ivar;
+          }
+        }
+      }
+      return 0;
+    },
+    [&](const THaEvData* evt){
+      static double last_charge = 0;
+      static int    last_scaler = 0;
+      static int counter = 0;
+      int pEL_CLEAN = 0;
+      if (scalers_wanted.count("H.pEL_CLEAN.scaler") != 0) {
+        pEL_CLEAN = hscaler->dvars[scalers_wanted["H.pEL_CLEAN.scaler"]];
+      }
+      double BCM2 =  0.0;
+      if (scalers_wanted.count("H.BCM2.scalerCharge") != 0) {
+        BCM2 = hscaler->dvars[scalers_wanted["H.BCM2.scalerCharge"]];
+      }
+      if ((evt->GetEvNum() > 1200) && (counter > 5000)) {
+        counter = 0;
+        pv_list.Put("hcYield:SHMS:EL_CLEAN:Count",pEL_CLEAN - last_scaler);
+        pv_list.Put("hcYield:SHMS:EL_CLEAN:charge",BCM2 - last_charge);
+      }
+      counter++;
+      last_charge = pEL_CLEAN;
+      last_scaler =  BCM2;
+      return 0;
+    });
+  analyzer->AddPostProcess(scaler_yield_monitors);
+
+  hallc::scandalizer::SimplePostProcess* daq_missing_ref_monitor = new hallc::scandalizer::SimplePostProcess(
+    [&](){
+      return 0;
+    },
+    [&](const THaEvData* evt){
+      static int counter = 0;
+      static double total = 0.2;
+      total += hdc->fNTDCRef_miss + hdc->fNADCRef_miss;
+      total += pdc->fNTDCRef_miss + pdc->fNADCRef_miss;
+      total += hhod->fNTDCRef_miss + hhod->fNADCRef_miss;
+      total += phod->fNTDCRef_miss + phod->fNADCRef_miss;
+      total += hcer->fNTDCRef_miss + hcer->fNADCRef_miss;
+      total += pngcer->fNTDCRef_miss + pngcer->fNADCRef_miss;
+      total += phgcer->fNTDCRef_miss + phgcer->fNADCRef_miss;
+      if ((evt->GetEvNum() > 1200) && (counter > 1000)) {
+        counter = 0;
+        pv_list.Put("hcDAQMissingRefTime",total);
+      }
+      counter++;
+      return 0;
+    });
+  analyzer->AddPostProcess(daq_missing_ref_monitor);
+
   //    static double eff_num             = 0.0000001;
   //    static double eff_den             = 0.0;
   //    static int    n_num               = 0;
@@ -308,6 +361,7 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   //  });
 
   analyzer->AddPostProcess(pp0);
+
   analyzer->AddPostProcess(pp1);
   analyzer->AddPostProcess(pp1a);
 

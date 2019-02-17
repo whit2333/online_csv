@@ -19,7 +19,7 @@ void make_jpsi_table() {
   using nlohmann::json;
   json j;
   {
-    std::ifstream json_input_file("db2/run_list_shms.json");
+    std::ifstream json_input_file("db2/run_list_coin.json");
     json_input_file >> j;
   }
   json j2;
@@ -45,6 +45,7 @@ void make_jpsi_table() {
     std::cout << "\n";
     fmt::print(" {:<5} ", "Run");
     fmt::print(" {:^5} ", "Target");
+    fmt::print(" {:^7} ", "radiator");
     fmt::print(" {:^7} ", "P_hms");
     fmt::print(" {:^7} ", "th_hms");
     fmt::print(" {:^7} ", "P_shms");
@@ -62,6 +63,7 @@ void make_jpsi_table() {
   std::cout << " runs : \n";
 
   std::string old_target = "";
+  std::string old_radiator_status = "";
 
   double p_hms   = 0.0;
   double th_hms  = 0.0;
@@ -75,6 +77,11 @@ void make_jpsi_table() {
     if (target_lab != old_target) {
       print_header();
     }
+    std::string radiator_status = runjs["radiator"]["radiator_status"].get<std::string>();
+    if (radiator_status != old_radiator_status) {
+      print_header();
+    }
+
 
     if ((p_hms != runjs["spectrometers"]["hms_momentum"].get<double>()) ||
         (th_hms != runjs["spectrometers"]["hms_angle"].get<double>()) ||
@@ -88,12 +95,14 @@ void make_jpsi_table() {
     p_shms  = runjs["spectrometers"]["shms_momentum"].get<double>();
     th_shms = runjs["spectrometers"]["shms_angle"].get<double>();
 
-    old_target = target_lab;
+    old_target          = target_lab;
+    old_radiator_status = radiator_status;
 
     runs_text << std::stoi(it.key()) << "\n";
 
     fmt::print(" {:<5} ", std::stoi(it.key()));
     fmt::print(" {:^5} ", target_lab);
+    fmt::print(" {:^7} ", radiator_status);
     fmt::print(" {:>7.3f} ", runjs["spectrometers"]["hms_momentum"].get<double>());
     fmt::print(" {:>7.2f} ", runjs["spectrometers"]["hms_angle"].get<double>());
     fmt::print(" {:>7.3f} ", runjs["spectrometers"]["shms_momentum"].get<double>());
@@ -110,8 +119,8 @@ void make_jpsi_table() {
     }
 
     double total_charge = 0.0001;
-    if (runjs.find("total_charge") != runjs.end()) {
-      total_charge = runjs["total_charge"].get<double>() / 1000.0;
+    if (runjs.find("good_total_charge") != runjs.end()) {
+      total_charge = runjs["good_total_charge"].get<double>() / 1000.0;
       // fmt::print("/ {:>10.1f} ", total_charge);
     }
     // else {
@@ -120,17 +129,18 @@ void make_jpsi_table() {
     if (j2.count(it.key()) != 0) {
       try {
 
-        double shms_yield = j2[it.key()]["shms e counts"].get<double>();
+        double shms_yield = j2[it.key()]["J/psi Good event count"].get<double>();
         // double pi_yield = j2[it.key()]["pion bg sub. counts"].get<double>();
         fmt::print(" {:>9.1f} ", shms_yield);
-        if (j2[it.key()].find("charge bcm4b 2u cut") != j2[it.key()].end()) {
-          total_charge = j2[it.key()]["charge bcm4b 2u cut"].get<double>();
+        if (j2[it.key()].find("good_total_charge") != j2[it.key()].end()) {
+          total_charge = j2[it.key()]["good_total_charge"].get<double>();
           // total_charge = runjs["total_charge"].get<double>() / 1000.0;
           fmt::print("/ {:<6.1f} ", total_charge);
         } else {
           fmt::print(" {:>11} ", "");
         }
-        fmt::print(" {:>9.1f} ", shms_yield / total_charge);
+        fmt::print(" {:>9.5f} ", shms_yield / total_charge);
+        fmt::print(" +- {:>8.5f} ", std::sqrt(shms_yield) / total_charge); 
         int n_events = j2[it.key()]["total trigger events"].get<int>();
         fmt::print(" {:>9d} ", n_events);
       } catch (std::domain_error) {

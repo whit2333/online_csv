@@ -185,7 +185,7 @@ void muon_pion_separation(int RunNumber = 7146, int nevents = -1, int prompt = 0
 
   gSystem->mkdir("results/good_shms_counter", true);
 
-  auto ddisplay      = new hallc::MonitoringDisplay(-1);
+  auto ddisplay      = new hallc::MonitoringDisplay(RunNumber);
   auto waveform_plot = ddisplay->CreateDisplayPlot(
       "muon_pion_sep", "calorimeter",
       [&](hallc::DisplayPlot& plt) {
@@ -214,8 +214,7 @@ void muon_pion_separation(int RunNumber = 7146, int nevents = -1, int prompt = 0
   auto plot2 = ddisplay->CreateDisplayPlot(
       "muon_pion_sep", "cherenkovs",
       [&](hallc::DisplayPlot& plt) {
-        plt._plot_data._canvas = new TCanvas(plt.GetName().c_str(), plt.GetName().c_str());
-        c = plt._plot_data._canvas;
+        c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
         c->Divide(2, 1);
         c->cd(1);
         // gPad->SetLogy(true);

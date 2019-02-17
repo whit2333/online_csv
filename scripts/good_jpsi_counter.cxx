@@ -45,17 +45,18 @@ constexpr const double M_e  = .000511;
 // Cuts
 // =================================================================================
 std::string goodTrackSHMS = "P.gtr.dp > -10 && P.gtr.dp < 22 && P.tr.n == 1 && "
-                            "TMath::Abs(P.gtr.th) < 0.04 && TMath::Abs(P.gtr.ph) < 0.025"
-                            "&& TMath::Abs(P.gtr.y) < 5.0";
-// TODO: double-check that H.gtr.y and H.gtr.ph cuts are not too restrictive
+                            "TMath::Abs(P.gtr.th) < 0.05 "
+                            "&& -0.035 < P.gtr.ph && P.gtr.ph < 0.025"
+                            "& P.gtr.y > -2.0 && P.gtr.y < 3";
 std::string goodTrackHMS = "H.gtr.dp > -8 && H.gtr.dp < 8 && H.tr.n == 1&&"
-                           "TMath::Abs(H.gtr.th) < 0.04 && -0.01 < H.gtr.ph && H.gtr.ph < 0.02"
-                           "&& TMath::Abs(H.gtr.y) < 2.5";
+                           "-0.08 < H.gtr.th && H.gtr.th < 0.06 && "
+                           "-0.03 < H.gtr.ph && H.gtr.ph < 0.04"
+                           "&& TMath::Abs(H.gtr.y) < 2.0";
 std::string eCutSHMS = "P.cal.etottracknorm > 0.8 && P.cal.etottracknorm < 2.&&"
                        "P.ngcer.npeSum > 2";
-std::string eCutHMS = "H.cal.etottracknorm > 0.8 && H.cal.etottracknorm < 2.&&"
+std::string eCutHMS = "H.cal.etottracknorm > 0.80 && H.cal.etottracknorm < 2.&&"
                       "H.cer.npeSum > 1.";
-std::string Jpsi_cut = "M_jpsi < 3.096916 + .15 && M_jpsi < 3.096916 + .15";
+std::string Jpsi_cut = "M_jpsi > 3.05 && M_jpsi < 3.15";
 
 // =================================================================================
 // Definitions
@@ -69,10 +70,12 @@ using Pvec4D = ROOT::Math::PxPyPzMVector;
 auto p_electron = [](double px, double py, double pz) { return Pvec4D{px, py, pz, M_e}; };
 auto p_jpsi     = [](const Pvec4D& e1, const Pvec4D& e2) { return e1 + e2; };
 auto E_gamma    = [](const Pvec4D& jpsi) {
-  return (M_J2 - 2. * jpsi.E() * M_P) / (2. * (jpsi.E() - M_P * jpsi.P() * cos(jpsi.Theta())));
+  double res =
+      (M_J2 - 2. * jpsi.E() * M_P) / (2. * (jpsi.E() - M_P - jpsi.P() * cos(jpsi.Theta())));
+  return res;
 };
 auto E_gamma_free = [](const Pvec4D& jpsi) {
-  return (jpsi.M2() - 2. * jpsi.E() * M_P) / (2. * (jpsi.E() - M_P * jpsi.P() * cos(jpsi.Theta())));
+  return (jpsi.M2() - 2. * jpsi.E() * M_P) / (2. * (jpsi.E() - M_P - jpsi.P() * cos(jpsi.Theta())));
 };
 auto t = [](const double Egamma, Pvec4D& jpsi) {
   Pvec4D beam{0, 0, Egamma, 0};
@@ -178,15 +181,15 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
   // int N_scaler_events = *(d_sh.Count());
 
   auto d_coin = d.Filter("fEvtHdr.fEvtType == 4");
-  auto d_shms = d.Filter("fEvtHdr.fEvtType != 4");
-  auto d_hms  = d.Filter("fEvtHdr.fEvtType != 4");
+  auto d_shms = d.Filter("fEvtHdr.fEvtType == 1");
+  auto d_hms  = d.Filter("fEvtHdr.fEvtType == 2");
 
   // Good track cuts
   auto dHMSGoodTrack_hms   = d_hms.Filter(goodTrackHMS);
-  auto dHMSGoodTrack_coin  = d_coin.Filter(goodTrackHMS);
+  auto dHMSGoodTrack       = d_coin.Filter(goodTrackHMS);
   auto dSHMSGoodTrack_shms = d_shms.Filter(goodTrackSHMS);
-  auto dSHMSGoodTrack_coin = d_coin.Filter(goodTrackSHMS);
-  auto dCOINGoodTrack      = dHMSGoodTrack_coin.Filter(goodTrackSHMS)
+  auto dSHMSGoodTrack      = d_coin.Filter(goodTrackSHMS);
+  auto dCOINGoodTrack      = dHMSGoodTrack.Filter(goodTrackSHMS)
                             .Define("p_electron", p_electron, {"P.gtr.px", "P.gtr.py", "P.gtr.pz"})
                             .Define("p_positron", p_electron, {"H.gtr.px", "H.gtr.py", "H.gtr.pz"})
                             .Define("p_jpsi", p_jpsi, {"p_electron", "p_positron"})
@@ -196,11 +199,11 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
                             .Define("t", t, {"E_gamma", "p_jpsi"})
                             .Define("abst", "fabs(t)");
   // PID cuts
-  auto dHMSEl_hms   = dHMSGoodTrack_hms.Filter(eCutHMS);
-  auto dHMSEl_coin  = dHMSGoodTrack_coin.Filter(eCutHMS);
-  auto dSHMSEl_shms = dSHMSGoodTrack_shms.Filter(eCutSHMS);
-  auto dSHMSEl_coin = dSHMSGoodTrack_coin.Filter(eCutSHMS);
+  auto dHMSEl       = dHMSGoodTrack.Filter(eCutHMS);
+  auto dSHMSEl      = dSHMSGoodTrack.Filter(eCutSHMS);
   auto dCOINEl      = dCOINGoodTrack.Filter(eCutHMS + " && " + eCutSHMS);
+  auto dHMSEl_hms   = dHMSGoodTrack_hms.Filter(eCutHMS);
+  auto dSHMSEl_shms = dSHMSGoodTrack_shms.Filter(eCutSHMS);
 
   // Timing cuts
   // Find the timing peak
@@ -218,10 +221,10 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
   };
 
   // timing counts
-  auto dHMSElInTime  = dHMSEl_coin.Filter(timing_cut, {"CTime.ePositronCoinTime_ROC2"});
-  auto dHMSElRandom  = dHMSEl_coin.Filter(anti_timing_cut, {"CTime.ePositronCoinTime_ROC2"});
-  auto dSHMSElInTime = dSHMSEl_coin.Filter(timing_cut, {"CTime.ePositronCoinTime_ROC2"});
-  auto dSHMSElRandom = dSHMSEl_coin.Filter(anti_timing_cut, {"CTime.ePositronCoinTime_ROC2"});
+  auto dHMSElInTime  = dHMSEl.Filter(timing_cut, {"CTime.ePositronCoinTime_ROC2"});
+  auto dHMSElRandom  = dHMSEl.Filter(anti_timing_cut, {"CTime.ePositronCoinTime_ROC2"});
+  auto dSHMSElInTime = dSHMSEl.Filter(timing_cut, {"CTime.ePositronCoinTime_ROC2"});
+  auto dSHMSElRandom = dSHMSEl.Filter(anti_timing_cut, {"CTime.ePositronCoinTime_ROC2"});
   auto dCOINElInTime = dCOINEl.Filter(timing_cut, {"CTime.ePositronCoinTime_ROC2"});
   auto dCOINElRandom = dCOINEl.Filter(anti_timing_cut, {"CTime.ePositronCoinTime_ROC2"});
 
@@ -232,6 +235,21 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
   // =========================================================================================
   // Histograms
   // =========================================================================================
+  // 2D correlations
+  auto hTheta2DNoCuts = d_coin.Histo2D(
+      {"theta2D", "No cuts;#theta_{SHMS};#theta_{HMS};#counts", 50, -.1, .1, 50, -.1, .1},
+      "P.gtr.th", "H.gtr.th");
+  auto hTheta2DTracking = dCOINGoodTrack.Histo2D(
+      {"theta2D", "Cuts: tracking;#theta_{SHMS};#theta_{HMS};#counts", 50, -.1, .1, 50, -.1, .1},
+      "P.gtr.th", "H.gtr.th");
+  auto hTheta2DPID =
+      dCOINEl.Histo2D({"theta2D", "Cuts: tracking+PID;#theta_{SHMS};#theta_{HMS};#counts", 50, -.1,
+                       .1, 50, -.1, .1},
+                      "P.gtr.th", "H.gtr.th");
+  auto hTheta2DTiming =
+      dCOINElInTime.Histo2D({"theta2D", "Cuts: tracking+PID;#theta_{SHMS};#theta_{HMS};#counts", 50,
+                             -.1, .1, 50, -.1, .1},
+                            "P.gtr.th", "H.gtr.th");
   // timing
   auto hCoinTimeNoCuts =
       d_coin.Histo1D({"coin_time.NoCuts", "No Cuts;coin_time;counts", 8000, 0, 1000},
@@ -248,9 +266,9 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
   // P.gtr.dp
   auto hPdpNoCuts =
       d_coin.Histo1D({"P.gtr.dp.NoCuts", "No Cuts;#deltap [%];counts", 200, -30, 40}, "P.gtr.dp");
-  auto hPdpTracking = dSHMSGoodTrack_coin.Histo1D(
+  auto hPdpTracking = dSHMSGoodTrack.Histo1D(
       {"P.gtr.dp.Tracking", "Cuts: Tracking;#deltap [%];counts", 200, -30, 40}, "P.gtr.dp");
-  auto hPdpPID = dSHMSEl_coin.Histo1D(
+  auto hPdpPID = dSHMSEl.Histo1D(
       {"P.gtr.dp.PID", "Cuts: Tracking+PID;#deltap [%];counts", 200, -30, 40}, "P.gtr.dp");
   auto hPdpTiming = dSHMSElInTime.Histo1D(
       {"P.gtr.dp.Timing", "Cuts: Tracking+PID+Timing;#deltap [%];counts", 200, -30, 40},
@@ -258,9 +276,9 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
   // P.gtr.th
   auto hPthNoCuts = d_coin.Histo1D(
       {"P.gtr.th.NoCuts", "No Cuts;#theta_{SHMS};counts", 200, -0.1, 0.1}, "P.gtr.th");
-  auto hPthTracking = dSHMSGoodTrack_coin.Histo1D(
+  auto hPthTracking = dSHMSGoodTrack.Histo1D(
       {"P.gtr.th.Tracking", "Cuts: Tracking;#theta_{SHMS};counts", 200, -0.1, 0.1}, "P.gtr.th");
-  auto hPthPID = dSHMSEl_coin.Histo1D(
+  auto hPthPID = dSHMSEl.Histo1D(
       {"P.gtr.th.PID", "Cuts: Tracking+PID;#theta_{SHMS};counts", 200, -0.1, 0.1}, "P.gtr.th");
   auto hPthTiming = dSHMSElInTime.Histo1D(
       {"P.gtr.th.Timing", "Cuts: Tracking+PID+Timing;#theta_{SHMS};counts", 200, -0.1, 0.1},
@@ -268,9 +286,9 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
   // P.gtr.ph
   auto hPphNoCuts =
       d_coin.Histo1D({"P.gtr.ph.NoCuts", "No Cuts;#phi_{SHMS};counts", 200, -0.1, 0.1}, "P.gtr.ph");
-  auto hPphTracking = dSHMSGoodTrack_coin.Histo1D(
+  auto hPphTracking = dSHMSGoodTrack.Histo1D(
       {"P.gtr.ph.Tracking", "Cuts: Tracking;#phi_{SHMS};counts", 200, -0.1, 0.1}, "P.gtr.ph");
-  auto hPphPID = dSHMSEl_coin.Histo1D(
+  auto hPphPID = dSHMSEl.Histo1D(
       {"P.gtr.ph.PID", "Cuts: Tracking+PID;#phi_{SHMS};counts", 200, -0.1, 0.1}, "P.gtr.ph");
   auto hPphTiming = dSHMSElInTime.Histo1D(
       {"P.gtr.ph.Timing", "Cuts: Tracking+PID+Timing;#phi_{SHMS};counts", 200, -0.1, 0.1},
@@ -278,54 +296,67 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
   // P.gtr.y
   auto hPyNoCuts =
       d_coin.Histo1D({"P.gtr.y.NoCuts", "No Cuts;ytar;counts", 200, -10., 10.}, "P.gtr.y");
-  auto hPyTracking = dSHMSGoodTrack_coin.Histo1D(
+  auto hPyTracking = dSHMSGoodTrack.Histo1D(
       {"P.gtr.y.Tracking", "Cuts: Tracking;ytar;counts", 200, -10., 10.}, "P.gtr.y");
-  auto hPyPID = dSHMSEl_coin.Histo1D(
-      {"P.gtr.y.PID", "Cuts: Tracking+PID;ytar;counts", 200, -10., 10.}, "P.gtr.y");
+  auto hPyPID =
+      dSHMSEl.Histo1D({"P.gtr.y.PID", "Cuts: Tracking+PID;ytar;counts", 200, -10., 10.}, "P.gtr.y");
   auto hPyTiming = dSHMSElInTime.Histo1D(
       {"P.gtr.y.Timing", "Cuts: Tracking+PID+Timing;ytar;counts", 200, -10., 10.}, "P.gtr.y");
   // P.cal.etottracknorm
   auto hPcalEPNoCuts =
       d_coin.Histo1D({"P.cal.etottracknorm.NoCuts", "No Cuts;SHMS E/P;counts", 200, -.5, 1.5},
                      "P.cal.etottracknorm");
-  auto hPcalEPTracking = dSHMSGoodTrack_coin.Histo1D(
+  auto hPcalEPTracking = dSHMSGoodTrack.Histo1D(
       {"P.cal.etottracknorm.Tracking", "Cuts: Tracking;SHMS E/P;counts", 200, -.5, 1.5},
       "P.cal.etottracknorm");
-  auto hPcalEPPID = dSHMSEl_coin.Histo1D(
+  auto hPcalEPPID = dSHMSEl.Histo1D(
       {"P.cal.etottracknorm.PID", "Cuts: Tracking+PID;SHMS E/P;counts", 200, -.5, 1.5},
+      "P.cal.etottracknorm");
+  auto hPcalEPAll = dCOINElInTime.Histo1D(
+      {"P.cal.etottracknorm.All", "Cuts: Tracking+PID+Coincidence;SHMS E/P;counts", 200, -.5, 1.5},
       "P.cal.etottracknorm");
   // P.ngcer.npeSum
   auto hPcerNpheNoCuts = d_coin.Histo1D(
-      {"P.ngcer.npeSum.NoCuts", "No Cuts;SHMS NGC #phe;counts", 200, -5, 25}, "P.ngcer.npeSum");
-  auto hPcerNpheTracking = dSHMSGoodTrack_coin.Histo1D(
-      {"P.ngcer.npeSum.Tracking", "Cuts: Tracking;SHMS NGC #phe;counts", 200, -5, 25},
+      {"P.ngcer.npeSum.NoCuts", "No Cuts;SHMS NGC #phe;counts", 200, -5, 76}, "P.ngcer.npeSum");
+  auto hPcerNpheTracking = dSHMSGoodTrack.Histo1D(
+      {"P.ngcer.npeSum.Tracking", "Cuts: Tracking;SHMS NGC #phe;counts", 200, -5, 76},
       "P.ngcer.npeSum");
-  auto hPcerNphePID = dSHMSEl_coin.Histo1D(
-      {"P.ngcer.npeSum.PID", "Cuts: Tracking+PID;SHMS NGC #phe;counts", 200, -5, 25},
+  auto hPcerNphePID = dSHMSEl.Histo1D(
+      {"P.ngcer.npeSum.PID", "Cuts: Tracking+PID;SHMS NGC #phe;counts", 200, -5, 76},
+      "P.ngcer.npeSum");
+  auto hPcerNpheAll = dCOINElInTime.Histo1D(
+      {"P.ngcer.npeSum.All", "Cuts: Tracking+PID+Coincidence;SHMS NGC #phe;counts", 200, -5, 76},
       "P.ngcer.npeSum");
   // H.cal.etottracknorm
   auto hHcalEPNoCuts =
       d_coin.Histo1D({"H.cal.etottracknorm.NoCuts", "No Cuts;HMS E/P;counts", 200, -.5, 1.5},
                      "H.cal.etottracknorm");
-  auto hHcalEPTracking = dHMSGoodTrack_coin.Histo1D(
+  auto hHcalEPTracking = dHMSGoodTrack.Histo1D(
       {"H.cal.etottracknorm.Tracking", "Cuts: Tracking;HMS E/P;counts", 200, -.5, 1.5},
       "H.cal.etottracknorm");
-  auto hHcalEPPID = dHMSEl_coin.Histo1D(
+  auto hHcalEPPID = dHMSEl.Histo1D(
       {"H.cal.etottracknorm.PID", "Cuts: Tracking+PID;HMS E/P;counts", 200, -.5, 1.5},
+      "H.cal.etottracknorm");
+  auto hHcalEPAll = dCOINElInTime.Histo1D(
+      {"H.cal.etottracknorm.All", "Cuts: Tracking+PID+Coincidence;HMS E/P;counts", 200, -.5, 1.5},
       "H.cal.etottracknorm");
   // H.cer.npeSum
   auto hHcerNpheNoCuts = d_coin.Histo1D(
-      {"H.cer.npeSum.NoCuts", "No Cuts;HMS HGC #phe;counts", 200, -1, 9}, "H.cer.npeSum");
-  auto hHcerNpheTracking = dSHMSGoodTrack_coin.Histo1D(
-      {"H.cer.npeSum.Tracking", "Cuts: Tracking;HMS HGC #phe;counts", 200, -1, 9}, "H.cer.npeSum");
-  auto hHcerNphePID = dSHMSEl_coin.Histo1D(
-      {"H.cer.npeSum.PID", "Cuts: Tracking+PID;HMS HGC #phe;counts", 200, -1, 9}, "H.cer.npeSum");
+      {"H.cer.npeSum.NoCuts", "No Cuts;HMS Cer #phe;counts", 200, -1, 15}, "H.cer.npeSum");
+  auto hHcerNpheTracking = dHMSGoodTrack.Histo1D(
+      {"H.cer.npeSum.Tracking", "Cuts: Tracking;HMS Cer #phe;counts", 200, -1, 15}, "H.cer.npeSum");
+  auto hHcerNphePID = dHMSEl.Histo1D(
+      {"H.cer.npeSum.PID", "Cuts: Tracking+PID+Coincidence;HMS Cer #phe;counts", 200, -1, 15},
+      "H.cer.npeSum");
+  auto hHcerNpheAll = dCOINElInTime.Histo1D(
+      {"H.cer.npeSum.PID", "Cuts: Tracking+PID+Coincidence;HMS Cer #phe;counts", 200, -1, 15},
+      "H.cer.npeSum");
   // H.gtr.dp
   auto hHdpNoCuts =
       d_coin.Histo1D({"H.gtr.dp.NoCuts", "No Cuts;#deltap [%];counts", 200, -30, 40}, "H.gtr.dp");
-  auto hHdpTracking = dHMSGoodTrack_coin.Histo1D(
+  auto hHdpTracking = dHMSGoodTrack.Histo1D(
       {"H.gtr.dp.Tracking", "Cuts: Tracking;#deltap [%];counts", 200, -30, 40}, "H.gtr.dp");
-  auto hHdpPID = dHMSEl_coin.Histo1D(
+  auto hHdpPID = dHMSEl.Histo1D(
       {"H.gtr.dp.PID", "Cuts: Tracking+PID;#deltap [%];counts", 200, -30, 40}, "H.gtr.dp");
   auto hHdpTiming = dHMSElInTime.Histo1D(
       {"H.gtr.dp.Timing", "Cuts: Tracking+PID+Timing;#deltap [%];counts", 200, -30, 40},
@@ -333,9 +364,9 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
   // H.gtr.th
   auto hHthNoCuts = d_coin.Histo1D(
       {"H.gtr.th.NoCuts", "No Cuts;#theta_{HMS};counts", 200, -0.1, 0.1}, "H.gtr.th");
-  auto hHthTracking = dHMSGoodTrack_coin.Histo1D(
+  auto hHthTracking = dHMSGoodTrack.Histo1D(
       {"H.gtr.th.Tracking", "Cuts: Tracking;#theta_{HMS};counts", 200, -0.1, 0.1}, "H.gtr.th");
-  auto hHthPID = dHMSEl_coin.Histo1D(
+  auto hHthPID = dHMSEl.Histo1D(
       {"H.gtr.th.PID", "Cuts: Tracking+PID;#theta_{HMS};counts", 200, -0.1, 0.1}, "H.gtr.th");
   auto hHthTiming = dHMSElInTime.Histo1D(
       {"H.gtr.th.Timing", "Cuts: Tracking+PID+Timing;#theta_{HMS};counts", 200, -0.1, 0.1},
@@ -343,9 +374,9 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
   // H.gtr.ph
   auto hHphNoCuts =
       d_coin.Histo1D({"H.gtr.ph.NoCuts", "No Cuts;#phi_{HMS};counts", 200, -0.1, 0.1}, "H.gtr.ph");
-  auto hHphTracking = dHMSGoodTrack_coin.Histo1D(
+  auto hHphTracking = dHMSGoodTrack.Histo1D(
       {"H.gtr.ph.Tracking", "Cuts: Tracking;#phi_{HMS};counts", 200, -0.1, 0.1}, "H.gtr.ph");
-  auto hHphPID = dHMSEl_coin.Histo1D(
+  auto hHphPID = dHMSEl.Histo1D(
       {"H.gtr.ph.PID", "Cuts: Tracking+PID;#phi_{HMS};counts", 200, -0.1, 0.1}, "H.gtr.ph");
   auto hHphTiming = dHMSElInTime.Histo1D(
       {"H.gtr.ph.Timing", "Cuts: Tracking+PID+Timing;#phi_{HMS};counts", 200, -0.1, 0.1},
@@ -353,25 +384,24 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
   // H.gtr.y
   auto hHyNoCuts =
       d_coin.Histo1D({"H.gtr.y.NoCuts", "No Cuts;ytar;counts", 200, -10., 10.}, "H.gtr.y");
-  auto hHyTracking = dHMSGoodTrack_coin.Histo1D(
+  auto hHyTracking = dHMSGoodTrack.Histo1D(
       {"H.gtr.y.Tracking", "Cuts: Tracking;ytar;counts", 200, -10., 10.}, "H.gtr.y");
-  auto hHyPID = dHMSEl_coin.Histo1D(
-      {"H.gtr.y.PID", "Cuts: Tracking+PID;ytar;counts", 200, -10., 10.}, "H.gtr.y");
+  auto hHyPID =
+      dHMSEl.Histo1D({"H.gtr.y.PID", "Cuts: Tracking+PID;ytar;counts", 200, -10., 10.}, "H.gtr.y");
   auto hHyTiming = dHMSElInTime.Histo1D(
       {"H.gtr.y.Timing", "Cuts: Tracking+PID+Timing;ytar;counts", 200, -10., 10.}, "H.gtr.y");
   // J/psi invariant mass
-  // J/psi invariant mass
   auto hJpsiMassNoCuts = dCOINGoodTrack.Histo1D(
-      {"JpsiMassNoCuts", "Cuts: Tracking;M_{J/#psi} [GeV];counts", 1000, 2, 5}, "M_jpsi");
+      {"JpsiMassNoCuts", "Cuts: Tracking;M_{J/#psi} [GeV];counts", 100, 2.5, 3.5}, "M_jpsi");
   auto hJpsiMassAfterPID = dCOINEl.Histo1D(
-      {"JpsiMassAfterPID", "Cuts: Tracking+PID;M_{J/#psi} [GeV];counts", 1000, 2, 5}, "M_jpsi");
+      {"JpsiMassAfterPID", "Cuts: Tracking+PID;M_{J/#psi} [GeV];counts", 100, 2.5, 3.5}, "M_jpsi");
   auto hJpsiMassAfterTiming = dCOINElInTime.Histo1D(
-      {"JpsiMassAfterTiming", "Cuts: Tracking+PID+Timing;M_{J/#psi} [GeV];counts", 1000, 2, 5},
+      {"JpsiMassAfterTiming", "Cuts: Tracking+PID+Timing;M_{J/#psi} [GeV];counts", 100, 2.5, 3.5},
       "M_jpsi");
-  auto hJpsiMassAfterCuts =
-      dJpsi.Histo1D({"JpsiMassAfterCuts",
-                     "Cuts: Tracking+PID+Timing+J/#psi Mass;M_{J/#psi} [GeV];counts", 1000, 2, 5},
-                    "M_jpsi");
+  auto hJpsiMassAfterCuts = dJpsi.Histo1D(
+      {"JpsiMassAfterCuts", "Cuts: Tracking+PID+Timing+J/#psi Mass;M_{J/#psi} [GeV];counts", 100,
+       2.5, 3.5},
+      "M_jpsi");
   // E_gamma spectrum
   auto hJpsiEgammaNoCuts = dCOINGoodTrack.Histo1D(
       {"JpsiEgammaNoCuts", "Cuts: Tracking;E_{#gamma} [GeV];counts", 60, 8, 11}, "E_gamma");
@@ -422,14 +452,14 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
   auto yield_hms                = d_hms.Count();
   auto yield_coin               = d_coin.Count();
   auto yield_HMSGoodTrack_hms   = dHMSGoodTrack_hms.Count();
-  auto yield_HMSGoodTrack_coin  = dHMSGoodTrack_coin.Count();
+  auto yield_HMSGoodTrack       = dHMSGoodTrack.Count();
   auto yield_SHMSGoodTrack_shms = dSHMSGoodTrack_shms.Count();
-  auto yield_SHMSGoodTrack_coin = dSHMSGoodTrack_coin.Count();
+  auto yield_SHMSGoodTrack      = dSHMSGoodTrack.Count();
   auto yield_COINGoodTrack      = dCOINGoodTrack.Count();
   auto yield_HMSEl_hms          = dHMSEl_hms.Count();
-  auto yield_HMSEl_coin         = dHMSEl_coin.Count();
+  auto yield_HMSEl              = dHMSEl.Count();
   auto yield_SHMSEl_shms        = dSHMSEl_shms.Count();
-  auto yield_SHMSEl_coin        = dSHMSEl_coin.Count();
+  auto yield_SHMSEl             = dSHMSEl.Count();
   auto yield_COINEl             = dCOINEl.Count();
   auto yield_HMSElInTime        = dHMSElInTime.Count();
   auto yield_HMSElRandom        = dHMSElRandom.Count();
@@ -460,14 +490,14 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
 #endif
 
   std::map<std::string, double> counts = {
-      {"shms_raw_yield_coin", (*yield_SHMSGoodTrack_coin) / (good_total_charge)},
+      {"shms_raw_yield_coin", (*yield_SHMSGoodTrack) / (good_total_charge)},
       {"shms_raw_yield_shms ", (*yield_SHMSGoodTrack_shms) / (good_total_charge)},
-      {"hms_raw_yield_coin", (*yield_HMSGoodTrack_coin) / (good_total_charge)},
+      {"hms_raw_yield_coin", (*yield_HMSGoodTrack) / (good_total_charge)},
       {"hms_raw_yield_hms", (*yield_HMSGoodTrack_hms) / (good_total_charge)},
       {"coin_raw_yield", (*yield_COINGoodTrack) / (good_total_charge)},
-      {"shms_e_yield_coin", (*yield_SHMSEl_coin) / (good_total_charge)},
+      {"shms_e_yield_coin", (*yield_SHMSEl) / (good_total_charge)},
       {"shms_e_yield_shms", (*yield_SHMSEl_shms) / (good_total_charge)},
-      {"hms_e_yield_coin", (*yield_HMSEl_coin) / (good_total_charge)},
+      {"hms_e_yield_coin", (*yield_HMSEl) / (good_total_charge)},
       {"hms_e_yield_hms", (*yield_HMSEl_hms) / (good_total_charge)},
       {"coin_ee_yield", (*yield_COINEl) / (good_total_charge)},
       {"hms_e_intime", (*yield_HMSElInTime) / (good_total_charge)},
@@ -532,6 +562,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       "Jpsi", "Invariant Mass",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
+        plt.SetPersist();
         c->SetLogy();
         hJpsiMassNoCuts->SetLineColor(kGreen + 2);
         hJpsiMassNoCuts->SetLineWidth(2);
@@ -549,12 +580,12 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
         return 0;
       },
       [](hallc::DisplayPlot& plt) { return 0; });
-#if 0
   auto JpsiEgamma = ddisplay->CreateDisplayPlot(
       "Jpsi", "Photon Energy",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
-        c->SetLogy();
+        plt.SetPersist();
+        //c->SetLogy();
         hJpsiEgammaNoCuts->SetLineColor(kGreen + 2);
         hJpsiEgammaNoCuts->SetLineWidth(2);
         hJpsiEgammaNoCuts->DrawClone();
@@ -571,10 +602,14 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
         return 0;
       },
       [](hallc::DisplayPlot& plt) { return 0; });
+#if 0
+#endif
+#if 0
   auto JpsiEgammaFree = ddisplay->CreateDisplayPlot(
       "Jpsi", "Photon Energy (Unconstrained)",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
+        plt.SetPersist();
         c->SetLogy();
         hJpsiEgammaFreeNoCuts->SetLineColor(kGreen + 2);
         hJpsiEgammaFreeNoCuts->SetLineWidth(2);
@@ -618,6 +653,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       "Tracking", "P.gtr.dp",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
+        plt.SetPersist();
         c->SetLogy();
         hPdpNoCuts->SetLineColor(kGreen + 2);
         hPdpNoCuts->SetLineWidth(2);
@@ -639,6 +675,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       "Tracking", "P.gtr.th",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
+        plt.SetPersist();
         c->SetLogy();
         hPthNoCuts->SetLineColor(kGreen + 2);
         hPthNoCuts->SetLineWidth(2);
@@ -660,6 +697,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       "Tracking", "P.gtr.ph",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
+        plt.SetPersist();
         c->SetLogy();
         hPphNoCuts->SetLineColor(kGreen + 2);
         hPphNoCuts->SetLineWidth(2);
@@ -681,6 +719,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       "Tracking", "P.gtr.y",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
+        plt.SetPersist();
         c->SetLogy();
         hPyNoCuts->SetLineColor(kGreen + 2);
         hPyNoCuts->SetLineWidth(2);
@@ -702,6 +741,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       "Tracking", "H.gtr.dp",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
+        plt.SetPersist();
         c->SetLogy();
         hHdpNoCuts->SetLineColor(kGreen + 2);
         hHdpNoCuts->SetLineWidth(2);
@@ -723,6 +763,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       "Tracking", "H.gtr.th",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
+        plt.SetPersist();
         c->SetLogy();
         hHthNoCuts->SetLineColor(kGreen + 2);
         hHthNoCuts->SetLineWidth(2);
@@ -744,6 +785,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       "Tracking", "H.gtr.ph",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
+        plt.SetPersist();
         c->SetLogy();
         hHphNoCuts->SetLineColor(kGreen + 2);
         hHphNoCuts->SetLineWidth(2);
@@ -765,6 +807,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       "Tracking", "H.gtr.y",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
+        plt.SetPersist();
         c->SetLogy();
         hHyNoCuts->SetLineColor(kGreen + 2);
         hHyNoCuts->SetLineWidth(2);
@@ -786,6 +829,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       "Timing", "coin_time",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
+        plt.SetPersist();
         c->SetLogy();
         hCoinTimeNoCuts->SetLineColor(kGreen + 2);
         hCoinTimeNoCuts->SetLineWidth(2);
@@ -807,6 +851,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       "PID", "H.cal.etottracknorm",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
+        plt.SetPersist();
         c->SetLogy();
         hHcalEPNoCuts->SetLineColor(kGreen + 2);
         hHcalEPNoCuts->SetLineWidth(2);
@@ -817,6 +862,9 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
         hHcalEPPID->SetLineColor(kBlue + 1);
         hHcalEPPID->SetLineWidth(2);
         hHcalEPPID->DrawClone("same");
+        hHcalEPAll->SetLineColor(kBlack);
+        hHcalEPAll->SetLineWidth(2);
+        hHcalEPAll->DrawClone("same");
         c->BuildLegend();
         return 0;
       },
@@ -825,6 +873,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       "PID", "H.cer.nphe",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
+        plt.SetPersist();
         c->SetLogy();
         hHcerNpheNoCuts->SetLineColor(kGreen + 2);
         hHcerNpheNoCuts->SetLineWidth(2);
@@ -835,6 +884,9 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
         hHcerNphePID->SetLineColor(kBlue + 1);
         hHcerNphePID->SetLineWidth(2);
         hHcerNphePID->DrawClone("same");
+        hHcerNpheAll->SetLineColor(kBlack);
+        hHcerNpheAll->SetLineWidth(2);
+        hHcerNpheAll->DrawClone("same");
         c->BuildLegend();
         return 0;
       },
@@ -843,6 +895,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       "PID", "P.cal.etottracknorm",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
+        plt.SetPersist();
         c->SetLogy();
         hPcalEPNoCuts->SetLineColor(kGreen + 2);
         hPcalEPNoCuts->SetLineWidth(2);
@@ -853,6 +906,9 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
         hPcalEPPID->SetLineColor(kBlue + 1);
         hPcalEPPID->SetLineWidth(2);
         hPcalEPPID->DrawClone("same");
+        hPcalEPAll->SetLineColor(kBlack);
+        hPcalEPAll->SetLineWidth(2);
+        hPcalEPAll->DrawClone("same");
         c->BuildLegend();
         return 0;
       },
@@ -861,6 +917,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       "PID", "P.ngcer.nphe",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
+        plt.SetPersist();
         c->SetLogy();
         hPcerNpheNoCuts->SetLineColor(kGreen + 2);
         hPcerNpheNoCuts->SetLineWidth(2);
@@ -871,6 +928,9 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
         hPcerNphePID->SetLineColor(kBlue + 1);
         hPcerNphePID->SetLineWidth(2);
         hPcerNphePID->DrawClone("same");
+        hPcerNpheAll->SetLineColor(kBlack);
+        hPcerNpheAll->SetLineWidth(2);
+        hPcerNpheAll->DrawClone("same");
         c->BuildLegend();
         return 0;
       },

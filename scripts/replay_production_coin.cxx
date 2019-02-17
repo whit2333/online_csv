@@ -1,11 +1,26 @@
 
+//#include "THaPostProcess.h"
+//
+R__LOAD_LIBRARY(libHallC.so)
+#include "hcana/HallC_Data.h"
+//
 R__LOAD_LIBRARY(libScandalizer.so)
+//#include "monitor/DetectorDisplay.h"
+//#include "monitor/DisplayPlots.h"
+//#include "monitor/MonitoringDisplay.h"
 #include "scandalizer/PostProcessors.h"
 #include "scandalizer/ScriptHelpers.h"
+//
+//#include "THaPostProcess.h"
+//#include "monitor/ExperimentMonitor.h"
+//#include "scandalizer/PostProcessors.h"
 
 void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 50000) {
 
   hallc::helper::script_requires_hcana();
+
+  spdlog::set_level(spdlog::level::warn);
+  spdlog::flush_every(std::chrono::seconds(5));
 
   // Get RunNumber and MaxEvent if not provided.
   if (RunNumber == 0) {
@@ -239,6 +254,23 @@ void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 50000) {
                              // 1 = counter is # of all decode reads
                              // 2 = counter is event number
 
+  auto ddisplay      = new hallc::MonitoringDisplay(RunNumber);
+  ddisplay->_data._root_folder = "/replay_production_coin/";
+
+  auto hms_event_display  = new hallc::event_display::HMSEventDisplay(ddisplay);
+  hms_event_display->_hod = hhod;
+  hms_event_display->_run_number = RunNumber;
+
+  auto shms_event_display  = new hallc::event_display::SHMSEventDisplay(ddisplay);
+  shms_event_display->_hod = phod;
+  shms_event_display->_run_number = RunNumber;
+
+  //ddisplay->InitAll();
+  //ddisplay->UpdateAll();
+
+  analyzer->AddPostProcess(hms_event_display);
+  analyzer->AddPostProcess(shms_event_display);
+
   analyzer->SetEvent(event);
   // Set EPICS event type
   analyzer->SetEpicsEvtType(180);
@@ -261,4 +293,25 @@ void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 50000) {
   analyzer->PrintReport("TEMPLATES/COIN/PRODUCTION/coin_production.template",
                         Form("REPORT_OUTPUT/COIN/PRODUCTION/replay_coin_production_%d_%d.report",
                              RunNumber, MaxEvent)); // optional
+
+  //ddisplay->CreateDisplayPlot(
+  //    "hms", "tar",
+  //    [&](hallc::DisplayPlot& plt) {
+  //      auto c = plt.SetCanvas( new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
+  //      //c = plt._plot_data._canvas; // new TCanvas("c1", "c1", 1600, 1200);
+  //      c->Divide(2, 1);
+  //      c->cd(1);
+  //      TH2* h2 = (TH2*) gROOT->FindObject("hgtrxp_vs_pgtrxp");
+  //      h2->Draw("colz");
+
+  //      c->cd(2);
+  //      // h_beta_0->DrawCopy();
+
+  //      //h_EprOverP_0->DrawCopy();
+  //      //h_EprOverP_2->SetLineColor(2);
+  //      //h_EprOverP_2->DrawCopy("same");
+  //      return 0;
+  //    },
+  //    [&](hallc::DisplayPlot& plt) { return 0; });
+  //ddisplay->UpdateAll();
 }
