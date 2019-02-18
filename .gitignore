@@ -20,6 +20,9 @@ DEF-files
 *.cast
 
 cache*
+
+untracked*
+
 # Compiled Object files
 *.slo
 *.lo
