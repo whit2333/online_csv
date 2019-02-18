@@ -253,13 +253,6 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   pp1->_analyzer          = analyzer;
   pp1->_spectrometer_name = "SHMS";
 
-  hallc::PVList pv_list;
-  pv_list.AddPV("hcDAQMissingRefTime");
-  // hallc::PVList pv_list2;
-  // pv_list.AddPV("hcYield:SHMS:EL_CLEAN:Count");
-  // pv_list2.AddPV("hcYield:SHMS:EL_CLEAN:Charge");
-  // pv_list2.AddPV("hcYield:HMS:EL_CLEAN:Count");
-  // pv_list2.AddPV("hcYield:HMS:EL_CLEAN:Charge");
 
   auto SHMS_scaler_yield_monitor = new hallc::scandalizer::YieldMonitor(hscaler,"SHMS:EL_CLEAN","H.pEL_CLEAN.scaler","H.BCM2.scalerCharge");
   analyzer->AddPostProcess(SHMS_scaler_yield_monitor);
@@ -267,48 +260,8 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   auto HMS_scaler_yield_monitor = new hallc::scandalizer::YieldMonitor(hscaler,"HMS:EL_CLEAN","H.hEL_CLEAN.scaler","H.BCM2.scalerCharge");
   analyzer->AddPostProcess(HMS_scaler_yield_monitor);
 
-  // std::map<std::string, int> scalers_wanted;
-  // hallc::scandalizer::SimplePostProcess* scaler_yield_monitors = new
-  // hallc::scandalizer::SimplePostProcess(
-  //  [&](){
-  //    for(auto aloc : hscaler->scalerloc) {
-  //      if( aloc ) {
-  //        std::cout << aloc->name << "\n";
-  //        if( std::string("H.pEL_CLEAN.scaler") == aloc->name.Data()){
-  //          size_t ivar = aloc->ivar;
-  //          scalers_wanted["H.pEL_CLEAN.scaler"] = ivar;
-  //        }
-  //        if( std::string("H.BCM2.scalerCharge") == aloc->name.Data()){
-  //          size_t ivar = aloc->ivar;
-  //          scalers_wanted["H.BCM2.scalerCharge"] = ivar;
-  //        }
-  //      }
-  //    }
-  //    return 0;
-  //  },
-  //  [&](const THaEvData* evt){
-  //    static double last_charge = 0;
-  //    static int    last_scaler = 0;
-  //    static int counter = 0;
-  //    int pEL_CLEAN = 0;
-  //    if (scalers_wanted.count("H.pEL_CLEAN.scaler") != 0) {
-  //      pEL_CLEAN = hscaler->dvars[scalers_wanted["H.pEL_CLEAN.scaler"]];
-  //    }
-  //    double BCM2 =  0.0;
-  //    if (scalers_wanted.count("H.BCM2.scalerCharge") != 0) {
-  //      BCM2 = hscaler->dvars[scalers_wanted["H.BCM2.scalerCharge"]];
-  //    }
-  //    if ((evt->GetEvNum() > 1200) && (counter > 5000)) {
-  //      counter = 0;
-  //      pv_list.Put("hcYield:SHMS:EL_CLEAN:Count",pEL_CLEAN - last_scaler);
-  //      pv_list.Put("hcYield:SHMS:EL_CLEAN:charge",BCM2 - last_charge);
-  //    }
-  //    counter++;
-  //    last_charge = pEL_CLEAN;
-  //    last_scaler =  BCM2;
-  //    return 0;
-  //  });
-
+  hallc::PVList pv_list;
+  pv_list.AddPV("hcDAQMissingRefTime");
   hallc::scandalizer::SimplePostProcess* daq_missing_ref_monitor =
       new hallc::scandalizer::SimplePostProcess(
           [&]() { return 0; },
@@ -330,49 +283,6 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
             return 0;
           });
   analyzer->AddPostProcess(daq_missing_ref_monitor);
-
-  //    static double eff_num             = 0.0000001;
-  //    static double eff_den             = 0.0;
-  //    static int    n_num               = 0;
-  //    static int    n_den               = 0;
-  //    int           shmsDC1Planes_nhits = 0;
-  //    int           shmsDC2Planes_nhits = 0;
-  //    for (int ip = 0; ip < 6; ip++) {
-  //      shmsDC1Planes_nhits += pdc->GetPlane(ip)->GetNHits();
-  //    }
-  //    for (int ip = 6; ip < 12; ip++) {
-  //      shmsDC2Planes_nhits += pdc->GetPlane(ip)->GetNHits();
-  //    }
-  //    bool   shms_DC_too_many_hits = (shmsDC1Planes_nhits > 8) || (shmsDC2Planes_nhits > 8);
-  //    double beta                  = phod->GetBetaNotrk();
-  //    bool   good_beta             = beta > 0.4;
-  //    bool   shms_good_hodoscope   = phod->fGoodScinHits;
-  //    bool   good_ntracks          = (pdc->GetNTracks() > 0);
-  //    bool   good_hgc              = phgcer->GetCerNPE() > 1;
-  //    if ((good_beta && shms_good_hodoscope) && (!shms_DC_too_many_hits) && good_hgc) {
-  //      eff_den = eff_den + 1.0;
-  //      n_den++;
-  //      if (good_ntracks) {
-  //        eff_num = eff_num + 1.0;
-  //        n_num++;
-  //      }
-  //    }
-  //    if ((evt->GetEvNum() > 1200) && (counter > 1000)) {
-  //      std::cout << " efficiency :  " << eff_num / eff_den << "\n";
-  //      //std::cout << " Event : " << evt->GetEvNum() << "  ( " << evt->GetEvType() << ")\n";
-  //      pv_list.Put("hcSHMSTrackingEff", eff_num/eff_den);
-  //      pv_list.Put("hcSHMSTrackingEff:Unc",std::sqrt(double(n_num))/(n_num+n_den+0.0000001));
-  //      pv_list.Put("hcSHMSTrackingEff.LOW",0.95);
-  //      pv_list.Put("hcSHMSTrackingEff.LOLO",0.93);
-
-  //      eff_num                = 0.000000001;
-  //      eff_den                = 0.0;
-  //      //analyzer->_skip_events = 300;
-  //      counter = 0;
-  //    }
-  //    counter++;
-  //    return 0;
-  //  });
 
   analyzer->AddPostProcess(pp1);
   analyzer->AddPostProcess(pp1a);
@@ -412,7 +322,7 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   // Define DEF-file+
   analyzer->SetOdefFile("online_monitor/scandalizer_monitor.def");
   // Define cuts file
-  analyzer->SetCutFile("UTIL_SIDIS/DEF-files/coin_production_sidis_cuts.def"); // optional
+  analyzer->SetCutFile("online_monitor/scandalizer_monitor.cuts"); // optional
   // File to record accounting information for cuts
   analyzer->SetSummaryFile(Form("REPORT_OUTPUT/COIN/PRODUCTION/summary_production_%d_%d.report",
                                 RunNumber, MaxEvent)); // optional
