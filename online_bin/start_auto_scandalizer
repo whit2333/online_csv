@@ -38,7 +38,7 @@ def launch_full_shms_replay(run_number):
         
 def launch_scan_coin_replay(run_number):
     global p
-    time.sleep(500)
+    time.sleep(120)
     #command=' pwd && sleep 200 '
     replay_dir = "/home/cdaq/whit/"
     try:
