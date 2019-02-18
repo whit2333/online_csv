@@ -133,11 +133,15 @@ fi
 pushd $CURRENT_REPLAY_DIR
 
 root -b -q "scripts/good_jpsi_counter.cxx(${run_number})"
+./bin/monitor_singles -r ${run_number}
 sleep 1
 mkdir -p monitoring/${run_number}
 http_proxy=  wget http://cdaql1.jlab.org:8888/good_jpsi_counter/${run_number}/Jpsi/Invariant_Mass/fPrimitives/JpsiMassAfterTiming/root.json -O monitoring/${run_number}/Invariant_Mass_after_timing.json
 http_proxy=  wget http://cdaql1.jlab.org:8888/good_jpsi_counter/${run_number}/Jpsi/Photon_Energy/fPrimitives/JpsiEgammaAfterCuts/root.json -O monitoring/${run_number}/Photon_Energy_after_cuts.json
-
+http_proxy=  wget http://cdaql1.jlab.org:8888/good_jpsi_counter/${run_number}/Jpsi/abs_t/fPrimitives/JpsiAbstAfterCuts/root.json -O monitoring/${run_number}/Abst_after_cuts.json
+http_proxy=  wget http://cdaql1.jlab.org:8888/good_jpsi_counter/${run_number}/Jpsi/abs_t/fPrimitives/hJpsiAbstAfterCuts_lowE/root.json -O monitoring/${run_number}/Abst_after_cuts_lowE.json
+http_proxy=  wget http://cdaql1.jlab.org:8888/good_jpsi_counter/${run_number}/Jpsi/abs_t/fPrimitives/hJpsiAbstAfterCuts_highE/root.json -O monitoring/${run_number}/Abst_after_cuts_highE.json
+http_proxy=  wget http://cdaql1.jlab.org:8888/good_jpsi_counter/${run_number}/Jpsi/Photon_Energy_\(Unconstrained\)/fPrimitives/JpsiEgammaFreeAfterCuts/root.json -O monitoring/${run_number}/Photon_Energy2_after_cuts.json
 
 popd
 

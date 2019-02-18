@@ -44,6 +44,7 @@ constexpr const double M_e  = .000511;
 // =================================================================================
 // Cuts
 // =================================================================================
+#if 0
 std::string goodTrackSHMS = "P.gtr.dp > -10 && P.gtr.dp < 22 && P.tr.n == 1 && "
                             "TMath::Abs(P.gtr.th) < 0.05 "
                             "&& -0.035 < P.gtr.ph && P.gtr.ph < 0.025"
@@ -52,11 +53,14 @@ std::string goodTrackHMS = "H.gtr.dp > -8 && H.gtr.dp < 8 && H.tr.n == 1&&"
                            "-0.08 < H.gtr.th && H.gtr.th < 0.06 && "
                            "-0.03 < H.gtr.ph && H.gtr.ph < 0.04"
                            "&& TMath::Abs(H.gtr.y) < 2.0";
-std::string eCutSHMS = "P.cal.etottracknorm > 0.8 && P.cal.etottracknorm < 2.&&"
+#endif
+std::string goodTrackSHMS = "P.gtr.dp > -10 && P.gtr.dp < 22";
+std::string goodTrackHMS  = "H.gtr.dp > -8 && H.gtr.dp < 8 ";
+std::string eCutSHMS      = "P.cal.etottracknorm > 0.8 && P.cal.etottracknorm < 2.&&"
                        "P.ngcer.npeSum > 2";
 std::string eCutHMS = "H.cal.etottracknorm > 0.80 && H.cal.etottracknorm < 2.&&"
                       "H.cer.npeSum > 1.";
-std::string Jpsi_cut = "M_jpsi > 3.05 && M_jpsi < 3.15";
+std::string Jpsi_cut = "M_jpsi > 3.05 && M_jpsi < 3.12";
 
 // =================================================================================
 // Definitions
@@ -67,7 +71,8 @@ using Pvec4D = ROOT::Math::PxPyPzMVector;
 // =================================================================================
 // J/psi reconstruction
 // =================================================================================
-auto p_electron = [](double px, double py, double pz) { return Pvec4D{px, py, pz, M_e}; };
+auto p_electron = [](double px, double py, double pz) { return Pvec4D{px*0.996, py*0.996, pz*0.996, M_e}; };
+auto p_positron = [](double px, double py, double pz) { return Pvec4D{px*0.994, py*0.994, pz*0.994, M_e}; };
 auto p_jpsi     = [](const Pvec4D& e1, const Pvec4D& e2) { return e1 + e2; };
 auto E_gamma    = [](const Pvec4D& jpsi) {
   double res =
@@ -191,7 +196,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
   auto dSHMSGoodTrack      = d_coin.Filter(goodTrackSHMS);
   auto dCOINGoodTrack      = dHMSGoodTrack.Filter(goodTrackSHMS)
                             .Define("p_electron", p_electron, {"P.gtr.px", "P.gtr.py", "P.gtr.pz"})
-                            .Define("p_positron", p_electron, {"H.gtr.px", "H.gtr.py", "H.gtr.pz"})
+                            .Define("p_positron", p_positron, {"H.gtr.px", "H.gtr.py", "H.gtr.pz"})
                             .Define("p_jpsi", p_jpsi, {"p_electron", "p_positron"})
                             .Define("M_jpsi", "p_jpsi.M()")
                             .Define("E_gamma", E_gamma, {"p_jpsi"})
@@ -231,6 +236,10 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
   // J/psi cut
   auto dJpsi       = dCOINElInTime.Filter(Jpsi_cut);
   auto dJpsiRandom = dCOINElRandom.Filter(Jpsi_cut);
+
+  // Egamma cut
+  auto dJpsi_low_Egamma = dJpsi.Filter("E_gamma_free< 10.35");
+  auto dJpsi_high_Egamma = dJpsi.Filter("E_gamma_free> 10.35");
 
   // =========================================================================================
   // Histograms
@@ -404,29 +413,29 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       "M_jpsi");
   // E_gamma spectrum
   auto hJpsiEgammaNoCuts = dCOINGoodTrack.Histo1D(
-      {"JpsiEgammaNoCuts", "Cuts: Tracking;E_{#gamma} [GeV];counts", 60, 8, 11}, "E_gamma");
+      {"JpsiEgammaNoCuts", "Cuts: Tracking;E_{#gamma} [GeV];counts", 32, 8, 11}, "E_gamma");
   auto hJpsiEgammaAfterPID = dCOINEl.Histo1D(
-      {"JpsiEgammaAfterPID", "Cuts: Tracking+PID;E_{#gamma} [GeV];counts", 60, 8, 11}, "E_gamma");
+      {"JpsiEgammaAfterPID", "Cuts: Tracking+PID;E_{#gamma} [GeV];counts", 32, 8, 11}, "E_gamma");
   auto hJpsiEgammaAfterTiming = dCOINElInTime.Histo1D(
-      {"JpsiEgammaAfterTiming", "Cuts: Tracking+PID+Timing;E_{#gamma} [GeV];counts", 60, 8, 11},
+      {"JpsiEgammaAfterTiming", "Cuts: Tracking+PID+Timing;E_{#gamma} [GeV];counts", 32, 8, 11},
       "E_gamma");
   auto hJpsiEgammaAfterCuts =
       dJpsi.Histo1D({"JpsiEgammaAfterCuts",
-                     "Cuts: Tracking+PID+Timing+J/#psi Mass;E_{#gamma} [GeV];counts", 60, 8, 11},
+                     "Cuts: Tracking+PID+Timing+J/#psi Mass;E_{#gamma} [GeV];counts", 32, 8, 11},
                     "E_gamma");
   // E_gamma_free spectrum
   auto hJpsiEgammaFreeNoCuts = dCOINGoodTrack.Histo1D(
-      {"JpsiEgammaFreeNoCuts", "Cuts: Tracking;E_{#gamma} [GeV];counts", 60, 8, 11},
+      {"JpsiEgammaFreeNoCuts", "Cuts: Tracking;E_{#gamma} [GeV];counts", 32, 8, 11},
       "E_gamma_free");
   auto hJpsiEgammaFreeAfterPID = dCOINEl.Histo1D(
-      {"JpsiEgammaFreeAfterPID", "Cuts: Tracking+PID;E_{#gamma} [GeV];counts", 60, 8, 11},
+      {"JpsiEgammaFreeAfterPID", "Cuts: Tracking+PID;E_{#gamma} [GeV];counts", 32, 8, 11},
       "E_gamma_free");
   auto hJpsiEgammaFreeAfterTiming = dCOINElInTime.Histo1D(
-      {"JpsiEgammaFreeAfterTiming", "Cuts: Tracking+PID+Timing;E_{#gamma} [GeV];counts", 60, 8, 11},
+      {"JpsiEgammaFreeAfterTiming", "Cuts: Tracking+PID+Timing;E_{#gamma} [GeV];counts", 32, 8, 11},
       "E_gamma_free");
   auto hJpsiEgammaFreeAfterCuts =
       dJpsi.Histo1D({"JpsiEgammaFreeAfterCuts",
-                     "Cuts: Tracking+PID+Timing+J/#psi Mass;E_{#gamma} [GeV];counts", 60, 8, 11},
+                     "Cuts: Tracking+PID+Timing+J/#psi Mass;E_{#gamma} [GeV];counts", 32, 8, 11},
                     "E_gamma_free");
   // |t| spectrum
   auto hJpsiAbstNoCuts = dCOINGoodTrack.Histo1D(
@@ -437,6 +446,12 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       {"JpsiAbstAfterPID", "Cuts: Tracking+PID+Timing;|t| [GeV^{2}];counts", 60, 0, 6}, "abst");
   auto hJpsiAbstAfterCuts = dJpsi.Histo1D(
       {"JpsiAbstAfterCuts", "Cuts: Tracking+PID+Timing+J/#psi Mass;|t| [GeV^{2}];counts", 60, 0, 6},
+      "abst");
+  auto hJpsiAbstAfterCuts_lowE = dJpsi_low_Egamma.Histo1D(
+      {"hJpsiAbstAfterCuts_lowE", "Cuts: Tracking+PID+Timing+J/#psi Mass Eg<1.35;|t| [GeV^{2}];counts", 60, 0, 6},
+      "abst");
+  auto hJpsiAbstAfterCuts_highE = dJpsi_high_Egamma.Histo1D(
+      {"hJpsiAbstAfterCuts_highE", "Cuts: Tracking+PID+Timing+J/#psi Mass Eg>1.35;|t| [GeV^{2}];counts", 60, 0, 6},
       "abst");
 
   // scalers
@@ -585,7 +600,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
         plt.SetPersist();
-        //c->SetLogy();
+        // c->SetLogy();
         hJpsiEgammaNoCuts->SetLineColor(kGreen + 2);
         hJpsiEgammaNoCuts->SetLineWidth(2);
         hJpsiEgammaNoCuts->DrawClone();
@@ -602,9 +617,6 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
         return 0;
       },
       [](hallc::DisplayPlot& plt) { return 0; });
-#if 0
-#endif
-#if 0
   auto JpsiEgammaFree = ddisplay->CreateDisplayPlot(
       "Jpsi", "Photon Energy (Unconstrained)",
       [&](hallc::DisplayPlot& plt) {
@@ -628,9 +640,10 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       },
       [](hallc::DisplayPlot& plt) { return 0; });
   auto JpsiAbst = ddisplay->CreateDisplayPlot(
-      "Jpsi", "|t|",
+      "Jpsi", "abs t",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
+        plt.SetPersist();
         c->SetLogy();
         hJpsiAbstNoCuts->SetLineColor(kGreen + 2);
         hJpsiAbstNoCuts->SetLineWidth(2);
@@ -644,11 +657,17 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
         hJpsiAbstAfterCuts->SetLineColor(kBlack);
         hJpsiAbstAfterCuts->SetLineWidth(2);
         hJpsiAbstAfterCuts->DrawClone("same");
+        hJpsiAbstAfterCuts_lowE->SetLineColor(kRed);
+        hJpsiAbstAfterCuts_lowE->SetLineWidth(2);
+        hJpsiAbstAfterCuts_lowE->DrawClone("same");
+        hJpsiAbstAfterCuts_highE->SetLineColor(kRed+4);
+        hJpsiAbstAfterCuts_highE->SetLineWidth(2);
+        hJpsiAbstAfterCuts_highE->DrawClone("same");
+
         c->BuildLegend();
         return 0;
       },
       [](hallc::DisplayPlot& plt) { return 0; });
-#endif
   auto TrackingPdp = ddisplay->CreateDisplayPlot(
       "Tracking", "P.gtr.dp",
       [&](hallc::DisplayPlot& plt) {

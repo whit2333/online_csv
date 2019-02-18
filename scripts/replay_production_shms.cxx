@@ -208,8 +208,8 @@ void replay_production_shms(Int_t RunNumber = 7160, Int_t MaxEvent = 50000) {
   //pp1a->_analyzer = analyzer;
   //pp1a->_spectrometer_name = "HMS";
 
-  hallc::scandalizer::SpectrometerMonitor * pp1 = new hallc::scandalizer::SpectrometerMonitor(phod,phgcer,pdc);
-  pp1->_analyzer = analyzer;
+  //hallc::scandalizer::SpectrometerMonitor * pp1 = new hallc::scandalizer::SpectrometerMonitor(phod,phgcer,pdc);
+  //pp1->_analyzer = analyzer;
 
   //hallc::scandalizer::SimplePostProcess* pp1 = new hallc::scandalizer::SimplePostProcess(
   //  [&](){
@@ -261,7 +261,7 @@ void replay_production_shms(Int_t RunNumber = 7160, Int_t MaxEvent = 50000) {
   //  });
 
   //analyzer->AddPostProcess(pp0);
-  analyzer->AddPostProcess(pp1);
+  //analyzer->AddPostProcess(pp1);
   //analyzer->AddPostProcess(pp1a);
 
   // A simple event class to be output to the resulting tree.

@@ -175,33 +175,42 @@ void scandalizer_monitor_shms(Int_t RunNumber = 7150, Int_t MaxEvent = 500000) {
   // then  repeatedly skips 3000 events and processes 1000.
   //auto pp0 = new hallc::scandalizer::SkipPeriodicAfterPedestal();
   //auto pp0 = new hallc::scandalizer::SkipAfterPedestal();
-  auto pp0 = new hallc::scandalizer::SkipPeriodicToEOF(200000,5000);
-  pp0->_analyzer = analyzer; /// \todo: fix these 2 lines
-  analyzer->AddPostProcess(pp0);
-
-  //SimplePostProcess([&]() { return 0; },
-  //                                                     [&](const THaEvData* evt) {
-  //                                                       static int counter = 0;
-  //                                                       if (evt->GetEvNum() > 2000) {
-  //                                                         if (counter == 0) {
-  //                                                           analyzer->_skip_events = 3000;
-  //                                                           counter                = 1000;
-  //                                                         } else {
-  //                                                           counter--;
-  //                                                         }
-  //                                                       }
-  //                                                       return 0;
-  //                                                     });
-
-  //hallc::scandalizer::SpectrometerMonitor * pp1a = new hallc::scandalizer::SpectrometerMonitor(hhod,hcer,hdc);
-  //pp1a->_analyzer = analyzer;
-  //pp1a->_spectrometer_name = "HMS";
-
+  //auto pp0 = new hallc::scandalizer::SkipPeriodicToEOF(200000,5000);
+  //pp0->_analyzer = analyzer; /// \todo: fix these 2 lines
+  //analyzer->AddPostProcess(pp0);
 
   hallc::scandalizer::SpectrometerMonitor * pp1 = new hallc::scandalizer::SpectrometerMonitor(phod,phgcer,pdc);
   pp1->_analyzer = analyzer; /// \todo fix
   analyzer->AddPostProcess(pp1);
   pp1->_spectrometer_name = "SHMS";
+
+  auto SHMS_scaler_yield_monitor = new hallc::scandalizer::YieldMonitor(hscaler,"SHMS:EL_CLEAN","H.pEL_CLEAN.scaler","H.BCM2.scalerCharge");
+  analyzer->AddPostProcess(SHMS_scaler_yield_monitor);
+
+  hallc::PVList pv_list;
+  pv_list.AddPV("hcDAQMissingRefTime");
+  hallc::scandalizer::SimplePostProcess* daq_missing_ref_monitor =
+      new hallc::scandalizer::SimplePostProcess(
+          [&]() { return 0; },
+          [&](const THaEvData* evt) {
+            static int    counter = 0;
+            static double total   = 0.2;
+            total += hdc->fNTDCRef_miss + hdc->fNADCRef_miss;
+            total += pdc->fNTDCRef_miss + pdc->fNADCRef_miss;
+            total += hhod->fNTDCRef_miss + hhod->fNADCRef_miss;
+            total += phod->fNTDCRef_miss + phod->fNADCRef_miss;
+            total += hcer->fNTDCRef_miss + hcer->fNADCRef_miss;
+            total += pngcer->fNTDCRef_miss + pngcer->fNADCRef_miss;
+            total += phgcer->fNTDCRef_miss + phgcer->fNADCRef_miss;
+            if ((evt->GetEvNum() > 1200) && (counter > 1000)) {
+              counter = 0;
+              pv_list.Put("hcDAQMissingRefTime", total);
+            }
+            counter++;
+            return 0;
+          });
+  analyzer->AddPostProcess(daq_missing_ref_monitor);
+
   //analyzer->AddPostProcess(pp1a);
 
   // A simple event class to be output to the resulting tree.

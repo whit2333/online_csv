@@ -27,6 +27,16 @@ void make_jpsi_table() {
     std::ifstream json_input_file("db2/jpsi_run_count_list.json");
     json_input_file >> j2;
   }
+  json j_hms;
+  {
+    std::ifstream json_input_file("db2/hms_run_count_list.json");
+    json_input_file >> j_hms;
+  }
+  json j_shms;
+  {
+    std::ifstream json_input_file("db2/shms_run_count_list.json");
+    json_input_file >> j_shms;
+  }
   json j3;
   {
     std::ifstream json_input_file("db2/run_list_extra.json");
@@ -62,7 +72,7 @@ void make_jpsi_table() {
 
   std::cout << " runs : \n";
 
-  std::string old_target = "";
+  std::string old_target          = "";
   std::string old_radiator_status = "";
 
   double p_hms   = 0.0;
@@ -81,7 +91,6 @@ void make_jpsi_table() {
     if (radiator_status != old_radiator_status) {
       print_header();
     }
-
 
     if ((p_hms != runjs["spectrometers"]["hms_momentum"].get<double>()) ||
         (th_hms != runjs["spectrometers"]["hms_angle"].get<double>()) ||
@@ -126,45 +135,51 @@ void make_jpsi_table() {
     // else {
     //  fmt::print(" {:>11} ", "");
     //}
-    if (j2.count(it.key()) != 0) {
-      try {
-
-        double shms_yield = j2[it.key()]["J/psi Good event count"].get<double>();
-        // double pi_yield = j2[it.key()]["pion bg sub. counts"].get<double>();
-        fmt::print(" {:>9.1f} ", shms_yield);
-        if (j2[it.key()].find("good_total_charge") != j2[it.key()].end()) {
-          total_charge = j2[it.key()]["good_total_charge"].get<double>();
-          // total_charge = runjs["total_charge"].get<double>() / 1000.0;
-          fmt::print("/ {:<6.1f} ", total_charge);
-        } else {
-          fmt::print(" {:>11} ", "");
-        }
-        fmt::print(" {:>9.5f} ", shms_yield / total_charge);
-        fmt::print(" +- {:>8.5f} ", std::sqrt(shms_yield) / total_charge); 
-        int n_events = j2[it.key()]["total trigger events"].get<int>();
-        fmt::print(" {:>9d} ", n_events);
-      } catch (std::domain_error) {
-        // you suck
-        //std::cout << "you suck\n";
-      }
-      // double live_time = j2[it.key()]["live time"].get<int>();
-    } else {
-      fmt::print(" {:>9} ", "");
-      fmt::print(" {:>9} ", "");
-      fmt::print(" {:>10} ", "");
-    }
-    std::string comment;
-    if (j3.count(it.key()) != 0) {
-      if (j3[it.key()].find("comment") != j3[it.key()].end()) {
+    if (j_hms.count(it.key()) != 0) {
+      auto   rl_hms = j_hms[it.key()];
+      double n_hms  = rl_hms["count_e"].get<double>();
+      double hms_yield =
+          n_hms * rl_hms["ps_factor"].get<double>() / rl_hms["good_total_charge"].get<double>();
+      double hms_unc = (n_hms > 0) ? hms_yield / sqrt(n_hms) : 0;
+      if (j2.count(it.key()) != 0) {
         try {
-          comment = j3[it.key()]["comment"].get<std::string>();
+
+          double shms_yield = j2[it.key()]["J/psi Good event count"].get<double>();
+          // double pi_yield = j2[it.key()]["pion bg sub. counts"].get<double>();
+          fmt::print(" {:>9.1f} ", shms_yield);
+          if (j2[it.key()].find("good_total_charge") != j2[it.key()].end()) {
+            total_charge = j2[it.key()]["good_total_charge"].get<double>();
+            // total_charge = runjs["total_charge"].get<double>() / 1000.0;
+            fmt::print("/ {:<6.1f} ", total_charge);
+          } else {
+            fmt::print(" {:>11} ", "");
+          }
+          fmt::print(" {:>9.5f} ", shms_yield / total_charge);
+          fmt::print(" +- {:>8.5f} ", std::sqrt(shms_yield) / total_charge);
+          int n_events = j2[it.key()]["total trigger events"].get<int>();
+          fmt::print(" {:>9d} ", n_events);
         } catch (std::domain_error) {
           // you suck
+          // std::cout << "you suck\n";
+        }
+        // double live_time = j2[it.key()]["live time"].get<int>();
+      } else {
+        fmt::print(" {:>9} ", "");
+        fmt::print(" {:>9} ", "");
+        fmt::print(" {:>10} ", "");
+      }
+      std::string comment;
+      if (j3.count(it.key()) != 0) {
+        if (j3[it.key()].find("comment") != j3[it.key()].end()) {
+          try {
+            comment = j3[it.key()]["comment"].get<std::string>();
+          } catch (std::domain_error) {
+            // you suck
+          }
         }
       }
+      fmt::print(" {:<} ", comment);
+      std::cout << "\n";
     }
-    fmt::print(" {:<} ", comment);
-    std::cout << "\n";
+    print_header();
   }
-  print_header();
-}
