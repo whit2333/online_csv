@@ -1,0 +1,80 @@
+[
+    {
+        "charge_goal": 250.0,
+        "hms_angle": 19.1,
+        "hms_momentum": 4.95,
+        "jpsi_count": 9.0,
+        "name": "High-E/low-t (radiator out)",
+        "radiator": "OUT",
+        "shms_angle": 17.0,
+        "shms_momentum": -4.835,
+        "status": "50.449069%",
+        "target": "LH2",
+        "total_charge": 126.12267295602932
+    },
+    {
+        "charge_goal": 770.0,
+        "hms_angle": 19.1,
+        "hms_momentum": 4.95,
+        "jpsi_count": 14.0,
+        "name": "High-E/low-t (dummy)",
+        "radiator": "IN",
+        "shms_angle": 17.0,
+        "shms_momentum": -4.835,
+        "status": "32.862023%",
+        "target": "DUMMY",
+        "total_charge": 253.03757568330604
+    },
+    {
+        "charge_goal": 4410.0,
+        "hms_angle": 19.1,
+        "hms_momentum": 4.95,
+        "jpsi_count": 255.0,
+        "name": "High-E/low-t",
+        "radiator": "IN",
+        "shms_angle": 17.0,
+        "shms_momentum": -4.835,
+        "status": "30.858774%",
+        "target": "LH2",
+        "total_charge": 1360.8719459465756
+    },
+    {
+        "charge_goal": 1740.0,
+        "hms_angle": 19.9,
+        "hms_momentum": 4.6,
+        "jpsi_count": 0.0,
+        "name": "Mid-E/low-t (dummy)",
+        "radiator": "IN",
+        "shms_angle": 20.1,
+        "shms_momentum": -4.3,
+        "status": "0%",
+        "target": "DUMMY",
+        "total_charge": 0.0
+    },
+    {
+        "charge_goal": 9060.0,
+        "hms_angle": 19.9,
+        "hms_momentum": 4.6,
+        "jpsi_count": 0.0,
+        "name": "Mid-E/low-t",
+        "radiator": "IN",
+        "shms_angle": 20.1,
+        "shms_momentum": -4.3,
+        "status": "0%",
+        "target": "LH2",
+        "total_charge": 0.0
+    },
+    {
+        "charge_goal": 48380.0,
+        "hms_angle": 16.4,
+        "hms_momentum": -4.08,
+        "jpsi_count": 0.0,
+        "name": "high-t",
+        "radiator": "IN",
+        "shms_angle": 30.0,
+        "shms_momentum": 3.5,
+        "status": "0%",
+        "target": "LH2",
+        "total_charge": 0.0
+    }
+]
