@@ -55,19 +55,19 @@ void make_jpsi_table() {
     std::cout << "\n";
     fmt::print(" {:<5} ", "Run");
     fmt::print(" {:^5} ", "Target");
-    fmt::print(" {:^7} ", "radiator");
-    fmt::print(" {:^7} ", "P_hms");
-    fmt::print(" {:^7} ", "th_hms");
-    fmt::print(" {:^7} ", "P_shms");
-    fmt::print(" {:^7} ", "th_shms");
+    fmt::print(" {:^4} ", "rad");
+    fmt::print(" {:>7} ", "P_hms");
+    fmt::print(" {:<7} ", "th_hms");
+    fmt::print(" {:>7} ", "P_shms");
+    fmt::print(" {:<7} ", "th_shms");
     fmt::print(" {:^21} ", "start time");
     fmt::print(" {:^21} ", "end time");
     fmt::print(" {:^7} ", "HMS e yield");
     fmt::print(" {:^7} ", "SHMS e yield");
-    fmt::print(" {:>9} ", "count");
+    fmt::print(" {:>7} ", "count");
     fmt::print(" {:>9} ", "charge");
     fmt::print(" {:>9} ", "yield");
-    fmt::print(" {:>9} ", "triggers");
+    fmt::print(" {:>9} ", "        ");
     fmt::print(" {:<} ", "comment");
     std::cout << "\n";
   };
@@ -113,11 +113,11 @@ void make_jpsi_table() {
 
     fmt::print(" {:<5} ", std::stoi(it.key()));
     fmt::print(" {:^5} ", target_lab);
-    fmt::print(" {:^7} ", radiator_status);
+    fmt::print(" {:^4} ", radiator_status);
     fmt::print(" {:>7.3f} ", runjs["spectrometers"]["hms_momentum"].get<double>());
-    fmt::print(" {:>7.2f} ", runjs["spectrometers"]["hms_angle"].get<double>());
+    fmt::print(" {:<7.2f} ", runjs["spectrometers"]["hms_angle"].get<double>());
     fmt::print(" {:>7.3f} ", runjs["spectrometers"]["shms_momentum"].get<double>());
-    fmt::print(" {:>7.2f} ", runjs["spectrometers"]["shms_angle"].get<double>());
+    fmt::print(" {:<7.2f} ", runjs["spectrometers"]["shms_angle"].get<double>());
     if (runjs["run_info"].find("start_time") != runjs["run_info"].end()) {
       fmt::print(" {:^21} ", runjs["run_info"]["start_time"].get<std::string>());
     } else {
@@ -168,7 +168,7 @@ void make_jpsi_table() {
 
         double shms_yield = j2[it.key()]["J/psi Good event count"].get<double>();
         // double pi_yield = j2[it.key()]["pion bg sub. counts"].get<double>();
-        fmt::print(" {:>9.1f} ", shms_yield);
+        fmt::print(" {:>7.1f} ", shms_yield);
         if (j2[it.key()].find("good_total_charge") != j2[it.key()].end()) {
           total_charge = j2[it.key()]["good_total_charge"].get<double>();
           // total_charge = runjs["total_charge"].get<double>() / 1000.0;
