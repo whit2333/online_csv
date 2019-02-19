@@ -14,6 +14,10 @@ namespace fs = std::experimental::filesystem;
 
 #include "TObject.h"
 
+void print_hline() {
+  std::cout << "-----------------------------------------------------------------------------------"
+               "----------------------------------------";
+}
 void make_status_table() {
 
   using nlohmann::json;
@@ -27,26 +31,27 @@ void make_status_table() {
   auto print_header = []() {
     // print header
     std::cout << "\n";
-    fmt::print(" {:>15} ", "Setting");
+    fmt::print(" {:>12} ", "Setting");
     fmt::print(" {:^7} ", "target");
     fmt::print(" {:^5} ", "rad");
-    fmt::print(" {:^7} ", "P_hms");
-    fmt::print(" {:^7} ", "th_hms");
-    fmt::print(" {:^7} ", "P_shms");
-    fmt::print(" {:^7} ", "th_shms");
-    fmt::print(" {:^5} ", "n_runs");
-    fmt::print(" {:^7} ", "J/psi");
-    fmt::print(" {:^14} ", "yield");
-    fmt::print(" {:>5} / {:<5} ", "charge", "goal");
-    fmt::print(" {:<8} ", "status");
+    fmt::print(" {:>6} ", "P_hms");
+    fmt::print(" {:>7} ", "th_hms");
+    fmt::print(" {:>6} ", "P_shms");
+    fmt::print(" {:>7} ", "th_shms");
+    fmt::print(" {:>5} ", "n_runs");
+    fmt::print(" {:>7} ", "J/psi");
+    fmt::print(" {:^15} ", "yield");
+    fmt::print(" {:>6} / {:<5} ", "charge", "goal");
+    fmt::print(" {:>7} ", "status");
     std::cout << "\n";
   };
 
-  std::cout << " runs : \n";
-
-  std::string old_name = "";
+  std::string old_name     = "";
+  double      total_charge = 0;
+  double      total_goal   = 0;
 
   print_header();
+  print_hline();
   for (auto setting : j) {
     const std::string name      = setting["name"];
     const std::string target    = setting["target"];
@@ -67,20 +72,28 @@ void make_status_table() {
       std::cout << "\n";
     }
     old_name = name;
+    total_charge += charge;
+    total_goal += goal;
 
-    fmt::print(" {:>15} ", name);
+    fmt::print(" {:>12} ", name);
     fmt::print(" {:^7} ", target);
     fmt::print(" {:^5} ", radiator);
-    fmt::print(" {:>7.3f} ", p_hms);
+    fmt::print(" {:>6.3f} ", p_hms);
     fmt::print(" {:>7.2f} ", th_hms);
-    fmt::print(" {:>7.3f} ", p_shms);
+    fmt::print(" {:>6.3f} ", p_shms);
     fmt::print(" {:>7.2f} ", th_shms);
     fmt::print(" {:>5} ", n_runs);
     fmt::print(" {:>7} ", count);
     fmt::print(" {:>6.2f} +- {:<6.2f} ", yield, yield_err);
-    fmt::print(" {:>5.0f} / {:<5.0f} ", charge, goal);
+    fmt::print(" {:>6.0f} / {:<5.0f} ", charge, goal);
     fmt::print(" {:>6.1f}%", status);
     std::cout << "\n";
   }
+  print_hline();
+  std::cout << "\n";
+  fmt::print(" {:>97}  {:>5.0f} / {:<5.0f}  {:>6.1f}%", "TOTAL GOOD CHARGE", total_charge,
+             total_goal, total_charge / total_goal * 100.);
+  std::cout << "\n";
+
   std::cout << std::endl;
 }

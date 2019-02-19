@@ -71,10 +71,14 @@ using Pvec4D = ROOT::Math::PxPyPzMVector;
 // =================================================================================
 // J/psi reconstruction
 // =================================================================================
-auto p_electron = [](double px, double py, double pz) { return Pvec4D{px*0.996, py*0.996, pz*0.996, M_e}; };
-auto p_positron = [](double px, double py, double pz) { return Pvec4D{px*0.994, py*0.994, pz*0.994, M_e}; };
-auto p_jpsi     = [](const Pvec4D& e1, const Pvec4D& e2) { return e1 + e2; };
-auto E_gamma    = [](const Pvec4D& jpsi) {
+auto p_electron = [](double px, double py, double pz) {
+  return Pvec4D{px * 0.996, py * 0.996, pz * 0.996, M_e};
+};
+auto p_positron = [](double px, double py, double pz) {
+  return Pvec4D{px * 0.994, py * 0.994, pz * 0.994, M_e};
+};
+auto p_jpsi  = [](const Pvec4D& e1, const Pvec4D& e2) { return e1 + e2; };
+auto E_gamma = [](const Pvec4D& jpsi) {
   double res =
       (M_J2 - 2. * jpsi.E() * M_P) / (2. * (jpsi.E() - M_P - jpsi.P() * cos(jpsi.Theta())));
   return res;
@@ -87,7 +91,8 @@ auto t = [](const double Egamma, Pvec4D& jpsi) {
   return (beam - jpsi).M2();
 };
 
-void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, int update = 1) {
+void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timing = false,
+                       int prompt = 0, int update = 1) {
 
   // ===============================================================================================
   // Initialization
@@ -213,16 +218,25 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
   // Timing cuts
   // Find the timing peak
   // Find the coin peak
-  auto h_coin_time =
-      dCOINEl.Histo1D({"coin_time", "coin_time", 8000, 0, 1000}, "CTime.ePositronCoinTime_ROC2");
-  h_coin_time->DrawClone();
-  int    coin_peak_bin    = h_coin_time->GetMaximumBin();
-  double coin_peak_center = h_coin_time->GetBinCenter(coin_peak_bin);
+  double coin_peak_center = 0;
+  if (redo_timing) {
+    auto h_coin_time =
+        dCOINEl.Histo1D({"coin_time", "coin_time", 8000, 0, 1000}, "CTime.ePositronCoinTime_ROC2");
+    h_coin_time->DrawClone();
+    int coin_peak_bin = h_coin_time->GetMaximumBin();
+    coin_peak_center  = h_coin_time->GetBinCenter(coin_peak_bin);
+    std::cout << "COINCIDENCE time peak found at: " << coin_peak_center << std::endl;
+  } else {
+    coin_peak_center = 163.438;
+    std::cout << "COINCIDENCE time peak: using pre-calculated value at: " << coin_peak_center
+              << std::endl;
+    ;
+  }
   // timing cut lambdas
   // TODO: evaluate timing cut and offset for random background
   auto timing_cut = [=](double coin_time) { return std::abs(coin_time - coin_peak_center) < 2.; };
   auto anti_timing_cut = [=](double coin_time) {
-    return std::abs(coin_time - coin_peak_center - 28.) < 2.;
+    return std::abs(coin_time - coin_peak_center - 28.) < 10.;
   };
 
   // timing counts
@@ -238,7 +252,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
   auto dJpsiRandom = dCOINElRandom.Filter(Jpsi_cut);
 
   // Egamma cut
-  auto dJpsi_low_Egamma = dJpsi.Filter("E_gamma_free< 10.35");
+  auto dJpsi_low_Egamma  = dJpsi.Filter("E_gamma_free< 10.35");
   auto dJpsi_high_Egamma = dJpsi.Filter("E_gamma_free> 10.35");
 
   // =========================================================================================
@@ -448,10 +462,12 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
       {"JpsiAbstAfterCuts", "Cuts: Tracking+PID+Timing+J/#psi Mass;|t| [GeV^{2}];counts", 60, 0, 6},
       "abst");
   auto hJpsiAbstAfterCuts_lowE = dJpsi_low_Egamma.Histo1D(
-      {"hJpsiAbstAfterCuts_lowE", "Cuts: Tracking+PID+Timing+J/#psi Mass Eg<1.35;|t| [GeV^{2}];counts", 60, 0, 6},
+      {"hJpsiAbstAfterCuts_lowE",
+       "Cuts: Tracking+PID+Timing+J/#psi Mass Eg<1.35;|t| [GeV^{2}];counts", 60, 0, 6},
       "abst");
   auto hJpsiAbstAfterCuts_highE = dJpsi_high_Egamma.Histo1D(
-      {"hJpsiAbstAfterCuts_highE", "Cuts: Tracking+PID+Timing+J/#psi Mass Eg>1.35;|t| [GeV^{2}];counts", 60, 0, 6},
+      {"hJpsiAbstAfterCuts_highE",
+       "Cuts: Tracking+PID+Timing+J/#psi Mass Eg>1.35;|t| [GeV^{2}];counts", 60, 0, 6},
       "abst");
 
   // scalers
@@ -660,7 +676,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, int prompt = 0, i
         hJpsiAbstAfterCuts_lowE->SetLineColor(kRed);
         hJpsiAbstAfterCuts_lowE->SetLineWidth(2);
         hJpsiAbstAfterCuts_lowE->DrawClone("same");
-        hJpsiAbstAfterCuts_highE->SetLineColor(kRed+4);
+        hJpsiAbstAfterCuts_highE->SetLineColor(kRed + 4);
         hJpsiAbstAfterCuts_highE->SetLineWidth(2);
         hJpsiAbstAfterCuts_highE->DrawClone("same");
 
