@@ -245,11 +245,13 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
 
   hallc::scandalizer::SpectrometerMonitor* pp1a =
       new hallc::scandalizer::SpectrometerMonitor(hhod, hcer, hdc);
+  pp1a->_scaler = hscaler;
   pp1a->_analyzer          = analyzer;
   pp1a->_spectrometer_name = "HMS";
 
   hallc::scandalizer::SpectrometerMonitor* pp1 =
       new hallc::scandalizer::SpectrometerMonitor(phod, phgcer, pdc);
+  pp1->_scaler = hscaler;
   pp1->_analyzer          = analyzer;
   pp1->_spectrometer_name = "SHMS";
 
