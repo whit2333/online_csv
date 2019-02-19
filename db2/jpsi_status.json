@@ -34,14 +34,14 @@
         ],
         "hms_angle": 19.1,
         "hms_momentum": 4.95,
-        "jpsi_count": 388.0,
+        "jpsi_count": 385.0,
         "name": "High-E/low-t",
         "radiator": "IN",
         "shms_angle": 17.0,
         "shms_momentum": -4.835,
-        "status": "50.572989%",
+        "status": "51.149042%",
         "target": "LH2",
-        "total_charge": 2230.268797228506
+        "total_charge": 2255.6727437466707
     },
     "phase1-dummy": {
         "charge_goal": 770.0,
