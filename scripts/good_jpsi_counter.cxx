@@ -91,7 +91,7 @@ auto t = [](const double Egamma, Pvec4D& jpsi) {
   return (beam - jpsi).M2();
 };
 
-void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timing = false,
+void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timing = true,
                        int prompt = 0, int update = 1) {
 
   // ===============================================================================================
@@ -227,7 +227,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
     coin_peak_center  = h_coin_time->GetBinCenter(coin_peak_bin);
     std::cout << "COINCIDENCE time peak found at: " << coin_peak_center << std::endl;
   } else {
-    coin_peak_center = 163.438;
+    coin_peak_center = 43.3125; // run 7228
     std::cout << "COINCIDENCE time peak: using pre-calculated value at: " << coin_peak_center
               << std::endl;
     ;
