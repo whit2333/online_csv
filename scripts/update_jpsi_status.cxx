@@ -13,7 +13,6 @@ namespace fs = std::filesystem;
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
 #endif
-
 #include "nlohmann/json.hpp"
 
 #include "monitor/DetectorDisplay.h"
@@ -28,6 +27,8 @@ R__LOAD_LIBRARY(libScandalizer.so)
 #include "TSystem.h"
 
 void update_jpsi_status() {
+
+  std::cout << "Analyzing J/psi run info...\n";
 
   using nlohmann::json;
   json j;
@@ -67,9 +68,11 @@ void update_jpsi_status() {
   for (json::iterator iset = jsum.begin(); iset != jsum.end(); ++iset) {
     auto& sumjs = iset.value();
 
-    sumjs["total_charge"] = 0.;
-    sumjs["jpsi_count"]   = 0.;
-    sumjs["status"]       = "0%";
+    sumjs["total_charge"]     = 0.;
+    sumjs["jpsi_count"]       = 0.;
+    sumjs["status"]           = "0%";
+    std::vector<int> run_list = {};
+    sumjs["good_run_list"]    = run_list;
   }
 
   // loop over all runs and add info to the summary where relevant
@@ -114,6 +117,9 @@ void update_jpsi_status() {
         sumjs["status"] = std::to_string(sumjs["total_charge"].get<double>() /
                                          sumjs["charge_goal"].get<double>() * 100) +
                           "%";
+        auto run_list = sumjs["good_run_list"].get<std::vector<int>>();
+        run_list.push_back(run);
+        sumjs["good_run_list"] = run_list;
 
       } else {
         ; // do nothing
@@ -126,4 +132,5 @@ void update_jpsi_status() {
     std::ifstream json_input_file{"db2/jpsi_settings.json"};
     json_output_file << std::setw(4) << jsum << "\n";
   }
+  std::cout << "Updated status written to db2/jpsi_status.json\n";
 }
