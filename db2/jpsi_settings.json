@@ -1,5 +1,6 @@
   [
     { "name": "High-E/low-t (radiator out)",
+      "label": "phase1-norad",
       "radiator": "OUT",
       "target": "LH2",
       "hms_angle": 19.1,
@@ -9,6 +10,7 @@
       "charge_goal": 250.0
     },
     { "name": "High-E/low-t (dummy)",
+      "label": "phase1-dummy",
       "radiator": "IN",
       "target": "DUMMY",
       "hms_angle": 19.1,
@@ -18,6 +20,7 @@
       "charge_goal": 770.0
     },
     { "name": "High-E/low-t",
+      "label": "phase1",
       "radiator": "IN",
       "target": "LH2",
       "hms_angle": 19.1,
@@ -27,6 +30,7 @@
       "charge_goal": 4410.0
     },
     { "name": "Mid-E/low-t (dummy)",
+      "label": "phase2-dummy",
       "radiator": "IN",
       "target": "DUMMY",
       "hms_angle": 19.9,
@@ -36,6 +40,7 @@
       "charge_goal": 1740.0
     },
     { "name": "Mid-E/low-t",
+      "label": "phase2",
       "radiator": "IN",
       "target": "LH2",
       "hms_angle": 19.9,
@@ -45,6 +50,7 @@
       "charge_goal": 9060.0
     },
     { "name": "high-t",
+      "label": "phase3",
       "radiator": "IN",
       "target": "LH2",
       "hms_angle": 16.4,
