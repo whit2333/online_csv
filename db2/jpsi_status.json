@@ -1,38 +1,40 @@
-[
-    {
-        "charge_goal": 250.0,
-        "hms_angle": 19.1,
-        "hms_momentum": 4.95,
-        "jpsi_count": 9.0,
-        "label": "phase1-norad",
-        "name": "High-E/low-t (radiator out)",
-        "radiator": "OUT",
-        "shms_angle": 17.0,
-        "shms_momentum": -4.835,
-        "status": "50.449069%",
-        "target": "LH2",
-        "total_charge": 126.12267295602932
-    },
-    {
-        "charge_goal": 770.0,
-        "hms_angle": 19.1,
-        "hms_momentum": 4.95,
-        "jpsi_count": 14.0,
-        "label": "phase1-dummy",
-        "name": "High-E/low-t (dummy)",
-        "radiator": "IN",
-        "shms_angle": 17.0,
-        "shms_momentum": -4.835,
-        "status": "32.862023%",
-        "target": "DUMMY",
-        "total_charge": 253.03757568330604
-    },
-    {
+{
+    "phase1": {
         "charge_goal": 4410.0,
+        "good_run_list": [
+            7225,
+            7226,
+            7228,
+            7229,
+            7230,
+            7233,
+            7234,
+            7235,
+            7236,
+            7237,
+            7238,
+            7239,
+            7240,
+            7241,
+            7245,
+            7246,
+            7247,
+            7248,
+            7249,
+            7264,
+            7265,
+            7266,
+            7267,
+            7268,
+            7269,
+            7270,
+            7271,
+            7272,
+            7273
+        ],
         "hms_angle": 19.1,
         "hms_momentum": 4.95,
         "jpsi_count": 403.0,
-        "label": "phase1",
         "name": "High-E/low-t",
         "radiator": "IN",
         "shms_angle": 17.0,
@@ -41,26 +43,48 @@
         "target": "LH2",
         "total_charge": 2230.268797228506
     },
-    {
-        "charge_goal": 1740.0,
-        "hms_angle": 19.9,
-        "hms_momentum": 4.6,
-        "jpsi_count": 0.0,
-        "label": "phase2-dummy",
-        "name": "Mid-E/low-t (dummy)",
+    "phase1-dummy": {
+        "charge_goal": 770.0,
+        "good_run_list": [
+            7242,
+            7243,
+            7244
+        ],
+        "hms_angle": 19.1,
+        "hms_momentum": 4.95,
+        "jpsi_count": 14.0,
+        "name": "High-E/low-t",
         "radiator": "IN",
-        "shms_angle": 20.1,
-        "shms_momentum": -4.3,
-        "status": "0%",
+        "shms_angle": 17.0,
+        "shms_momentum": -4.835,
+        "status": "32.862023%",
         "target": "DUMMY",
-        "total_charge": 0.0
+        "total_charge": 253.03757568330604
     },
-    {
+    "phase1-norad": {
+        "charge_goal": 250.0,
+        "good_run_list": [
+            7220,
+            7221,
+            7222
+        ],
+        "hms_angle": 19.1,
+        "hms_momentum": 4.95,
+        "jpsi_count": 9.0,
+        "name": "High-E/low-t",
+        "radiator": "OUT",
+        "shms_angle": 17.0,
+        "shms_momentum": -4.835,
+        "status": "50.449069%",
+        "target": "LH2",
+        "total_charge": 126.12267295602932
+    },
+    "phase2": {
         "charge_goal": 9060.0,
+        "good_run_list": [],
         "hms_angle": 19.9,
         "hms_momentum": 4.6,
         "jpsi_count": 0.0,
-        "label": "phase2",
         "name": "Mid-E/low-t",
         "radiator": "IN",
         "shms_angle": 20.1,
@@ -69,18 +93,32 @@
         "target": "LH2",
         "total_charge": 0.0
     },
-    {
-        "charge_goal": 48380.0,
-        "hms_angle": 16.4,
-        "hms_momentum": -4.08,
+    "phase2-dummy": {
+        "charge_goal": 1740.0,
+        "good_run_list": [],
+        "hms_angle": 19.9,
+        "hms_momentum": 4.6,
         "jpsi_count": 0.0,
-        "label": "phase3",
-        "name": "high-t",
+        "name": "Mid-E/low-t",
+        "radiator": "IN",
+        "shms_angle": 20.1,
+        "shms_momentum": -4.3,
+        "status": "0%",
+        "target": "DUMMY",
+        "total_charge": 0.0
+    },
+    "phase3": {
+        "charge_goal": 48380.0,
+        "good_run_list": [],
+        "hms_angle": 16.4,
+        "hms_momentum": 4.08,
+        "jpsi_count": 0.0,
+        "name": "High-t",
         "radiator": "IN",
         "shms_angle": 30.0,
-        "shms_momentum": 3.5,
+        "shms_momentum": -3.5,
         "status": "0%",
         "target": "LH2",
         "total_charge": 0.0
     }
-]
+}
