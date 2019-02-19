@@ -62,6 +62,8 @@ void make_jpsi_table() {
     fmt::print(" {:^7} ", "th_shms");
     fmt::print(" {:^21} ", "start time");
     fmt::print(" {:^21} ", "end time");
+    fmt::print(" {:^7} ", "HMS e yield");
+    fmt::print(" {:^7} ", "SHMS e yield");
     fmt::print(" {:>9} ", "count");
     fmt::print(" {:>9} ", "charge");
     fmt::print(" {:>9} ", "yield");
@@ -136,50 +138,70 @@ void make_jpsi_table() {
     //  fmt::print(" {:>11} ", "");
     //}
     if (j_hms.count(it.key()) != 0) {
-      auto   rl_hms = j_hms[it.key()];
-      double n_hms  = rl_hms["count_e"].get<double>();
-      double hms_yield =
-          n_hms * rl_hms["ps_factor"].get<double>() / rl_hms["good_total_charge"].get<double>();
-      double hms_unc = (n_hms > 0) ? hms_yield / sqrt(n_hms) : 0;
-      if (j2.count(it.key()) != 0) {
-        try {
+      auto   rl_hms    = j_hms[it.key()];
+      double n_hms     = rl_hms["count_e"].get<double>();
+      double ps_factor = rl_hms["ps_factor"].get<double>();
+      double charge    = rl_hms["good_total_charge"].get<double>();
+      double hms_yield = n_hms * ps_factor / charge;
+      double hms_unc   = sqrt(n_hms) * ps_factor / charge;
+      fmt::print(" {:>5.1f}", hms_yield);
+      fmt::print(" +- {:>5.1f}", hms_unc);
+    } else {
+      fmt::print(" {:>5.1f}", 0.);
+      fmt::print(" +- {:>5.1f}", 0.);
+    }
+    if (j_shms.count(it.key()) != 0) {
+      auto   rl_shms    = j_shms[it.key()];
+      double n_shms     = rl_shms["count_e"].get<double>();
+      double ps_factor  = rl_shms["ps_factor"].get<double>();
+      double charge     = rl_shms["good_total_charge"].get<double>();
+      double shms_yield = n_shms * ps_factor / charge;
+      double shms_unc   = sqrt(n_shms) * ps_factor / charge;
+      fmt::print(" {:>5.0f}", shms_yield);
+      fmt::print(" +- {:>5.0f}", shms_unc);
+    } else {
+      fmt::print(" {:>5.0f}", 0.);
+      fmt::print(" +- {:>5.0f}", 0.);
+    }
+    if (j2.count(it.key()) != 0) {
+      try {
 
-          double shms_yield = j2[it.key()]["J/psi Good event count"].get<double>();
-          // double pi_yield = j2[it.key()]["pion bg sub. counts"].get<double>();
-          fmt::print(" {:>9.1f} ", shms_yield);
-          if (j2[it.key()].find("good_total_charge") != j2[it.key()].end()) {
-            total_charge = j2[it.key()]["good_total_charge"].get<double>();
-            // total_charge = runjs["total_charge"].get<double>() / 1000.0;
-            fmt::print("/ {:<6.1f} ", total_charge);
-          } else {
-            fmt::print(" {:>11} ", "");
-          }
-          fmt::print(" {:>9.5f} ", shms_yield / total_charge);
-          fmt::print(" +- {:>8.5f} ", std::sqrt(shms_yield) / total_charge);
-          int n_events = j2[it.key()]["total trigger events"].get<int>();
-          fmt::print(" {:>9d} ", n_events);
+        double shms_yield = j2[it.key()]["J/psi Good event count"].get<double>();
+        // double pi_yield = j2[it.key()]["pion bg sub. counts"].get<double>();
+        fmt::print(" {:>9.1f} ", shms_yield);
+        if (j2[it.key()].find("good_total_charge") != j2[it.key()].end()) {
+          total_charge = j2[it.key()]["good_total_charge"].get<double>();
+          // total_charge = runjs["total_charge"].get<double>() / 1000.0;
+          fmt::print("/ {:<6.1f} ", total_charge);
+        } else {
+          fmt::print(" {:>11} ", "");
+        }
+        fmt::print(" {:>9.5f} ", shms_yield / total_charge);
+        fmt::print(" +- {:>8.5f} ", std::sqrt(shms_yield) / total_charge);
+        int n_events = j2[it.key()]["total trigger events"].get<int>();
+        fmt::print(" {:>9d} ", n_events);
+      } catch (std::domain_error) {
+        // you suck
+        // std::cout << "you suck\n";
+      }
+      // double live_time = j2[it.key()]["live time"].get<int>();
+    } else {
+      fmt::print(" {:>9} ", "");
+      fmt::print(" {:>9} ", "");
+      fmt::print(" {:>10} ", "");
+    }
+    std::string comment;
+    if (j3.count(it.key()) != 0) {
+      if (j3[it.key()].find("comment") != j3[it.key()].end()) {
+        try {
+          comment = j3[it.key()]["comment"].get<std::string>();
         } catch (std::domain_error) {
           // you suck
-          // std::cout << "you suck\n";
-        }
-        // double live_time = j2[it.key()]["live time"].get<int>();
-      } else {
-        fmt::print(" {:>9} ", "");
-        fmt::print(" {:>9} ", "");
-        fmt::print(" {:>10} ", "");
-      }
-      std::string comment;
-      if (j3.count(it.key()) != 0) {
-        if (j3[it.key()].find("comment") != j3[it.key()].end()) {
-          try {
-            comment = j3[it.key()]["comment"].get<std::string>();
-          } catch (std::domain_error) {
-            // you suck
-          }
         }
       }
-      fmt::print(" {:<} ", comment);
-      std::cout << "\n";
     }
-    print_header();
+    fmt::print(" {:<} ", comment);
+    std::cout << "\n";
   }
+  print_header();
+}
