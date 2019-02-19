@@ -134,6 +134,8 @@ pushd $CURRENT_REPLAY_DIR
 
 root -b -q "scripts/good_jpsi_counter.cxx(${run_number})"
 ./bin/monitor_singles -r ${run_number}
+root -b -q "scripts/update_jpsi_status.cxx"
+
 sleep 1
 mkdir -p monitoring/${run_number}
 http_proxy=  wget http://cdaql1.jlab.org:8888/good_jpsi_counter/${run_number}/Jpsi/Invariant_Mass/fPrimitives/JpsiMassAfterTiming/root.json -O monitoring/${run_number}/Invariant_Mass_after_timing.json
