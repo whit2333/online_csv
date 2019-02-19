@@ -27,7 +27,7 @@ R__LOAD_LIBRARY(libScandalizer.so)
 #include "TStyle.h"
 #include "TSystem.h"
 
-void jpsi_status() {
+void update_jpsi_status() {
 
   using nlohmann::json;
   json j;
