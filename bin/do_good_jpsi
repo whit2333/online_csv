@@ -132,7 +132,7 @@ fi
 #popd
 pushd $CURRENT_REPLAY_DIR
 
-root -b -q "scripts/good_jpsi_counter.cxx(${run_number})"
+root -b -q "scripts/good_jpsi_counter.cxx+(${run_number})"
 ./bin/monitor_singles -r ${run_number}
 root -b -q "scripts/update_jpsi_status.cxx"
 

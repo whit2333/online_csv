@@ -34,14 +34,14 @@
         ],
         "hms_angle": 19.1,
         "hms_momentum": 4.95,
-        "jpsi_count": 407.0,
+        "jpsi_count": 406.8,
         "name": "High-E/low-t",
         "radiator": "IN",
         "shms_angle": 17.0,
         "shms_momentum": -4.835,
-        "status": "55.460019%",
+        "status": "56.268206%",
         "target": "LH2",
-        "total_charge": 2445.786857818919
+        "total_charge": 2481.4278735454845
     },
     "phase1-dummy": {
         "charge_goal": 770.0,
@@ -92,18 +92,19 @@
             7281,
             7282,
             7283,
-            7284
+            7284,
+            7285
         ],
         "hms_angle": 19.9,
         "hms_momentum": 4.6,
-        "jpsi_count": 66.0,
+        "jpsi_count": 70.0,
         "name": "Mid-E/low-t",
         "radiator": "IN",
         "shms_angle": 20.1,
         "shms_momentum": -4.3,
-        "status": "6.416539%",
+        "status": "6.744630%",
         "target": "LH2",
-        "total_charge": 581.3384412671688
+        "total_charge": 611.0634497328502
     },
     "phase2-dummy": {
         "charge_goal": 1740.0,
