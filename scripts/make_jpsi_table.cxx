@@ -60,8 +60,8 @@ void make_jpsi_table() {
     fmt::print(" {:<7} ", "th_hms");
     fmt::print(" {:>7} ", "P_shms");
     fmt::print(" {:<7} ", "th_shms");
-    fmt::print(" {:^21} ", "start time");
-    fmt::print(" {:^21} ", "end time");
+    fmt::print(" {:^8} ", "start");
+    fmt::print(" {:^17} ", "end time");
     fmt::print(" {:^7} ", "HMS e yield");
     fmt::print(" {:^7} ", "SHMS e yield");
     fmt::print(" {:>7} ", "count");
@@ -71,8 +71,6 @@ void make_jpsi_table() {
     fmt::print(" {:<} ", "comment");
     std::cout << "\n";
   };
-
-  std::cout << " runs : \n";
 
   std::string old_target          = "";
   std::string old_radiator_status = "";
@@ -84,6 +82,10 @@ void make_jpsi_table() {
 
   for (json::iterator it = j.begin(); it != j.end(); ++it) {
     auto runjs = it.value();
+
+    if( std::stoi(it.key()) < 7200) {
+      continue;
+    }
 
     std::string target_lab = runjs["target"]["target_label"].get<std::string>();
     if (target_lab != old_target) {
@@ -119,14 +121,16 @@ void make_jpsi_table() {
     fmt::print(" {:>7.3f} ", runjs["spectrometers"]["shms_momentum"].get<double>());
     fmt::print(" {:<7.2f} ", runjs["spectrometers"]["shms_angle"].get<double>());
     if (runjs["run_info"].find("start_time") != runjs["run_info"].end()) {
-      fmt::print(" {:^21} ", runjs["run_info"]["start_time"].get<std::string>());
+      auto start_time = runjs["run_info"]["start_time"].get<std::string>();
+      fmt::print(" {:^8} ",start_time.substr(0, start_time.size()-13));
     } else {
-      fmt::print(" {:21} ", "");
+      fmt::print(" {:8} ", "");
     }
     if (runjs["run_info"].find("stop_time") != runjs["run_info"].end()) {
-      fmt::print(" {:^21} ", runjs["run_info"]["stop_time"].get<std::string>());
+      auto stop_time = runjs["run_info"]["stop_time"].get<std::string>();
+      fmt::print(" {:^17} ",stop_time.substr(0, stop_time.size()-4));
     } else {
-      fmt::print(" {:21} ", "");
+      fmt::print(" {:17} ", "");
     }
 
     double total_charge = 0.0001;

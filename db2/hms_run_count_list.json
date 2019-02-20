@@ -631,13 +631,13 @@
         "time 1MHz 2u cut": 2118.150383999999
     },
     "7285": {
-        "charge bcm4b 2u cut": 6.3353632368157005,
-        "count_e": 175.0,
-        "count_raw": 17605.0,
-        "count_tracked": 4789.0,
-        "good_time": 636.8621459999998,
-        "good_total_charge": 6.3353632368157005,
+        "charge bcm4b 2u cut": 36.23812090755871,
+        "count_e": 1003.0,
+        "count_raw": 103305.0,
+        "count_tracked": 28430.0,
+        "good_time": 2360.5500230000007,
+        "good_total_charge": 36.23812090755871,
         "ps_factor": 1.0,
-        "time 1MHz 2u cut": 636.8621459999998
+        "time 1MHz 2u cut": 2360.5500230000007
     }
 }
