@@ -56,7 +56,8 @@ std::string goodTrackHMS = "H.gtr.dp > -8 && H.gtr.dp < 8 && H.tr.n == 1&&"
 #endif
 std::string goodTrackSHMS = "P.gtr.dp > -10 && P.gtr.dp < 22";
 std::string goodTrackHMS  = "H.gtr.dp > -8 && H.gtr.dp < 8 ";
-std::string eCutSHMS      = "P.cal.etottracknorm > 0.8 && P.cal.etottracknorm < 2.&&"
+// std::string goodTrackHMS = "H.gtr.dp > -10 && H.gtr.dp < 10 ";
+std::string eCutSHMS = "P.cal.etottracknorm > 0.8 && P.cal.etottracknorm < 2.&&"
                        "P.ngcer.npeSum > 2";
 std::string eCutHMS = "H.cal.etottracknorm > 0.80 && H.cal.etottracknorm < 2.&&"
                       "H.cer.npeSum > 1.";
