@@ -44,12 +44,11 @@ bool root_file_exists(std::string rootfile) {
   return false;
 }
 
-void plot_jpsi_masses_phase2(int start_run = 0) {
+void plot_jpsi_masses_phase1(int start_run = 0) {
 
-  auto mcFile          = new TFile("monitoring/simulation/mc-histos-phase2.root");
+  auto mcFile          = new TFile("monitoring/simulation/mc-histos-phase1.root");
   auto mc_yield_Egamma = (TH1D*)mcFile->Get("hSumEgamma_00");
   auto mc_yield_Abst   = (TH1D*)mcFile->Get("hSumAbst_00");
-  //  auto mc_yield_Egamma_30 = (TH1D*)mcFile->Get("hSumEgamma_30");
 
   using nlohmann::json;
   json j2;
@@ -59,9 +58,9 @@ void plot_jpsi_masses_phase2(int start_run = 0) {
   }
   double total_charge = 0.000;
 
-  std::vector<int> kine_0_runs = {7274, 7275, 7276, 7277, 7278, 7279, 7280, 7281, 7282, 7283,
-                                  7284, 7285, 7286, 7287, 7288, 7289, 7290, 7291, 7292, 7293,
-                                  7294, 7295, 7296, 7297, 7298, 7299, 7300, 7301, 7302, 7303};
+  std::vector<int> kine_0_runs = {7225, 7226, 7228, 7229, 7230, 7233, 7234, 7235, 7236, 7237,
+                                  7238, 7239, 7240, 7241, 7245, 7246, 7247, 7248, 7249, 7264,
+                                  7265, 7266, 7267, 7268, 7269, 7270, 7271, 7272, 7273};
 
   // total histograms
   TH1D* hTotal       = nullptr;
@@ -136,7 +135,7 @@ void plot_jpsi_masses_phase2(int start_run = 0) {
 
   auto ddisplay = new hallc::MonitoringDisplay(-1);
   ddisplay->CreateDisplayPlot(
-      "total", "inv_mass_phase2",
+      "total", "inv_mass_phase1",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
         // plt.SetPersist();
@@ -146,13 +145,13 @@ void plot_jpsi_masses_phase2(int start_run = 0) {
             fmt::format("{:3.1f}\% of scheduled beam time ", 100.0 * (2.60943) / 66.0).c_str());
         hTotal->Draw("e1");
         hTotal->Draw("hist same");
-        c->SaveAs("results/plot_jpsi_masses/c1-2.png");
-        c->SaveAs("results/plot_jpsi_masses/c1-2.pdf");
+        c->SaveAs("results/plot_jpsi_masses/c1-1.png");
+        c->SaveAs("results/plot_jpsi_masses/c1-1.pdf");
         return 0;
       },
       [&](hallc::DisplayPlot& plt) { return 0; });
   ddisplay->CreateDisplayPlot(
-      "total", "E_gamma_phase2",
+      "total", "E_gamma_phase1",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
         // plt.SetPersist();
@@ -168,9 +167,7 @@ void plot_jpsi_masses_phase2(int start_run = 0) {
 #if 0
         mc_yield_Egamma_30->SetLineColor(kBlue + 1);
         mc_yield_Egamma_30->Draw("hist same");
-#endif
 
-#if 0
         mc_50_yield_Egamma->SetLineColor(kBlue + 1);
         mc_50_yield_Egamma->Draw("hist same");
 #endif
@@ -181,18 +178,16 @@ void plot_jpsi_masses_phase2(int start_run = 0) {
             fmt::format("{:3.1f}\% of scheduled beam time ", 100.0 * (2.60943) / 66.0).c_str(),
             "lep");
         leg->AddEntry(mc_yield_Egamma, "t-channel production only");
-#if 0
-        leg->AddEntry(mc_yield_Egamma_30, "+ 3\% pentaquark coupling");
-#endif
+        //        leg->AddEntry(mc_yield_Egamma_30, "+ 3\% pentaquark coupling");
         leg->Draw();
-        c->SaveAs("results/plot_jpsi_masses/c2-2.png");
-        c->SaveAs("results/plot_jpsi_masses/c2-2.pdf");
+        c->SaveAs("results/plot_jpsi_masses/c2-1.png");
+        c->SaveAs("results/plot_jpsi_masses/c2-1.pdf");
 
         return 0;
       },
       [&](hallc::DisplayPlot& plt) { return 0; });
   ddisplay->CreateDisplayPlot(
-      "total", "Abs_t_phase2",
+      "total", "Abs_t_phase1",
       [&](hallc::DisplayPlot& plt) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
         // plt.SetPersist();
@@ -211,8 +206,8 @@ void plot_jpsi_masses_phase2(int start_run = 0) {
         leg->AddEntry(mc_yield_Abst, "t-channel production only");
         leg->Draw();
 
-        c->SaveAs("results/plot_jpsi_masses/c3-2.png");
-        c->SaveAs("results/plot_jpsi_masses/c3-2.pdf");
+        c->SaveAs("results/plot_jpsi_masses/c3-1.png");
+        c->SaveAs("results/plot_jpsi_masses/c3-1.pdf");
 
         return 0;
       },
