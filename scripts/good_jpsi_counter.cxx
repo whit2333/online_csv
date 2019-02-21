@@ -256,6 +256,11 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
   auto dJpsi_low_Egamma  = dJpsi.Filter("E_gamma_free< 10.35");
   auto dJpsi_high_Egamma = dJpsi.Filter("E_gamma_free> 10.35");
 
+  // Output root file
+  auto out_file =  new TFile(fmt::format("monitoring/{}/good_jpsi_counter.root",RunNumber).c_str(),"UPDATE");
+  out_file->cd();
+
+
   // =========================================================================================
   // Histograms
   // =========================================================================================
@@ -414,16 +419,17 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
       dHMSEl.Histo1D({"H.gtr.y.PID", "Cuts: Tracking+PID;ytar;counts", 200, -10., 10.}, "H.gtr.y");
   auto hHyTiming = dHMSElInTime.Histo1D(
       {"H.gtr.y.Timing", "Cuts: Tracking+PID+Timing;ytar;counts", 200, -10., 10.}, "H.gtr.y");
+
   // J/psi invariant mass
   auto hJpsiMassNoCuts = dCOINGoodTrack.Histo1D(
-      {"JpsiMassNoCuts", "Cuts: Tracking;M_{J/#psi} [GeV];counts", 100, 2.5, 3.5}, "M_jpsi");
+      {"JpsiMassNoCuts", "Cuts: Tracking;M_{J/#psi} [GeV];counts", 200, 2.5, 3.5}, "M_jpsi");
   auto hJpsiMassAfterPID = dCOINEl.Histo1D(
-      {"JpsiMassAfterPID", "Cuts: Tracking+PID;M_{J/#psi} [GeV];counts", 100, 2.5, 3.5}, "M_jpsi");
+      {"JpsiMassAfterPID", "Cuts: Tracking+PID;M_{J/#psi} [GeV];counts", 200, 2.5, 3.5}, "M_jpsi");
   auto hJpsiMassAfterTiming = dCOINElInTime.Histo1D(
-      {"JpsiMassAfterTiming", "Cuts: Tracking+PID+Timing;M_{J/#psi} [GeV];counts", 100, 2.5, 3.5},
+      {"JpsiMassAfterTiming", "Cuts: Tracking+PID+Timing;M_{J/#psi} [GeV];counts", 200, 2.5, 3.5},
       "M_jpsi");
   auto hJpsiMassAfterCuts = dJpsi.Histo1D(
-      {"JpsiMassAfterCuts", "Cuts: Tracking+PID+Timing+J/#psi Mass;M_{J/#psi} [GeV];counts", 100,
+      {"JpsiMassAfterCuts", "Cuts: Tracking+PID+Timing+J/#psi Mass;M_{J/#psi} [GeV];counts", 200,
        2.5, 3.5},
       "M_jpsi");
   // E_gamma spectrum
@@ -608,6 +614,13 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         hJpsiMassAfterCuts->SetLineColor(kBlack);
         hJpsiMassAfterCuts->SetLineWidth(2);
         hJpsiMassAfterCuts->DrawClone("same");
+
+        out_file->cd();
+        hJpsiMassNoCuts     ->Write();
+        hJpsiMassAfterPID   ->Write();
+        hJpsiMassAfterTiming->Write();
+        hJpsiMassAfterCuts  ->Write();
+
         c->BuildLegend();
         return 0;
       },
@@ -631,6 +644,14 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         hJpsiEgammaAfterCuts->SetLineWidth(2);
         hJpsiEgammaAfterCuts->DrawClone("same");
         c->BuildLegend();
+
+        out_file->cd();
+        hJpsiEgammaNoCuts     ->Write();
+        hJpsiEgammaAfterPID   ->Write();
+        hJpsiEgammaAfterTiming->Write();
+        hJpsiEgammaAfterCuts  ->Write();
+
+
         return 0;
       },
       [](hallc::DisplayPlot& plt) { return 0; });
@@ -653,6 +674,12 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         hJpsiEgammaFreeAfterCuts->SetLineWidth(2);
         hJpsiEgammaFreeAfterCuts->DrawClone("same");
         c->BuildLegend();
+
+        out_file->cd();
+        hJpsiEgammaFreeNoCuts      ->Write();
+        hJpsiEgammaFreeAfterPID    ->Write();
+        hJpsiEgammaFreeAfterTiming ->Write();
+        hJpsiEgammaFreeAfterCuts   ->Write();
         return 0;
       },
       [](hallc::DisplayPlot& plt) { return 0; });
@@ -680,6 +707,14 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         hJpsiAbstAfterCuts_highE->SetLineColor(kRed + 4);
         hJpsiAbstAfterCuts_highE->SetLineWidth(2);
         hJpsiAbstAfterCuts_highE->DrawClone("same");
+
+        out_file->cd();
+        hJpsiAbstNoCuts          ->Write();
+        hJpsiAbstAfterPID        ->Write();
+        hJpsiAbstAfterTiming     ->Write();
+        hJpsiAbstAfterCuts       ->Write();
+        hJpsiAbstAfterCuts_lowE  ->Write();
+        hJpsiAbstAfterCuts_highE ->Write();
 
         c->BuildLegend();
         return 0;
@@ -972,6 +1007,9 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
       },
       [](hallc::DisplayPlot& plt) { return 0; });
   ddisplay->_data._root_folder = "/good_jpsi_counter/";
+
+  out_file->Write();
+
   ddisplay->InitAll();
   ddisplay->UpdateAll();
 }

@@ -31,5 +31,23 @@
   },
   "7232": {
     "comment": "Daq really bad. JUNK"
+  },
+  "7292": {
+    "comment": "DAQ Issues, HMS DC"
+  },
+  "7293": {
+    "comment": "DAQ Issues, HMS DC"
+  },
+  "7294": {
+    "comment": "just after rebooted ROCs"
+  },
+  "7295": {
+    "comment": "good, just after rebooted ROCs"
+  },
+  "7299": {
+    "comment": "JUNK"
+  },
+  "7300": {
+    "comment": "short"
   }
 }

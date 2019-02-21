@@ -239,9 +239,9 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   // auto pp0 = new hallc::scandalizer::SkipPeriodicAfterPedestal();
   // auto pp0 = new hallc::scandalizer::SkipPeriodicToEOF(5000,8000);
   // pp0->_analyzer = analyzer; /// \todo: fix these 2 lines
-  auto pp0 = new hallc::scandalizer::SkipAfterPedestal(135000);
-  pp0->_analyzer = analyzer;
-  analyzer->AddPostProcess(pp0);
+  //auto pp0 = new hallc::scandalizer::SkipAfterPedestal(135000);
+  //pp0->_analyzer = analyzer;
+  //analyzer->AddPostProcess(pp0);
 
   hallc::scandalizer::SpectrometerMonitor* pp1a =
       new hallc::scandalizer::SpectrometerMonitor(hhod, hcer, hdc);

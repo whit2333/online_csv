@@ -1,3 +1,7 @@
+#include <fmt/core.h>
+#include <fmt/ostream.h>
+R__LOAD_LIBRARY(libfmt.so)
+
 
 //#include "THaPostProcess.h"
 //
@@ -254,22 +258,22 @@ void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 50000) {
                              // 1 = counter is # of all decode reads
                              // 2 = counter is event number
 
-  //auto ddisplay      = new hallc::MonitoringDisplay(RunNumber);
-  //ddisplay->_data._root_folder = "/replay_production_coin/";
+  auto ddisplay      = new hallc::MonitoringDisplay({"cdaql1.jlab.org",9091},RunNumber);
+  ddisplay->_data._root_folder = "/replay_production_coin/";
 
-  //auto hms_event_display  = new hallc::event_display::HMSEventDisplay(ddisplay);
-  //hms_event_display->_hod = hhod;
-  //hms_event_display->_run_number = RunNumber;
+  auto hms_event_display  = new hallc::event_display::HMSEventDisplay(ddisplay);
+  hms_event_display->_hod = hhod;
+  hms_event_display->_run_number = RunNumber;
 
-  //auto shms_event_display  = new hallc::event_display::SHMSEventDisplay(ddisplay);
-  //shms_event_display->_hod = phod;
-  //shms_event_display->_run_number = RunNumber;
+  auto shms_event_display  = new hallc::event_display::SHMSEventDisplay(ddisplay);
+  shms_event_display->_hod = phod;
+  shms_event_display->_run_number = RunNumber;
 
   //ddisplay->InitAll();
   //ddisplay->UpdateAll();
 
-  //analyzer->AddPostProcess(hms_event_display);
-  //analyzer->AddPostProcess(shms_event_display);
+  analyzer->AddPostProcess(hms_event_display);
+  analyzer->AddPostProcess(shms_event_display);
 
   analyzer->SetEvent(event);
   // Set EPICS event type
