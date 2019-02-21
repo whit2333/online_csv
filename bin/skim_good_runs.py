@@ -21,7 +21,7 @@ def skim(setting, db, script):
         if_names = ['{}/skim_coinel_{}.root'.format(outdir, run) for run in run_list]
         odat_name = '{}/skim_coinel_{}.root'.format(outdir, setting)
         print('Combining runs into: ', odat_name)
-        os.system('hadd {} {}'.format(odat_name, ' '.join(if_names)))
+        os.system('hadd -f {} {}'.format(odat_name, ' '.join(if_names)))
     else:
         print('No runs taken for ', setting)
 
