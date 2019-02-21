@@ -110,18 +110,20 @@
             7300,
             7301,
             7302,
-            7303
+            7303,
+            7304,
+            7305
         ],
         "hms_angle": 19.9,
         "hms_momentum": 4.6,
-        "jpsi_count": 249.8,
+        "jpsi_count": 265.8,
         "name": "Mid-E/low-t",
         "radiator": "IN",
         "shms_angle": 20.1,
         "shms_momentum": -4.3,
-        "status": "25.869941%",
+        "status": "27.469167%",
         "target": "LH2",
-        "total_charge": 2343.8166125794737
+        "total_charge": 2488.7065605145954
     },
     "phase2-dummy": {
         "charge_goal": 1740.0,
