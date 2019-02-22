@@ -23,7 +23,7 @@ void replay_production_coin(Int_t RunNumber = 7224, Int_t MaxEvent = 50000) {
 
   hallc::helper::script_requires_hcana();
 
-  spdlog::set_level(spdlog::level::warn);
+  spdlog::set_level(spdlog::level::trace);
   spdlog::flush_every(std::chrono::seconds(5));
 
   // Get RunNumber and MaxEvent if not provided.
