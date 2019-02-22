@@ -49,5 +49,14 @@
   },
   "7300": {
     "comment": "short"
+  },
+  "7309": {
+    "comment": "junk - SHMS HB Interlock went off"
+  },
+  "7310": {
+    "comment": "junk"
+  },
+  "7311": {
+    "comment": "junk"
   }
 }

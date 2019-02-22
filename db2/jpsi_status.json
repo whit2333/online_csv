@@ -141,7 +141,11 @@
     },
     "phase3": {
         "charge_goal": 48380.0,
-        "good_run_list": [],
+        "good_run_list": [
+            7308,
+            7312,
+            7315
+        ],
         "hms_angle": 16.4,
         "hms_momentum": 4.08,
         "jpsi_count": 0.0,
@@ -149,8 +153,8 @@
         "radiator": "IN",
         "shms_angle": 30.0,
         "shms_momentum": -3.5,
-        "status": "0%",
+        "status": "0.651502%",
         "target": "LH2",
-        "total_charge": 0.0
+        "total_charge": 315.19660241180827
     }
 }
