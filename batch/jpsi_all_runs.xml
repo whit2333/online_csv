@@ -1,0 +1,120 @@
+<Request>
+  <Email email="whit@jlab.org" request="false" job="false"/>
+  <Project name="c-comm2017"/>
+  <Track  name="reconstruction"/>
+  <Name   name="jpsi_2019"/>
+  <OS     name="centos7"/>
+  <Memory space="3024" unit="MB"/>
+  <List name="runs">
+7224
+7225
+7226
+7227
+7228
+7229
+7230
+7231
+7232
+7233
+7234
+7235
+7236
+7237
+7238
+7239
+7240
+7241
+7242
+7243
+7244
+7245
+7246
+7247
+7248
+7249
+7262
+7263
+7264
+7265
+7266
+7267
+7268
+7269
+7270
+7271
+7272
+7273
+7274
+7275
+7276
+7277
+7278
+7279
+7280
+7281
+7282
+7283
+7284
+7285
+7286
+7287
+7288
+7289
+7290
+7291
+7292
+7293
+7294
+7295
+7296
+7297
+7298
+7299
+7300
+7301
+7302
+7303
+  </List>
+  <ForEach list="runs">
+    <Job>
+      <Input src="mss:/mss/hallc/jpsi-007/raw/coin_all_0${runs}.dat" dest="coin_all_0${runs}.dat"/>
+      <!-- Properties overridden here -->
+      <Output src="ROOTfiles/coin_replay_production_${runs}_-1.root" 
+          dest="/volatile/hallc/jpsi-007/whit/ROOTfiles/coin_replay_production_${runs}_-1.root"/>
+      <Output src="REPORT_OUTPUT/COIN/PRODUCTION/replay_coin_production_${runs}_-1.report" 
+        dest="/volatile/hallc/jpsi-007/whit/REPORT_OUTPUT/COIN/PRODUCTION/replay_coin_production_${runs}_-1.report"/>
+      <Output src="REPORT_OUTPUT/COIN/PRODUCTION/summary_production_${runs}_-1.report" 
+        dest="/volatile/hallc/jpsi-007/whit/REPORT_OUTPUT/COIN/PRODUCTION/summary_production_${runs}_-1.report"/>
+      <Command><![CDATA[
+/bin/bash <<EOF
+source /home/whit/.bashrc
+source /group/c-csv/local/setup.sh
+# For some reason the module files need to put in a specific order.
+# This is probably because we are using the old TCL version.
+module unload csv/dev
+module load csv/dev
+module load tmux/latest
+module load python/latest
+module load python/2.7.15
+module load python3/latest
+module load vim/latest
+module load git/latest
+module load ruby/2.5.3
+make_hallc_replay_symlinks -b /group/jpsi-007/whit/hallc_replay_jpsi -c
+make_hallc_replay -b /group/jpsi-007/whit/hallc_replay_jpsi  -c
+rm bin
+ln -s /group/jpsi-007/whit/replay_jpsi/bin
+ln -s /group/jpsi-007/whit/replay_jpsi/scripts
+ls -lrth
+mkdir -p raw
+mkdir ROOTfiles
+ln -s ROOTfiles ROOTfiles_jpsi
+hcana -b -q "scripts/replay_production_coin.cxx(${runs},-1)"
+ls -lrth 
+EOF
+        ]]></Command>
+    </Job>
+  </ForEach> 
+
+</Request>
+
