@@ -19,7 +19,7 @@ R__LOAD_LIBRARY(libScandalizer.so)
 //#include "monitor/ExperimentMonitor.h"
 //#include "scandalizer/PostProcessors.h"
 
-void replay_production_coin(Int_t RunNumber = 0, Int_t MaxEvent = 50000) {
+void replay_production_coin(Int_t RunNumber = 7224, Int_t MaxEvent = 50000) {
 
   hallc::helper::script_requires_hcana();
 
