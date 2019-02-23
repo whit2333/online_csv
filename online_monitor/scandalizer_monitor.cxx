@@ -264,6 +264,7 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
 
   hallc::PVList pv_list;
   pv_list.AddPV("hcDAQMissingRefTime");
+
   hallc::scandalizer::SimplePostProcess* daq_missing_ref_monitor =
       new hallc::scandalizer::SimplePostProcess(
           [&]() { return 0; },
@@ -277,7 +278,7 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
             total += hcer->fNTDCRef_miss + hcer->fNADCRef_miss;
             total += pngcer->fNTDCRef_miss + pngcer->fNADCRef_miss;
             total += phgcer->fNTDCRef_miss + phgcer->fNADCRef_miss;
-            if ((evt->GetEvNum() > 1200) && (counter > 1000)) {
+            if ( (counter > 1000)) {
               counter = 0;
               pv_list.Put("hcDAQMissingRefTime", total);
             }
@@ -285,6 +286,36 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
             return 0;
           });
   analyzer->AddPostProcess(daq_missing_ref_monitor);
+
+  hallc::PVList pv_list2;
+  pv_list2.AddPV("hcHMS:DC:Wire:1:Occ");
+  hallc::scandalizer::SimplePostProcess* dc_occ_test =
+      new hallc::scandalizer::SimplePostProcess(
+          [&]() { return 0; },
+          [&](const THaEvData* evt) {
+            static int counter = 0;
+            static int total   = 0;
+            TClonesArray* hits = hdc->GetPlane(2)->GetHits();
+            for(int i = 0; i< hits->GetEntries(); i++ ) {
+              THcDCHit* ahit =  (THcDCHit*)hits->At(i);
+              if(ahit) {
+                if(ahit->GetWireNum() == 50) {
+                  total++;
+                }
+              }
+            }
+
+            if ( (counter > 1000)) {
+              std::cout << double(total) << "/ " << double(counter)  << " = " ;
+              std::cout << double(total)/double(counter) << "\n";
+              pv_list2.Put("hcHMS:DC:Wire:1:Occ", double(total)/double(counter));
+              counter = 0;
+              total = 0;
+            }
+            counter++;
+            return 0;
+          });
+  analyzer->AddPostProcess(dc_occ_test);
 
   analyzer->AddPostProcess(pp1);
   analyzer->AddPostProcess(pp1a);

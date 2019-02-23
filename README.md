@@ -19,6 +19,10 @@ CSV online files
 ```
 parallel -N1 -j10 ./bin/hc_shms_replay -r {}  ::: $(seq 7100 7142)
 ```
+Event number (Maybe):
+```
+getscalers hcvme05 | grep "144: " | sed 's/(0)//' | sed 's/^144: //'
+```
 
 ###
 ```

@@ -58,5 +58,20 @@
   },
   "7311": {
     "comment": "junk"
+  },
+  "7317": {
+    "comment": "short run - need to reboot the shms ROCs"
+  },
+  "7321": {
+    "comment": "this run was junk"
+  },
+  "7323": {
+    "comment": "this run was junk"
+  },
+  "7337": {
+    "comment": "stopped the run early after beam was taken away"
+  },
+  "7353": {
+    "comment": "ended early due to HMS dipole alarm"
   }
 }

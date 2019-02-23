@@ -40,7 +40,7 @@ void make_status_table() {
     fmt::print(" {:>7} ", "th_shms");
     fmt::print(" {:>5} ", "n_runs");
     fmt::print(" {:>7} ", "J/psi");
-    fmt::print(" {:^15} ", "yield");
+    fmt::print(" {:^17} ", "yield");
     fmt::print(" {:>6} / {:<5} ", "charge", "goal");
     fmt::print(" {:>7} ", "status");
     std::cout << "\n";
@@ -84,7 +84,7 @@ void make_status_table() {
     fmt::print(" {:>7.2f} ", th_shms);
     fmt::print(" {:>5} ", n_runs);
     fmt::print(" {:>7} ", count);
-    fmt::print(" {:>6.2f} +- {:<6.2f} ", yield, yield_err);
+    fmt::print(" {:>8.4f} +- {:<8.4f} ", yield, yield_err);
     fmt::print(" {:>6.0f} / {:<5.0f} ", charge, goal);
     fmt::print(" {:>6.1f}%", status);
     std::cout << "\n";
