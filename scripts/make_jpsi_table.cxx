@@ -149,10 +149,10 @@ void make_jpsi_table() {
       double hms_yield = n_hms * ps_factor / charge;
       double hms_unc   = sqrt(n_hms) * ps_factor / charge;
       fmt::print(" {:>5.1f}", hms_yield);
-      fmt::print(" +- {:<5.1f}", hms_unc);
+      fmt::print(" ± {:<5.1f}", hms_unc);
     } else {
       fmt::print(" {:>5.1f}", 0.);
-      fmt::print(" +- {:<5.1f}", 0.);
+      fmt::print(" ± {:<5.1f}", 0.);
     }
     if (j_shms.count(it.key()) != 0) {
       auto   rl_shms    = j_shms[it.key()];
@@ -162,10 +162,10 @@ void make_jpsi_table() {
       double shms_yield = n_shms * ps_factor / charge;
       double shms_unc   = sqrt(n_shms) * ps_factor / charge;
       fmt::print(" {:>5.0f}", shms_yield);
-      fmt::print(" +- {:<5.0f}", shms_unc);
+      fmt::print(" ± {:<5.0f}", shms_unc);
     } else {
       fmt::print(" {:>5.0f}", 0.);
-      fmt::print(" +- {:<5.0f}", 0.);
+      fmt::print(" ± {:<5.0f}", 0.);
     }
     if (j2.count(it.key()) != 0) {
       try {
@@ -181,7 +181,7 @@ void make_jpsi_table() {
           fmt::print(" {:>15} ", "");
         }
         fmt::print(" {:>9.5f} ", shms_yield / total_charge);
-        fmt::print(" +- {:<8.5f} ", std::sqrt(shms_yield) / total_charge);
+        fmt::print(" ± {:<8.5f} ", std::sqrt(shms_yield) / total_charge);
         int n_events = j2[it.key()]["total trigger events"].get<int>();
         fmt::print(" {:>9d} ", n_events);
       } catch (std::domain_error) {
