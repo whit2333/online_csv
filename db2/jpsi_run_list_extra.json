@@ -5,6 +5,12 @@
   "7156": {
     "comment": "cosmics"
   },
+  "7181": {
+    "comment": " "
+  },
+  "7182": {
+    "comment": " "
+  },
   "7219": {
     "comment": "short mode 10"
   },
@@ -31,6 +37,9 @@
   },
   "7232": {
     "comment": "Daq really bad. JUNK"
+  },
+  "7262": {
+    "comment": "HMS fixed, rotated SHMS back to phase1 kin"
   },
   "7292": {
     "comment": "DAQ Issues, HMS DC"
@@ -73,5 +82,23 @@
   },
   "7353": {
     "comment": "ended early due to HMS dipole alarm"
+  },
+  "7366": {
+    "comment": "ELCLEAN alarms for HMS and SHMS went off. We stopped run and started new run, which looked fine in 50k"
+  },
+  "7374": {
+    "comment": "ended early due to needed raster IOC reboot by MCC"
+  },
+  "7381": {
+    "comment": " "
+  },
+  "7382": {
+    "comment": "junk - no beam"
+  },
+  "7383": {
+    "comment": "junk - ended due to shms el clean yield alarm"
+  },
+  "7386": {
+    "comment": "ended early due to missing ref time alarm"
   }
 }
