@@ -2045,5 +2045,18 @@
         "good_total_charge": 61.37390857698378,
         "ps_factor": 3.0,
         "time 1MHz 2u cut": 1010.7366189999999
+    },
+    "7387": {
+        "charge bcm4b 2u cut": 172.11176711622107,
+        "count_e": 23931.0,
+        "count_identified_pscorr": 71793.0,
+        "count_raw": 288681.0,
+        "count_raw_pscorr": 866043.0,
+        "count_tracked": 26181.0,
+        "count_tracked_pscorr": 78543.0,
+        "good_time": 2851.9425029999998,
+        "good_total_charge": 172.11176711622107,
+        "ps_factor": 3.0,
+        "time 1MHz 2u cut": 2851.9425029999998
     }
 }
