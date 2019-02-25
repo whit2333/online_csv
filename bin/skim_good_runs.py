@@ -11,12 +11,15 @@ class InvalidSettingError(HallCError):
     def __init(self, setting):
         self.message = 'Unknown setting: ' + setting
 
-def skim(setting, db, script):
+def skim(setting, db, script, force_update=False):
     run_list = db[setting]['good_run_list']
     print('Creating skim for setting ', setting)
     for run in run_list:
-        print('Skimming run {}'.format(run))
-        os.system('root -b -q "{}({})"'.format(script, run))
+        if not force_update and os.path.isfile('{}/skim_coinel_{}.root'.format(outdir, run)):
+            print('Skipping run', run, ' (file already present)')
+        else:
+            print('Skimming run {}'.format(run))
+            os.system('root -b -q "{}({})"'.format(script, run))
     if len(run_list) > 0:
         if_names = ['{}/skim_coinel_{}.root'.format(outdir, run) for run in run_list]
         odat_name = '{}/skim_coinel_{}.root'.format(outdir, setting)
@@ -33,13 +36,17 @@ if __name__ == '__main__':
             help='ID of the setting we want to skim (e.g. "phase1"), (def.: "all")',
             dest='setting')
     parser.add_argument('-c', '--command',
-            default='scripts/skim.cxx',
+            default='scripts/skim.cxx+',
             help='Skim script to be used (def.: "scripts/skim.cxx")',
             dest='script')
     parser.add_argument('-d', '--database',
             default='db2/jpsi_status.json',
             help='J/psi-007 status database (default: db2/jpsi_status.json)',
             dest='db')
+    parser.add_argument('-f', '--force-update',
+            action='store_true',
+            help='Force update mode: also re-skim previously skimmed files.',
+            dest='force_update')
     args = parser.parse_args()
 
     print('J/psi-007 SKIM')
@@ -52,8 +59,8 @@ if __name__ == '__main__':
 
         if args.setting is 'all':
             for setting in db:
-                skim(setting, db, args.script)
+                skim(setting, db, args.script, args.force_update)
         else:
             if args.setting not in db:
                 raise InvalidSettingError(args.setting)
-            skim(args.setting, db, args.script)
+            skim(args.setting, db, args.script, args.force_update)
