@@ -119,6 +119,13 @@ module load ruby/2.5.3
 
 mkdir -p results/${run_number}
 
+PREVIOUS_Scan=$(pgrep -a "hcana" | grep online_monitor | awk '{print $1}')
+echo ${PREVIOUS_Scan}
+if [ -n "${PREVIOUS_Scan}" ] ; then
+  echo "killing ${PREVIOUS_Scan}"
+  kill ${PREVIOUS_Scan}
+fi
+
 hcana  -b -q "online_monitor/scandalizer_monitor.cxx(${run_number},${n_events})"
 
 
