@@ -1896,5 +1896,70 @@
         "good_total_charge": 172.11176711622107,
         "ps_factor": 33.0,
         "time 1MHz 2u cut": 2851.9425029999998
+    },
+    "7388": {
+        "charge bcm4b 2u cut": 179.08109784230476,
+        "count_e": 4838.0,
+        "count_identified_pscorr": 159654.0,
+        "count_raw": 322063.0,
+        "count_raw_pscorr": 10628079.0,
+        "count_tracked": 111873.0,
+        "count_tracked_pscorr": 3691809.0,
+        "good_time": 2944.209926,
+        "good_total_charge": 179.08109784230476,
+        "ps_factor": 33.0,
+        "time 1MHz 2u cut": 2944.209926
+    },
+    "7389": {
+        "charge bcm4b 2u cut": 195.8633859604742,
+        "count_e": 5336.0,
+        "count_identified_pscorr": 176088.0,
+        "count_raw": 353276.0,
+        "count_raw_pscorr": 11658108.0,
+        "count_tracked": 122154.0,
+        "count_tracked_pscorr": 4031082.0,
+        "good_time": 3205.582608,
+        "good_total_charge": 195.8633859604742,
+        "ps_factor": 33.0,
+        "time 1MHz 2u cut": 3205.582608
+    },
+    "7390": {
+        "charge bcm4b 2u cut": 181.8155914512807,
+        "count_e": 5136.0,
+        "count_identified_pscorr": 169488.0,
+        "count_raw": 330788.0,
+        "count_raw_pscorr": 10916004.0,
+        "count_tracked": 114487.0,
+        "count_tracked_pscorr": 3778071.0,
+        "good_time": 2994.749196,
+        "good_total_charge": 181.8155914512807,
+        "ps_factor": 33.0,
+        "time 1MHz 2u cut": 2994.749196
+    },
+    "7391": {
+        "charge bcm4b 2u cut": 141.61924657260192,
+        "count_e": 3840.0,
+        "count_identified_pscorr": 126720.0,
+        "count_raw": 257542.0,
+        "count_raw_pscorr": 8498886.0,
+        "count_tracked": 89416.0,
+        "count_tracked_pscorr": 2950728.0,
+        "good_time": 2361.2258709999996,
+        "good_total_charge": 141.61924657260192,
+        "ps_factor": 33.0,
+        "time 1MHz 2u cut": 2361.2258709999996
+    },
+    "7392": {
+        "charge bcm4b 2u cut": 142.42751964969614,
+        "count_e": 3606.0,
+        "count_identified_pscorr": 118998.0,
+        "count_raw": 243993.0,
+        "count_raw_pscorr": 8051769.0,
+        "count_tracked": 82295.0,
+        "count_tracked_pscorr": 2715735.0,
+        "good_time": 2355.755572000001,
+        "good_total_charge": 142.42751964969614,
+        "ps_factor": 33.0,
+        "time 1MHz 2u cut": 2355.755572000001
     }
 }
