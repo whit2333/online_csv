@@ -110,7 +110,7 @@ bool root_file_exists(std::string rootfile) {
   return false;
 }
 
-void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timing = true,
+void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timing = false,
                        int prompt = 0, int update = 1) {
 
   // ===============================================================================================
@@ -165,19 +165,19 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
   std::string rootfile =
       fmt::format("ROOTfiles_volatile/coin_replay_production_{}_{}.root", RunNumber, nevents);
   found_good_file = root_file_exists(rootfile.c_str());
-  if(!found_good_file) {
-     rootfile = fmt::format("ROOTfiles_jpsi/coin_replay_production_{}_{}.root",RunNumber,nevents);
-     found_good_file = root_file_exists(rootfile.c_str());
+  if (!found_good_file) {
+    rootfile = fmt::format("ROOTfiles_jpsi/coin_replay_production_{}_{}.root", RunNumber, nevents);
+    found_good_file = root_file_exists(rootfile.c_str());
   }
-  if(!found_good_file) {
-     rootfile = fmt::format("ROOTfiles/coin_replay_production_{}_{}.root",RunNumber,nevents);
-     found_good_file = root_file_exists(rootfile.c_str());
+  if (!found_good_file) {
+    rootfile = fmt::format("ROOTfiles/coin_replay_production_{}_{}.root", RunNumber, nevents);
+    found_good_file = root_file_exists(rootfile.c_str());
   }
   if (!found_good_file) {
     std::cout << " Error: suitable root file not found\n";
     return;
   }
-  
+
   // ===============================================================================================
   // Dataframe
   // ===============================================================================================
@@ -229,7 +229,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
     coin_peak_center  = h_coin_time->GetBinCenter(coin_peak_bin);
     std::cout << "COINCIDENCE time peak found at: " << coin_peak_center << std::endl;
   } else {
-    coin_peak_center = 43.3125; // run 7228
+    coin_peak_center = 42.5; // run 7240-7241
     std::cout << "COINCIDENCE time peak: using pre-calculated value at: " << coin_peak_center
               << std::endl;
     ;
@@ -258,9 +258,9 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
   auto dJpsi_high_Egamma = dJpsi.Filter("E_gamma_free> 10.35");
 
   // Output root file
-  auto out_file =  new TFile(fmt::format("monitoring/{}/good_jpsi_counter.root",RunNumber).c_str(),"UPDATE");
+  auto out_file =
+      new TFile(fmt::format("monitoring/{}/good_jpsi_counter.root", RunNumber).c_str(), "UPDATE");
   out_file->cd();
-
 
   // =========================================================================================
   // Histograms
@@ -617,10 +617,10 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         hJpsiMassAfterCuts->DrawClone("same");
 
         out_file->cd();
-        hJpsiMassNoCuts     ->Write();
-        hJpsiMassAfterPID   ->Write();
+        hJpsiMassNoCuts->Write();
+        hJpsiMassAfterPID->Write();
         hJpsiMassAfterTiming->Write();
-        hJpsiMassAfterCuts  ->Write();
+        hJpsiMassAfterCuts->Write();
 
         c->BuildLegend();
         return 0;
@@ -647,11 +647,10 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         c->BuildLegend();
 
         out_file->cd();
-        hJpsiEgammaNoCuts     ->Write();
-        hJpsiEgammaAfterPID   ->Write();
+        hJpsiEgammaNoCuts->Write();
+        hJpsiEgammaAfterPID->Write();
         hJpsiEgammaAfterTiming->Write();
-        hJpsiEgammaAfterCuts  ->Write();
-
+        hJpsiEgammaAfterCuts->Write();
 
         return 0;
       },
@@ -677,10 +676,10 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         c->BuildLegend();
 
         out_file->cd();
-        hJpsiEgammaFreeNoCuts      ->Write();
-        hJpsiEgammaFreeAfterPID    ->Write();
-        hJpsiEgammaFreeAfterTiming ->Write();
-        hJpsiEgammaFreeAfterCuts   ->Write();
+        hJpsiEgammaFreeNoCuts->Write();
+        hJpsiEgammaFreeAfterPID->Write();
+        hJpsiEgammaFreeAfterTiming->Write();
+        hJpsiEgammaFreeAfterCuts->Write();
         return 0;
       },
       [](hallc::DisplayPlot& plt) { return 0; });
@@ -710,12 +709,12 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         hJpsiAbstAfterCuts_highE->DrawClone("same");
 
         out_file->cd();
-        hJpsiAbstNoCuts          ->Write();
-        hJpsiAbstAfterPID        ->Write();
-        hJpsiAbstAfterTiming     ->Write();
-        hJpsiAbstAfterCuts       ->Write();
-        hJpsiAbstAfterCuts_lowE  ->Write();
-        hJpsiAbstAfterCuts_highE ->Write();
+        hJpsiAbstNoCuts->Write();
+        hJpsiAbstAfterPID->Write();
+        hJpsiAbstAfterTiming->Write();
+        hJpsiAbstAfterCuts->Write();
+        hJpsiAbstAfterCuts_lowE->Write();
+        hJpsiAbstAfterCuts_highE->Write();
 
         c->BuildLegend();
         return 0;
