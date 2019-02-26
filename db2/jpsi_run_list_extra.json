@@ -133,5 +133,8 @@
   },
   "7427": {
     "comment": "stopped to change prescalers"
+  },
+  "7428": {
+    "comment": "Pre-scale values for 7428 somehow stored incorrectly in the CODA header, prescalers were only *really* changed for the next run."
   }
 }

@@ -2381,11 +2381,14 @@
     "7428": {
         "charge bcm4b 2u cut": 118.86340563545492,
         "count_e": 626.0,
+        "count_identified_pscorr": 1252.0,
         "count_raw": 96313.0,
+        "count_raw_pscorr": 192626.0,
         "count_tracked": 23555.0,
+        "count_tracked_pscorr": 47110.0,
         "good_time": 2974.810803,
         "good_total_charge": 118.86340563545492,
-        "ps_factor": 1.0,
+        "ps_factor": 2.0,
         "time 1MHz 2u cut": 2974.810803
     },
     "7429": {

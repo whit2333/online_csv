@@ -17,7 +17,7 @@
     "hms_momentum": 4.95,
     "shms_angle": 17.0,
     "shms_momentum": -4.835,
-    "charge_goal": 770.0
+    "charge_goal": 593.0
   },
   "phase1": { 
     "name": "High-E/low-t",
@@ -30,17 +30,17 @@
     "charge_goal": 4410.0
   },
   "phase2-dummy": { 
-    "name": "Mid-E/low-t",
+    "name": "Low-E/low-t",
     "radiator": "IN",
     "target": "DUMMY",
     "hms_angle": 19.9,
     "hms_momentum": 4.6,
     "shms_angle": 20.1,
     "shms_momentum": -4.3,
-    "charge_goal": 1740.0
+    "charge_goal": 1219.0
   },
   "phase2": { 
-    "name": "Mid-E/low-t",
+    "name": "Low-E/low-t",
     "radiator": "IN",
     "target": "LH2",
     "hms_angle": 19.9,
