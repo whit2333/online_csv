@@ -1,0 +1,48 @@
+#!/bin/bash
+#set -u 
+
+if [[ -z ${1} ]] ; then
+  echo  " first argument is the previous hcRunSettingAccumulatedCharge "
+  exit
+fi
+if [[ -z ${2} ]] ; then
+  echo  " second argument is the previous value of hcRunSettingTIme "
+  exit
+fi
+
+previous_charge=$1
+previous_time=$2 # minuites
+
+#caget hcRunSettingAccumulatedCharge
+##caget hcRunSettingTime 
+#
+current_charge=$(caget hcRunSettingAccumulatedCharge | awk ' {print $2} ' )
+current_time=$(  caget hcRunSettingTime | awk ' {print $2} ' )
+
+#echo ${current_charge}
+#echo ${current_time}
+
+update_time=$(echo "$current_time + $previous_time * 60" | bc )
+update_charge=$(echo "$current_charge + $previous_charge * 1000" | bc )
+
+echo "time $update_time"
+echo "charge $update_charge"
+
+function yes_or_no {
+  while true; do
+    read -p "$* [y/n]: " yn
+    case $yn in
+      [Yy]*) return 0 ;;
+      [Nn]*) echo "No entered" ; return 1 ;;
+    esac
+  done
+}
+
+echo " update epics variables?"
+yes_or_no && {
+  caput hcRunSettingAccumulatedCharge  $update_charge 
+  #caput hcRunSettingTime  $update_time 
+}
+
+
+
