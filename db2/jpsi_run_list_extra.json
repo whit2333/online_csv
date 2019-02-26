@@ -100,5 +100,38 @@
   },
   "7386": {
     "comment": "ended early due to missing ref time alarm"
+  },
+  "7396": {
+    "comment": "this run was junk"
+  },
+  "7397": {
+    "comment": "there migh be an issue with one of the hodoscope adcs"
+  },
+  "7402": {
+    "comment": "this run was very trippy"
+  },
+  "7404": {
+    "comment": "about 30 minutes of stable beam,ended early"
+  },
+  "7409": {
+    "comment": "junk, setting PS"
+  },
+  "7410": {
+    "comment": "junk, setting PS"
+  },
+  "7416": {
+    "comment": "junk run, bad hodo and target temp spike, run ended early"
+  },
+  "7418": {
+    "comment": "first 15 minutes beam was very unstable"
+  },
+  "7419": {
+    "comment": "lumi scan, 65uA and 55uA"
+  },
+  "7420": {
+    "comment": "lumi scan, 45uA, 35uA, 25uA, 18uA"
+  },
+  "7427": {
+    "comment": "stopped to change prescalers"
   }
 }

@@ -32,36 +32,54 @@
             7270,
             7271,
             7272,
-            7273
+            7273,
+            7411,
+            7412,
+            7413,
+            7414,
+            7415,
+            7417,
+            7418,
+            7419,
+            7420,
+            7421,
+            7422,
+            7423,
+            7424,
+            7425,
+            7426
         ],
         "hms_angle": 19.1,
         "hms_momentum": 4.95,
-        "jpsi_count": 384.8,
+        "jpsi_count": 751.5999999999999,
         "name": "High-E/low-t",
         "radiator": "IN",
         "shms_angle": 17.0,
         "shms_momentum": -4.835,
-        "status": "59.135988%",
+        "status": "118.427289%",
         "target": "LH2",
-        "total_charge": 2607.897081853267
+        "total_charge": 5222.643453213302
     },
     "phase1-dummy": {
         "charge_goal": 770.0,
         "good_run_list": [
             7242,
             7243,
-            7244
+            7244,
+            7427,
+            7428,
+            7429
         ],
         "hms_angle": 19.1,
         "hms_momentum": 4.95,
-        "jpsi_count": 17.0,
+        "jpsi_count": 25.0,
         "name": "High-E/low-t",
         "radiator": "IN",
         "shms_angle": 17.0,
         "shms_momentum": -4.835,
-        "status": "38.106105%",
+        "status": "71.994186%",
         "target": "DUMMY",
-        "total_charge": 293.4170074428015
+        "total_charge": 554.35523208576
     },
     "phase1-norad": {
         "charge_goal": 250.0,
@@ -221,17 +239,28 @@
             7389,
             7390,
             7391,
-            7392
+            7392,
+            7393,
+            7394,
+            7395,
+            7397,
+            7398,
+            7399,
+            7400,
+            7401,
+            7402,
+            7403,
+            7404
         ],
         "hms_angle": 16.4,
         "hms_momentum": 4.08,
-        "jpsi_count": 89.0,
+        "jpsi_count": 107.0,
         "name": "High-t",
         "radiator": "IN",
         "shms_angle": 30.0,
         "shms_momentum": -3.5,
-        "status": "24.518103%",
+        "status": "28.424947%",
         "target": "LH2",
-        "total_charge": 11861.857990755138
+        "total_charge": 13751.98926682354
     }
 }
