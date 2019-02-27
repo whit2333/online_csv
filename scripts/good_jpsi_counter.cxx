@@ -166,7 +166,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
   ROOT::RDataFrame d_sh("TSP", rootfile);
   // int N_scaler_events = *(d_sh.Count());
 
-  auto d_coin = d.Filter("fEvtHdr.fEvtType == 4");
+  auto d_coin = d.Filter("fEvtHdr.fEvtType >= 4");
 
   // Good track cuts
   auto dHMSGoodTrack  = d_coin.Filter(goodTrackHMS);
