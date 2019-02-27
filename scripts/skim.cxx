@@ -78,6 +78,24 @@ auto abst = [](const double Egamma, Pvec4D& jpsi) {
   return fabs((beam - jpsi).M2());
 };
 
+bool root_file_exists(std::string rootfile) {
+  bool found_good_file = false;
+  if (!gSystem->AccessPathName(rootfile.c_str())) {
+    TFile file(rootfile.c_str());
+    if (file.IsZombie()) {
+      std::cout << rootfile << " is a zombie.\n";
+      std::cout
+          << " Did your replay finish?  Check that the it is done before running this script.\n";
+      return false;
+      // return;
+    } else {
+      std::cout << " using : " << rootfile << "\n";
+      return true;
+    }
+  }
+  return false;
+}
+
 void skim(int RunNumber = 7146, int nevents = -1) {
 
   // ===============================================================================================
@@ -103,37 +121,19 @@ void skim(int RunNumber = 7146, int nevents = -1) {
   }
 
   std::string coda_type = "COIN";
-  std::string rootfile  = "ROOTfiles/";
-  rootfile += std::string("coin_replay_production_");
-  rootfile += std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
 
   bool found_good_file = false;
-  if (!gSystem->AccessPathName(rootfile.c_str())) {
-    TFile file(rootfile.c_str());
-    if (file.IsZombie()) {
-      std::cout << rootfile << " is a zombie.\n";
-      std::cout
-          << " Did your replay finish?  Check that the it is done before running this script.\n";
-      // return;
-    } else {
-      found_good_file = true;
-    }
+
+  std::string rootfile =
+      fmt::format("ROOTfiles_volatile/coin_replay_production_{}_{}.root", RunNumber, nevents);
+  found_good_file = root_file_exists(rootfile.c_str());
+  if (!found_good_file) {
+    rootfile = fmt::format("ROOTfiles_jpsi/coin_replay_production_{}_{}.root", RunNumber, nevents);
+    found_good_file = root_file_exists(rootfile.c_str());
   }
   if (!found_good_file) {
-    rootfile = "ROOTfiles_online/";
-    rootfile += std::string("shms_replay_production_");
-    rootfile += std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
-
-    if (!gSystem->AccessPathName(rootfile.c_str())) {
-      TFile file(rootfile.c_str());
-      if (file.IsZombie()) {
-        std::cout << rootfile << " is a zombie.\n";
-        std::cout
-            << " Did your replay finish?  Check that the it is done before running this script.\n";
-      } else {
-        found_good_file = true;
-      }
-    }
+    rootfile = fmt::format("ROOTfiles/coin_replay_production_{}_{}.root", RunNumber, nevents);
+    found_good_file = root_file_exists(rootfile.c_str());
   }
   if (!found_good_file) {
     std::cout << " Error: suitable root file not found\n";

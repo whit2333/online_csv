@@ -30,6 +30,23 @@ struct RDFInfo {
   const std::string title;
   RDFInfo(RDFNode& df, std::string_view title) : df{df}, title{title} {}
 };
+bool root_file_exists(std::string rootfile) {
+  bool found_good_file = false;
+  if (!gSystem->AccessPathName(rootfile.c_str())) {
+    TFile file(rootfile.c_str());
+    if (file.IsZombie()) {
+      std::cout << rootfile << " is a zombie.\n";
+      std::cout
+          << " Did your replay finish?  Check that the it is done before running this script.\n";
+      return false;
+      // return;
+    } else {
+      std::cout << " using : " << rootfile << "\n";
+      return true;
+    }
+  }
+  return false;
+}
 
 // =================================================================================
 // Cuts
@@ -117,17 +134,19 @@ void good_shms_counter(int RunNumber = 7146, int nevents = -1, const std::string
   const double ps_factor = (ps == 0) ? 1. : (std::pow(2, ps - 1) + 1);
   std::cout << "Using prescale factor " << ps_factor << std::endl;
 
-  std::string rootfile = "ROOTfiles/" + mode + "_replay_production_" + std::to_string(RunNumber) +
-                         "_" + std::to_string(nevents) + ".root ";
   bool found_good_file = false;
-  std::cout << "Loading " << rootfile << "\n";
-  TFile file(rootfile.c_str());
-  if (file.IsZombie()) {
-    std::cout << rootfile << " is a zombie.\n";
-    std::cout
-        << " Did your replay finish?  Check that the it is done before running this script.\n";
-  } else {
-    found_good_file = true;
+
+  std::string rootfile =
+      fmt::format("ROOTfiles_volatile/{}_replay_production_{}_{}.root", mode, RunNumber, nevents);
+  found_good_file = root_file_exists(rootfile.c_str());
+  if (!found_good_file) {
+    rootfile =
+        fmt::format("ROOTfiles_jpsi/{}_replay_production_{}_{}.root", mode, RunNumber, nevents);
+    found_good_file = root_file_exists(rootfile.c_str());
+  }
+  if (!found_good_file) {
+    rootfile = fmt::format("ROOTfiles/{}_replay_production_{}_{}.root", mode, RunNumber, nevents);
+    found_good_file = root_file_exists(rootfile.c_str());
   }
   if (!found_good_file) {
     std::cout << " Error: suitable root file not found\n";

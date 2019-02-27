@@ -40,6 +40,24 @@ std::string goodTrack = "H.gtr.dp > -8 && H.gtr.dp < 8 && H.tr.n == 1&&"
                         "&& TMath::Abs(H.gtr.y) < 2.0";
 std::string eCut = "H.cal.etottracknorm > 0.80 && H.cal.etottracknorm < 2.&&"
                    "H.cer.npeSum > 1.";
+
+bool root_file_exists(std::string rootfile) {
+  bool found_good_file = false;
+  if (!gSystem->AccessPathName(rootfile.c_str())) {
+    TFile file(rootfile.c_str());
+    if (file.IsZombie()) {
+      std::cout << rootfile << " is a zombie.\n";
+      std::cout
+          << " Did your replay finish?  Check that the it is done before running this script.\n";
+      return false;
+      // return;
+    } else {
+      std::cout << " using : " << rootfile << "\n";
+      return true;
+    }
+  }
+  return false;
+}
 void good_hms_counter(int RunNumber = 7146, int nevents = -1, const std::string& mode = "coin",
                       int update = 1) {
 
@@ -118,17 +136,19 @@ void good_hms_counter(int RunNumber = 7146, int nevents = -1, const std::string&
   const double ps_factor = (ps == 0) ? 1. : (std::pow(2, ps - 1) + 1);
   std::cout << "Using prescale factor " << ps_factor << std::endl;
 
-  std::string rootfile = "ROOTfiles/" + mode + "_replay_production_" + std::to_string(RunNumber) +
-                         "_" + std::to_string(nevents) + ".root ";
   bool found_good_file = false;
-  std::cout << "Loading " << rootfile << "\n";
-  TFile file(rootfile.c_str());
-  if (file.IsZombie()) {
-    std::cout << rootfile << " is a zombie.\n";
-    std::cout
-        << " Did your replay finish?  Check that the it is done before running this script.\n";
-  } else {
-    found_good_file = true;
+
+  std::string rootfile =
+      fmt::format("ROOTfiles_volatile/{}_replay_production_{}_{}.root", mode, RunNumber, nevents);
+  found_good_file = root_file_exists(rootfile.c_str());
+  if (!found_good_file) {
+    rootfile =
+        fmt::format("ROOTfiles_jpsi/{}_replay_production_{}_{}.root", mode, RunNumber, nevents);
+    found_good_file = root_file_exists(rootfile.c_str());
+  }
+  if (!found_good_file) {
+    rootfile = fmt::format("ROOTfiles/{}_replay_production_{}_{}.root", mode, RunNumber, nevents);
+    found_good_file = root_file_exists(rootfile.c_str());
   }
   if (!found_good_file) {
     std::cout << " Error: suitable root file not found\n";
