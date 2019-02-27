@@ -6,7 +6,7 @@ R__LOAD_LIBRARY(libScandalizer.so)
 #include "scandalizer/PostProcessors.h"
 #include "scandalizer/YieldMonitors.h"
 
-void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
+void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0, Int_t start_event = 0) {
 
   spdlog::set_level(spdlog::level::warn);
   spdlog::flush_every(std::chrono::seconds(5));
@@ -238,28 +238,29 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   // then  repeatedly skips 3000 events and processes 1000.
   // auto pp0 = new hallc::scandalizer::SkipPeriodicAfterPedestal();
   // pp0->_analyzer = analyzer; /// \todo: fix these 2 lines
-  //auto pp0 = new hallc::scandalizer::SkipAfterPedestal(135000);
-   auto pp0 = new hallc::scandalizer::SkipPeriodicToEOF(40000,10000);
+  auto pp0 = new hallc::scandalizer::SkipAfterPedestal(start_event);
+  //auto pp0       = new hallc::scandalizer::SkipPeriodicToEOF(40000, 10000);
   pp0->_analyzer = analyzer;
   analyzer->AddPostProcess(pp0);
 
   hallc::scandalizer::SpectrometerMonitor* pp1a =
       new hallc::scandalizer::SpectrometerMonitor(hhod, hcer, hdc);
-  pp1a->_scaler = hscaler;
+  pp1a->_scaler            = hscaler;
   pp1a->_analyzer          = analyzer;
   pp1a->_spectrometer_name = "HMS";
 
   hallc::scandalizer::SpectrometerMonitor* pp1 =
       new hallc::scandalizer::SpectrometerMonitor(phod, phgcer, pdc);
-  pp1->_scaler = hscaler;
+  pp1->_scaler            = hscaler;
   pp1->_analyzer          = analyzer;
   pp1->_spectrometer_name = "SHMS";
 
-
-  auto SHMS_scaler_yield_monitor = new hallc::scandalizer::YieldMonitor(hscaler,"SHMS:EL_CLEAN","H.pEL_CLEAN.scaler","H.BCM2.scalerCharge");
+  auto SHMS_scaler_yield_monitor = new hallc::scandalizer::YieldMonitor(
+      hscaler, "SHMS:EL_CLEAN", "H.pEL_CLEAN.scaler", "H.BCM2.scalerCharge");
   analyzer->AddPostProcess(SHMS_scaler_yield_monitor);
 
-  auto HMS_scaler_yield_monitor = new hallc::scandalizer::YieldMonitor(hscaler,"HMS:EL_CLEAN","H.hEL_CLEAN.scaler","H.BCM2.scalerCharge");
+  auto HMS_scaler_yield_monitor = new hallc::scandalizer::YieldMonitor(
+      hscaler, "HMS:EL_CLEAN", "H.hEL_CLEAN.scaler", "H.BCM2.scalerCharge");
   analyzer->AddPostProcess(HMS_scaler_yield_monitor);
 
   hallc::PVList pv_list;
@@ -278,7 +279,7 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
             total += hcer->fNTDCRef_miss + hcer->fNADCRef_miss;
             total += pngcer->fNTDCRef_miss + pngcer->fNADCRef_miss;
             total += phgcer->fNTDCRef_miss + phgcer->fNADCRef_miss;
-            if ( (counter > 1000)) {
+            if ((counter > 1000)) {
               counter = 0;
               pv_list.Put("hcDAQMissingRefTime", total);
             }
@@ -287,9 +288,9 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
           });
   analyzer->AddPostProcess(daq_missing_ref_monitor);
 
-  //hallc::PVList pv_list2;
-  //pv_list2.AddPV("hcHMS:DC:Wire:1:Occ");
-  //hallc::scandalizer::SimplePostProcess* dc_occ_test =
+  // hallc::PVList pv_list2;
+  // pv_list2.AddPV("hcHMS:DC:Wire:1:Occ");
+  // hallc::scandalizer::SimplePostProcess* dc_occ_test =
   //    new hallc::scandalizer::SimplePostProcess(
   //        [&]() { return 0; },
   //        [&](const THaEvData* evt) {
@@ -315,7 +316,7 @@ void scandalizer_monitor(Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   //          counter++;
   //          return 0;
   //        });
-  //analyzer->AddPostProcess(dc_occ_test);
+  // analyzer->AddPostProcess(dc_occ_test);
 
   analyzer->AddPostProcess(pp1);
   analyzer->AddPostProcess(pp1a);

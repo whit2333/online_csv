@@ -31,6 +31,7 @@ n_events=
 container=
 n_calib=
 calibrate=
+start_event=0
 
 if [[ $# -eq 0 ]] ; then
   print_the_help
@@ -54,6 +55,11 @@ do
       ;;
     -n|--n-events)
       n_events="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -s|--start-event)
+      start_event="$2"
       shift # past argument
       shift # past value
       ;;
@@ -126,6 +132,6 @@ if [ -n "${PREVIOUS_Scan}" ] ; then
   kill ${PREVIOUS_Scan}
 fi
 
-hcana  -b -q "online_monitor/scandalizer_monitor.cxx(${run_number},${n_events})"
+hcana  -b -q "online_monitor/scandalizer_monitor.cxx(${run_number},${n_events},${start_event})"
 
 
