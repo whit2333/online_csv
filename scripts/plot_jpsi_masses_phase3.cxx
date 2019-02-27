@@ -150,8 +150,8 @@ void plot_jpsi_masses_phase3(int start_run = 0) {
             fmt::format("{:3.1f}\% of scheduled beam time ", 100.0 * (2.60943) / 66.0).c_str());
         hTotal->Draw("e1");
         hTotal->Draw("hist same");
-        c->SaveAs("results/plot_jpsi_masses/c1-2.png");
-        c->SaveAs("results/plot_jpsi_masses/c1-2.pdf");
+        c->SaveAs("results/plot_jpsi_masses/c1-3.png");
+        c->SaveAs("results/plot_jpsi_masses/c1-3.pdf");
         return 0;
       },
       [&](hallc::DisplayPlot& plt) { return 0; });
@@ -189,8 +189,8 @@ void plot_jpsi_masses_phase3(int start_run = 0) {
         leg->AddEntry(mc_yield_Egamma_30, "+ 3\% pentaquark coupling");
 #endif
         leg->Draw();
-        c->SaveAs("results/plot_jpsi_masses/c2-2.png");
-        c->SaveAs("results/plot_jpsi_masses/c2-2.pdf");
+        c->SaveAs("results/plot_jpsi_masses/c2-3.png");
+        c->SaveAs("results/plot_jpsi_masses/c2-3.pdf");
 
         return 0;
       },
@@ -215,8 +215,8 @@ void plot_jpsi_masses_phase3(int start_run = 0) {
         leg->AddEntry(mc_yield_Abst, "t-channel production only");
         leg->Draw();
 
-        c->SaveAs("results/plot_jpsi_masses/c3-2.png");
-        c->SaveAs("results/plot_jpsi_masses/c3-2.pdf");
+        c->SaveAs("results/plot_jpsi_masses/c3-3.png");
+        c->SaveAs("results/plot_jpsi_masses/c3-3.pdf");
 
         return 0;
       },
