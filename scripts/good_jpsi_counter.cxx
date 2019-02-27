@@ -56,8 +56,7 @@ std::string goodTrackHMS = "H.gtr.dp > -8 && H.gtr.dp < 8 && H.tr.n == 1&&"
 #endif
 std::string goodTrackSHMS = "P.gtr.dp > -10 && P.gtr.dp < 22";
 std::string goodTrackHMS  = "H.gtr.dp > -8 && H.gtr.dp < 8 ";
-// std::string goodTrackHMS = "H.gtr.dp > -10 && H.gtr.dp < 10 ";
-std::string eCutSHMS = "P.cal.etottracknorm > 0.8 && P.cal.etottracknorm < 2.&&"
+std::string eCutSHMS      = "P.cal.etottracknorm > 0.8 && P.cal.etottracknorm < 2.&&"
                        "P.ngcer.npeSum > 2";
 std::string eCutHMS = "H.cal.etottracknorm > 0.80 && H.cal.etottracknorm < 2.&&"
                       "H.cer.npeSum > 1.";
@@ -134,31 +133,6 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
     std::cout << "Check that run number and replay exists. \n";
     std::cout << "If problem persists please contact Sylvester (217-848-0565)\n";
   }
-  double P0_shms_setting = j[runnum_str]["spectrometers"]["shms_momentum"].get<double>();
-  double P0_shms         = std::abs(P0_shms_setting);
-
-  int ps1 = 0;
-  if (j[runnum_str].find("daq") != j[runnum_str].end()) {
-    ps1 = j[runnum_str]["daq"]["ps1"].get<int>();
-    std::cout << "ps1 = " << ps1 << "\n";
-  } else {
-    std::cout << " using default ps1 = 0 \n";
-  }
-  //  The way the input rates are prescaled follows:
-  //       input-rate/(2^{val - 1} + 1)
-  double shms_singles_ps_value = (ps1 >= 0) ? std::pow(2.0, ps1) : 0.;
-  std::cout << "prescale value " << shms_singles_ps_value << "\n";
-  int ps4 = 0;
-  if (j[runnum_str].find("daq") != j[runnum_str].end()) {
-    ps4 = j[runnum_str]["daq"]["ps4"].get<int>();
-    std::cout << "ps4 = " << ps4 << "\n";
-  } else {
-    std::cout << " using default ps4 = 0 \n";
-  }
-  double hms_singles_ps_value = (ps4 >= 0) ? std::pow(2.0, ps4) : 0.;
-  std::cout << "prescale value " << hms_singles_ps_value << "\n";
-
-  std::string coda_type = "COIN";
 
   bool found_good_file = false;
 
@@ -193,15 +167,11 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
   // int N_scaler_events = *(d_sh.Count());
 
   auto d_coin = d.Filter("fEvtHdr.fEvtType == 4");
-  auto d_shms = d.Filter("fEvtHdr.fEvtType == 1");
-  auto d_hms  = d.Filter("fEvtHdr.fEvtType == 2");
 
   // Good track cuts
-  auto dHMSGoodTrack_hms   = d_hms.Filter(goodTrackHMS);
-  auto dHMSGoodTrack       = d_coin.Filter(goodTrackHMS);
-  auto dSHMSGoodTrack_shms = d_shms.Filter(goodTrackSHMS);
-  auto dSHMSGoodTrack      = d_coin.Filter(goodTrackSHMS);
-  auto dCOINGoodTrack      = dHMSGoodTrack.Filter(goodTrackSHMS)
+  auto dHMSGoodTrack  = d_coin.Filter(goodTrackHMS);
+  auto dSHMSGoodTrack = d_coin.Filter(goodTrackSHMS);
+  auto dCOINGoodTrack = dHMSGoodTrack.Filter(goodTrackSHMS)
                             .Define("p_electron", p_electron, {"P.gtr.px", "P.gtr.py", "P.gtr.pz"})
                             .Define("p_positron", p_positron, {"H.gtr.px", "H.gtr.py", "H.gtr.pz"})
                             .Define("p_jpsi", p_jpsi, {"p_electron", "p_positron"})
@@ -211,11 +181,9 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
                             .Define("t", t, {"E_gamma", "p_jpsi"})
                             .Define("abst", "fabs(t)");
   // PID cuts
-  auto dHMSEl       = dHMSGoodTrack.Filter(eCutHMS);
-  auto dSHMSEl      = dSHMSGoodTrack.Filter(eCutSHMS);
-  auto dCOINEl      = dCOINGoodTrack.Filter(eCutHMS + " && " + eCutSHMS);
-  auto dHMSEl_hms   = dHMSGoodTrack_hms.Filter(eCutHMS);
-  auto dSHMSEl_shms = dSHMSGoodTrack_shms.Filter(eCutSHMS);
+  auto dHMSEl  = dHMSGoodTrack.Filter(eCutHMS);
+  auto dSHMSEl = dSHMSGoodTrack.Filter(eCutSHMS);
+  auto dCOINEl = dCOINGoodTrack.Filter(eCutHMS + " && " + eCutSHMS);
 
   // Timing cuts
   // Find the timing peak
@@ -237,6 +205,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
   // timing cut lambdas
   // TODO: evaluate timing cut and offset for random background
   auto timing_cut = [=](double coin_time) { return std::abs(coin_time - coin_peak_center) < 2.; };
+  // anti-timing set to 5x width of regular
   auto anti_timing_cut = [=](double coin_time) {
     return std::abs(coin_time - coin_peak_center - 28.) < 10.;
   };
@@ -487,27 +456,21 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
 
   auto yield_all = d.Count();
   // 5 timing cut widths worth of random backgrounds
-  auto yield_shms               = d_shms.Count();
-  auto yield_hms                = d_hms.Count();
-  auto yield_coin               = d_coin.Count();
-  auto yield_HMSGoodTrack_hms   = dHMSGoodTrack_hms.Count();
-  auto yield_HMSGoodTrack       = dHMSGoodTrack.Count();
-  auto yield_SHMSGoodTrack_shms = dSHMSGoodTrack_shms.Count();
-  auto yield_SHMSGoodTrack      = dSHMSGoodTrack.Count();
-  auto yield_COINGoodTrack      = dCOINGoodTrack.Count();
-  auto yield_HMSEl_hms          = dHMSEl_hms.Count();
-  auto yield_HMSEl              = dHMSEl.Count();
-  auto yield_SHMSEl_shms        = dSHMSEl_shms.Count();
-  auto yield_SHMSEl             = dSHMSEl.Count();
-  auto yield_COINEl             = dCOINEl.Count();
-  auto yield_HMSElInTime        = dHMSElInTime.Count();
-  auto yield_HMSElRandom        = dHMSElRandom.Count();
-  auto yield_SHMSElInTime       = dSHMSElInTime.Count();
-  auto yield_SHMSElRandom       = dSHMSElRandom.Count();
-  auto yield_COINElInTime       = dCOINElInTime.Count();
-  auto yield_COINElRandom       = dCOINElRandom.Count();
-  auto yield_jpsi_raw           = dJpsi.Count();
-  auto yield_jpsi_random        = dJpsiRandom.Count();
+  auto yield_coin          = d_coin.Count();
+  auto yield_HMSGoodTrack  = dHMSGoodTrack.Count();
+  auto yield_SHMSGoodTrack = dSHMSGoodTrack.Count();
+  auto yield_COINGoodTrack = dCOINGoodTrack.Count();
+  auto yield_HMSEl         = dHMSEl.Count();
+  auto yield_SHMSEl        = dSHMSEl.Count();
+  auto yield_COINEl        = dCOINEl.Count();
+  auto yield_HMSElInTime   = dHMSElInTime.Count();
+  auto yield_HMSElRandom   = dHMSElRandom.Count();
+  auto yield_SHMSElInTime  = dSHMSElInTime.Count();
+  auto yield_SHMSElRandom  = dSHMSElRandom.Count();
+  auto yield_COINElInTime  = dCOINElInTime.Count();
+  auto yield_COINElRandom  = dCOINElRandom.Count();
+  auto yield_jpsi_raw      = dJpsi.Count();
+  auto yield_jpsi_random   = dJpsiRandom.Count();
 
   // -------------------------------------
   // End lazy eval
@@ -520,24 +483,12 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
   double good_total_charge = *total_charge / 1000.0; // mC
   double good_time         = *time_1MHz_cut;         // s
 
-#if 0
-  // Not sure what we want from this TODO
-  double shms_scaler_yield     = ((*shms_el_real_scaler) / good_total_charge);
-  double hms_scaler_yield      = ((*hms_el_real_scaler) / good_total_charge);
-  double shms_scaler_yield_unc = (std::sqrt(*shms_el_real_scaler) / good_total_charge);
-  double shms_scaler_yield_unc = (std::sqrt(*hms_el_real_scaler) / good_total_charge);
-#endif
-
   std::map<std::string, double> counts = {
       {"shms_raw_yield_coin", (*yield_SHMSGoodTrack) / (good_total_charge)},
-      {"shms_raw_yield_shms ", (*yield_SHMSGoodTrack_shms) / (good_total_charge)},
       {"hms_raw_yield_coin", (*yield_HMSGoodTrack) / (good_total_charge)},
-      {"hms_raw_yield_hms", (*yield_HMSGoodTrack_hms) / (good_total_charge)},
       {"coin_raw_yield", (*yield_COINGoodTrack) / (good_total_charge)},
       {"shms_e_yield_coin", (*yield_SHMSEl) / (good_total_charge)},
-      {"shms_e_yield_shms", (*yield_SHMSEl_shms) / (good_total_charge)},
       {"hms_e_yield_coin", (*yield_HMSEl) / (good_total_charge)},
-      {"hms_e_yield_hms", (*yield_HMSEl_hms) / (good_total_charge)},
       {"coin_ee_yield", (*yield_COINEl) / (good_total_charge)},
       {"hms_e_intime", (*yield_HMSElInTime) / (good_total_charge)},
       {"shms_e_intime", (*yield_SHMSElInTime) / (good_total_charge)},
@@ -548,8 +499,6 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
       {"hms_e_good", (n_HMSElGood) / (good_total_charge)},
       {"shms_e_good", (n_SHMSElGood) / (good_total_charge)},
       {"coin_e_good", (n_COINElGood) / (good_total_charge)},
-      {"ps_cor_shms_e_good", (n_SHMSElGood / good_total_charge) * shms_singles_ps_value},
-      {"ps_cor_hms_e_good", (n_HMSElGood / good_total_charge) * hms_singles_ps_value},
       {"J/psi count", *yield_jpsi_raw},
       {"J/psi yield", *yield_jpsi_raw / (good_total_charge)},
       {"J/psi random background count", *yield_jpsi_random / 5.},
@@ -583,8 +532,6 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
 
   jruns[run_str]["charge bcm4b 2u cut"] = good_total_charge;
   jruns[run_str]["time 1MHz 2u cut"]    = good_time;
-  jruns[run_str]["shms ps1 factor"]     = shms_singles_ps_value;
-  jruns[run_str]["hms ps4 factor"]      = hms_singles_ps_value;
 
   if (update) {
     std::cout << "Updating db2/jpsi_run_count_list.json with shms counts\n";
