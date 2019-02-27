@@ -146,8 +146,8 @@ void plot_jpsi_masses_phase1(int start_run = 0) {
         // plt.SetPersist();
         c->cd();
         // hTotal->SetTitle(fmt::format("with {} C",total_charge/1000).c_str());
-        hTotal->SetTitle(
-            fmt::format("{:3.1f}\% of scheduled beam time ", 100.0 * (2.60943) / 66.0).c_str());
+        //hTotal->SetTitle(
+        //    fmt::format("{:3.1f}\% of scheduled beam time ", 100.0 * (2.60943) / 66.0).c_str());
         hTotal->Draw("e1");
         hTotal->Draw("hist same");
         c->SaveAs("results/plot_jpsi_masses/c1-1.png");
@@ -161,27 +161,27 @@ void plot_jpsi_masses_phase1(int start_run = 0) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
         // plt.SetPersist();
         c->cd();
-        hEgammaTotal->SetTitle(
-            fmt::format("{:3.1f}\% of scheduled beam time ", 100.0 * (2.60943) / 66.0).c_str());
+        //hEgammaTotal->SetTitle(
+        //    fmt::format("{:3.1f}\% of scheduled beam time ", 100.0 * (2.60943) / 66.0).c_str());
         hEgammaTotal->SetMarkerStyle(20);
         hEgammaTotal->SetMarkerSize(1.7);
         hEgammaTotal->Draw("e1");
 
         mc_yield_Egamma->SetLineColor(kRed + 1);
         mc_yield_Egamma->Draw("hist same");
-#if 0
-        mc_yield_Egamma_30->SetLineColor(kBlue + 1);
-        mc_yield_Egamma_30->Draw("hist same");
 
-        mc_50_yield_Egamma->SetLineColor(kBlue + 1);
-        mc_50_yield_Egamma->Draw("hist same");
-#endif
+        //mc_yield_Egamma_30->SetLineColor(kBlue + 1);
+        //mc_yield_Egamma_30->Draw("hist same");
+
+        //mc_50_yield_Egamma->SetLineColor(kBlue + 1);
+        //mc_50_yield_Egamma->Draw("hist same");
+        
         TLegend* leg = new TLegend(0.15, 0.6, 0.52, 0.8);
 
-        leg->AddEntry(
-            hEgammaTotal,
-            fmt::format("{:3.1f}\% of scheduled beam time ", 100.0 * (2.60943) / 66.0).c_str(),
-            "lep");
+        //leg->AddEntry(
+        //    hEgammaTotal,
+        //    fmt::format("{:3.1f}\% of scheduled beam time ", 100.0 * (2.60943) / 66.0).c_str(),
+        //    "lep");
         leg->AddEntry(mc_yield_Egamma, "t-channel production only");
         //        leg->AddEntry(mc_yield_Egamma_30, "+ 3\% pentaquark coupling");
         leg->Draw();
@@ -205,9 +205,9 @@ void plot_jpsi_masses_phase1(int start_run = 0) {
         mc_yield_Abst->Draw("hist same");
         TLegend* leg = new TLegend(0.55, 0.6, 0.85, 0.8);
 
-        leg->AddEntry(
-            hEgammaTotal,
-            fmt::format("{:3.1f}\% of scheduled beam time ", 100.0 * (1.67) / 66.0).c_str(), "lep");
+        //leg->AddEntry(
+        //    hEgammaTotal,
+        //    fmt::format("{:3.1f}\% of scheduled beam time ", 100.0 * (1.67) / 66.0).c_str(), "lep");
         leg->AddEntry(mc_yield_Abst, "t-channel production only");
         leg->Draw();
 

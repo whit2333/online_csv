@@ -218,8 +218,8 @@ void plot_jpsi_masses(int start_run = 0) {
         // plt.SetPersist();
         c->cd();
         // hTotal->SetTitle(fmt::format("with {} C",total_charge/1000).c_str());
-        hTotal->SetTitle(
-            fmt::format("{:3.1f}\% of scheduled beam time ", 100.0 * (2.60943) / 66.0).c_str());
+        //hTotal->SetTitle(
+        //    fmt::format("{:3.1f}\% of scheduled beam time ", 100.0 * (2.60943) / 66.0).c_str());
         hTotal->Draw("e1");
         hTotal->Draw("hist same");
         c->SaveAs("results/plot_jpsi_masses/c1.png");
@@ -233,8 +233,8 @@ void plot_jpsi_masses(int start_run = 0) {
         auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
         // plt.SetPersist();
         c->cd();
-        hEgammaTotal->SetTitle(
-            fmt::format("{:3.1f}\% of scheduled beam time ", 100.0 * (2.60943) / 66.0).c_str());
+        //hEgammaTotal->SetTitle(
+        //    fmt::format("{:3.1f}\% of scheduled beam time ", 100.0 * (2.60943) / 66.0).c_str());
         hEgammaTotal->SetMarkerStyle(20);
         hEgammaTotal->SetMarkerSize(1.7);
         hEgammaTotal->Draw("e1");
@@ -249,10 +249,10 @@ void plot_jpsi_masses(int start_run = 0) {
         mc_50_yield_Egamma->Draw("hist same");
         TLegend* leg = new TLegend(0.15, 0.6, 0.52, 0.8);
 
-        leg->AddEntry(
-            hEgammaTotal,
-            fmt::format("{:3.1f}\% of scheduled beam time ", 100.0 * (2.60943) / 66.0).c_str(),
-            "lep");
+        //leg->AddEntry(
+        //    hEgammaTotal,
+        //    fmt::format("{:3.1f}\% of scheduled beam time ", 100.0 * (2.60943) / 66.0).c_str(),
+        //    "lep");
         leg->AddEntry(mc_yield_Egamma, "t-channel production only");
         // leg->AddEntry(mc_40_yield_Egamma, "+ 4\% coupling");
         leg->AddEntry(mc_50_yield_Egamma, "+ 5\% pentaquark coupling");

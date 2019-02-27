@@ -137,6 +137,12 @@
   "7428": {
     "comment": "Pre-scale values for 7428 somehow stored incorrectly in the CODA header, prescalers were only *really* changed for the next run."
   },
+  "7430": {
+    "comment": "junk"
+  },
+  "7431": {
+    "comment": "junk"
+  },
   "7432": {
     "comment": "Carbon hole "
   },

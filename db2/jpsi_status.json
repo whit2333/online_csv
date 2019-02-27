@@ -133,7 +133,6 @@
             7303,
             7304,
             7305,
-            7431,
             7438,
             7439,
             7441,
@@ -142,18 +141,25 @@
             7445,
             7446,
             7447,
-            7448
+            7448,
+            7449,
+            7450,
+            7451,
+            7452,
+            7453,
+            7454,
+            7455
         ],
         "hms_angle": 19.9,
         "hms_momentum": 4.6,
-        "jpsi_count": 379.8,
+        "jpsi_count": 449.8,
         "name": "Low-E/low-t",
         "radiator": "IN",
         "shms_angle": 20.1,
         "shms_momentum": -4.3,
-        "status": "38.613631%",
+        "status": "46.009262%",
         "target": "LH2",
-        "total_charge": 3498.394944376364
+        "total_charge": 4168.43913056745
     },
     "phase2-dummy": {
         "charge_goal": 1219.0,
