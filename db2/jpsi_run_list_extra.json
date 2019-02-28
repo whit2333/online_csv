@@ -169,5 +169,23 @@
   },
   "7444": {
     "comment": "run ended early shms dipole tripped-ramped, junk"
+  },
+  "7456": {
+    "comment": "lost beam, beam positions not very stable"
+  },
+  "7457": {
+    "comment": "junk, crappy beam/no beam"
+  },
+  "7459": {
+    "comment": "junk, DAQ in funny state, started 7459 to test after kcoda/startcoda"
+  },
+  "7464": {
+    "comment": "mcc took the beam away for RF work"
+  },
+  "7465": {
+    "comment": "junk - MCC is playing with my feelings :("
+  },
+  "7466": {
+    "comment": "junk - crappy beam - after SHMS reboot"
   }
 }
