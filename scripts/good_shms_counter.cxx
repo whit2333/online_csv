@@ -137,8 +137,13 @@ void good_shms_counter(int RunNumber = 7146, int nevents = -1, const std::string
   bool found_good_file = false;
 
   std::string rootfile =
-      fmt::format("ROOTfiles_volatile/{}_replay_production_{}_{}.root", mode, RunNumber, nevents);
+      fmt::format("full_online/{}_replay_production_{}_{}.root", mode, RunNumber, nevents);
   found_good_file = root_file_exists(rootfile.c_str());
+  if (!found_good_file) {
+    rootfile =
+        fmt::format("ROOTfiles_volatile/{}_replay_production_{}_{}.root", mode, RunNumber, nevents);
+    found_good_file = root_file_exists(rootfile.c_str());
+  }
   if (!found_good_file) {
     rootfile =
         fmt::format("ROOTfiles_jpsi/{}_replay_production_{}_{}.root", mode, RunNumber, nevents);

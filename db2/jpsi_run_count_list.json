@@ -8609,5 +8609,31 @@
         "shms_e_yield_coin": 125.95793534399164,
         "shms_raw_yield_coin": 390.65073088245947,
         "time 1MHz 2u cut": 2915.6908550000007
+    },
+    "7476": {
+        "J/psi Good event count": 19.0,
+        "J/psi Good event yield": 0.11962143889864736,
+        "J/psi count": 19.0,
+        "J/psi random background": 0.0,
+        "J/psi random background count": 0.0,
+        "J/psi yield": 0.11962143889864736,
+        "charge bcm4b 2u cut": 158.83440439216156,
+        "coin_e_good": 0.22035528218171882,
+        "coin_e_intime": 0.22035528218171882,
+        "coin_e_random": 0.0012591730410383933,
+        "coin_ee_yield": 0.24553874300248668,
+        "coin_raw_yield": 142.45024613267344,
+        "good_total_charge": 158.83440439216156,
+        "hms_e_good": 0.2770180690284465,
+        "hms_e_intime": 0.2833139342336385,
+        "hms_e_random": 0.006295865205191967,
+        "hms_e_yield_coin": 0.7932790158541878,
+        "hms_raw_yield_coin": 862.4957579200683,
+        "shms_e_good": 64.21782509295805,
+        "shms_e_intime": 64.87889093950321,
+        "shms_e_random": 0.66610253870931,
+        "shms_e_yield_coin": 130.68327406416964,
+        "shms_raw_yield_coin": 415.77264228567225,
+        "time 1MHz 2u cut": 2753.944535000001
     }
 }

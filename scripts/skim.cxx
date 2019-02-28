@@ -125,8 +125,13 @@ void skim(int RunNumber = 7146, int nevents = -1) {
   bool found_good_file = false;
 
   std::string rootfile =
-      fmt::format("ROOTfiles_volatile/coin_replay_production_{}_{}.root", RunNumber, nevents);
+      fmt::format("full_online/coin_replay_production_{}_{}.root", RunNumber, nevents);
   found_good_file = root_file_exists(rootfile.c_str());
+  if (!found_good_file) {
+    rootfile =
+        fmt::format("ROOTfiles_volatile/coin_replay_production_{}_{}.root", RunNumber, nevents);
+    found_good_file = root_file_exists(rootfile.c_str());
+  }
   if (!found_good_file) {
     rootfile = fmt::format("ROOTfiles_jpsi/coin_replay_production_{}_{}.root", RunNumber, nevents);
     found_good_file = root_file_exists(rootfile.c_str());
