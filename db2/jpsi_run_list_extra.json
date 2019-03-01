@@ -187,5 +187,20 @@
   },
   "7466": {
     "comment": "junk - crappy beam - after SHMS reboot"
+  },
+  "7481": {
+    "comment": "ended run due to ROC06 error"
+  },
+  "7482": {
+    "comment": "junk - daq issue"
+  },
+  "7483": {
+    "comment": "junk - daq issue"
+  },
+  "7484": {
+    "comment": "junk - daq issue"
+  },
+  "7485": {
+    "comment": "good run after roc reboots"
   }
 }

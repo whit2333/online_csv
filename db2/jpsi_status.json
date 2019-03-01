@@ -164,18 +164,24 @@
             7473,
             7474,
             7475,
-            7476
+            7476,
+            7477,
+            7478,
+            7479,
+            7480,
+            7481,
+            7485
         ],
         "hms_angle": 19.9,
         "hms_momentum": 4.6,
-        "jpsi_count": 657.8,
+        "jpsi_count": 748.8,
         "name": "Low-E/low-t",
         "radiator": "IN",
         "shms_angle": 20.1,
         "shms_momentum": -4.3,
-        "status": "65.566245%",
+        "status": "76.518848%",
         "target": "LH2",
-        "total_charge": 5940.301791571772
+        "total_charge": 6932.607618662271
     },
     "phase2-dummy": {
         "charge_goal": 1219.0,
