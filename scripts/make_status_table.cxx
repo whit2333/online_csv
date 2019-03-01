@@ -16,7 +16,7 @@ namespace fs = std::experimental::filesystem;
 
 void print_hline() {
   std::cout << "-----------------------------------------------------------------------------------"
-               "----------------------------------------";
+               "--------------------------------------------";
 }
 void make_status_table() {
 
@@ -40,7 +40,7 @@ void make_status_table() {
     fmt::print(" {:>7} ", "th_shms");
     fmt::print(" {:>5} ", "n_runs");
     fmt::print(" {:>7} ", "J/psi");
-    fmt::print(" {:^17} ", "yield");
+    fmt::print(" {:^19} ", "yield");
     fmt::print(" {:>6} / {:<5} ", "charge", "goal");
     fmt::print(" {:>7} ", "status");
     std::cout << "\n";
@@ -48,7 +48,9 @@ void make_status_table() {
 
   std::string old_name     = "";
   double      total_charge = 0;
+  double      total_count  = 0;
   double      total_goal   = 0;
+  double      total_runs   = 0;
 
   print_header();
   print_hline();
@@ -72,8 +74,10 @@ void make_status_table() {
       std::cout << "\n";
     }
     old_name = name;
+    total_count += count;
     total_charge += charge;
     total_goal += goal;
+    total_runs += n_runs;
 
     fmt::print(" {:>12} ", name);
     fmt::print(" {:^7} ", target);
@@ -91,8 +95,8 @@ void make_status_table() {
   }
   print_hline();
   std::cout << "\n";
-  fmt::print(" {:>97}  {:>5.0f} / {:<5.0f}  {:>6.1f}%", "TOTAL GOOD CHARGE", total_charge,
-             total_goal, total_charge / total_goal * 100.);
+  fmt::print(" {:>69.0f}  {:>7.0f} {:^22}  {:>5.0f} / {:<5.0f}  {:>6.1f}%", total_runs, total_count,
+             "TOTAL GOOD CHARGE", total_charge, total_goal, total_charge / total_goal * 100.);
   std::cout << "\n";
 
   std::cout << std::endl;
