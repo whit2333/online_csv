@@ -170,35 +170,53 @@
             7479,
             7480,
             7481,
-            7485
+            7485,
+            7486,
+            7487,
+            7488,
+            7489,
+            7490,
+            7491,
+            7496,
+            7497,
+            7499,
+            7500,
+            7501,
+            7502,
+            7503
         ],
         "hms_angle": 19.9,
         "hms_momentum": 4.6,
-        "jpsi_count": 748.8,
+        "jpsi_count": 868.8,
         "name": "Low-E/low-t",
         "radiator": "IN",
         "shms_angle": 20.1,
         "shms_momentum": -4.3,
-        "status": "76.518848%",
+        "status": "89.999068%",
         "target": "LH2",
-        "total_charge": 6932.607618662271
+        "total_charge": 8153.91555333849
     },
     "phase2-dummy": {
         "charge_goal": 1219.0,
-        "good_run_list": [],
+        "good_run_list": [
+            7492,
+            7493,
+            7494,
+            7495
+        ],
         "hms_angle": 19.9,
         "hms_momentum": 4.6,
-        "jpsi_count": 0.0,
+        "jpsi_count": 13.0,
         "name": "Low-E/low-t",
         "radiator": "IN",
         "shms_angle": 20.1,
         "shms_momentum": -4.3,
-        "status": "0%",
+        "status": "23.429601%",
         "target": "DUMMY",
-        "total_charge": 0.0
+        "total_charge": 285.6068411119544
     },
     "phase3": {
-        "charge_goal": 48380.0,
+        "charge_goal": 36288.0,
         "good_run_list": [
             7308,
             7312,
@@ -297,8 +315,25 @@
         "radiator": "IN",
         "shms_angle": 30.0,
         "shms_momentum": -3.5,
-        "status": "28.424947%",
+        "status": "37.896796%",
         "target": "LH2",
         "total_charge": 13751.98926682354
+    },
+    "phase4": {
+        "charge_goal": 12096.0,
+        "good_run_list": [
+            7504,
+            7505
+        ],
+        "hms_angle": 16.5,
+        "hms_momentum": 4.4,
+        "jpsi_count": 5.0,
+        "name": "Medium-t",
+        "radiator": "IN",
+        "shms_angle": 24.5,
+        "shms_momentum": -4.4,
+        "status": "1.659278%",
+        "target": "LH2",
+        "total_charge": 200.70628501659263
     }
 }

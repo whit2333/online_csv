@@ -1,4 +1,7 @@
 {
+  "1234": {
+    "comment": "this run was junk"
+  },
   "7118": {
     "comment": "cosmics, replay errors"
   },
@@ -192,15 +195,30 @@
     "comment": "ended run due to ROC06 error"
   },
   "7482": {
-    "comment": "junk - daq issue"
+    "comment": "       junk - daq issue"
   },
   "7483": {
-    "comment": "junk - daq issue"
+    "comment": "       junk - daq issue"
   },
   "7484": {
-    "comment": "junk - daq issue"
+    "comment": "       junk - daq issue"
   },
   "7485": {
     "comment": "good run after roc reboots"
+  },
+  "7490": {
+    "comment": " "
+  },
+  "7498": {
+    "comment": "junk - HMS ROC issues"
+  },
+  "7499": {
+    "comment": "30 uA luminosity scan"
+  },
+  "7500": {
+    "comment": "20 uA luminosity scan"
+  },
+  "7502": {
+    "comment": "10 uA luminosity scan"
   }
 }

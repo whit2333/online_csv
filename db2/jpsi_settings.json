@@ -57,6 +57,16 @@
     "hms_momentum": 4.08,
     "shms_angle": 30.0,
     "shms_momentum": -3.5,
-    "charge_goal": 48380.0
+    "charge_goal": 36288.0
+  },
+  "phase4": { 
+    "name": "Medium-t",
+    "radiator": "IN",
+    "target": "LH2",
+    "hms_angle": 16.5,
+    "hms_momentum": 4.4,
+    "shms_angle": 24.5,
+    "shms_momentum": -4.4,
+    "charge_goal": 12096.0
   }
 }
