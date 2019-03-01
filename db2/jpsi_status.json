@@ -323,17 +323,20 @@
         "charge_goal": 12096.0,
         "good_run_list": [
             7504,
-            7505
+            7505,
+            7506,
+            7507,
+            7508
         ],
         "hms_angle": 16.5,
         "hms_momentum": 4.4,
-        "jpsi_count": 5.0,
+        "jpsi_count": 26.0,
         "name": "Medium-t",
         "radiator": "IN",
         "shms_angle": 24.5,
         "shms_momentum": -4.4,
-        "status": "1.659278%",
+        "status": "6.076842%",
         "target": "LH2",
-        "total_charge": 200.70628501659263
+        "total_charge": 735.0547780003119
     }
 }

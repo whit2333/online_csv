@@ -220,5 +220,14 @@
   },
   "7502": {
     "comment": "10 uA luminosity scan"
+  },
+  "7507": {
+    "comment": "SHMS Dipole trip ~1minute from end of run"
+  },
+  "7508": {
+    "comment": "possible issues --> DC multiplicity issues in HMS started after event ~700k"
+  },
+  "7509": {
+    "comment": "junk --> DC multiplicity issues in HMS, ROC had to be rebooted"
   }
 }
