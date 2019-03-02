@@ -229,5 +229,14 @@
   },
   "7509": {
     "comment": "junk --> DC multiplicity issues in HMS, ROC had to be rebooted"
+  },
+  "7517": {
+    "comment": "junk - one of the RF cavities down"
+  },
+  "7518": {
+    "comment": "cosmics run (junk)"
+  },
+  "7519": {
+    "comment": "cosmics run (junk)"
   }
 }

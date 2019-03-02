@@ -3552,6 +3552,32 @@
         "ps_factor": 9.0,
         "time 1MHz 2u cut": 3191.915484999999
     },
+    "7511": {
+        "charge bcm4b 2u cut": 189.83906024328022,
+        "count_e": 33024.0,
+        "count_identified_pscorr": 297216.0,
+        "count_raw": 294398.0,
+        "count_raw_pscorr": 2649582.0,
+        "count_tracked": 34949.0,
+        "count_tracked_pscorr": 314541.0,
+        "good_time": 3389.0008449999996,
+        "good_total_charge": 189.83906024328022,
+        "ps_factor": 9.0,
+        "time 1MHz 2u cut": 3389.0008449999996
+    },
+    "7512": {
+        "charge bcm4b 2u cut": 166.03924812528186,
+        "count_e": 28465.0,
+        "count_identified_pscorr": 256185.0,
+        "count_raw": 257880.0,
+        "count_raw_pscorr": 2320920.0,
+        "count_tracked": 30148.0,
+        "count_tracked_pscorr": 271332.0,
+        "good_time": 2987.2866959999988,
+        "good_total_charge": 166.03924812528186,
+        "ps_factor": 9.0,
+        "time 1MHz 2u cut": 2987.2866959999988
+    },
     "7513": {
         "charge bcm4b 2u cut": 6.508831197023739,
         "count_e": 1086.0,
@@ -3577,5 +3603,57 @@
         "good_total_charge": 29.007871459912316,
         "ps_factor": 9.0,
         "time 1MHz 2u cut": 529.9534170000001
+    },
+    "7515": {
+        "charge bcm4b 2u cut": 169.97946101682837,
+        "count_e": 29419.0,
+        "count_identified_pscorr": 264771.0,
+        "count_raw": 265333.0,
+        "count_raw_pscorr": 2387997.0,
+        "count_tracked": 31091.0,
+        "count_tracked_pscorr": 279819.0,
+        "good_time": 3082.44713,
+        "good_total_charge": 169.97946101682837,
+        "ps_factor": 9.0,
+        "time 1MHz 2u cut": 3082.44713
+    },
+    "7516": {
+        "charge bcm4b 2u cut": 145.97858011285965,
+        "count_e": 25307.0,
+        "count_identified_pscorr": 227763.0,
+        "count_raw": 227190.0,
+        "count_raw_pscorr": 2044710.0,
+        "count_tracked": 26773.0,
+        "count_tracked_pscorr": 240957.0,
+        "good_time": 2699.297272,
+        "good_total_charge": 145.97858011285965,
+        "ps_factor": 9.0,
+        "time 1MHz 2u cut": 2699.297272
+    },
+    "7517": {
+        "charge bcm4b 2u cut": 0.0,
+        "count_e": 0.0,
+        "count_identified_pscorr": 0.0,
+        "count_raw": 0.0,
+        "count_raw_pscorr": 0.0,
+        "count_tracked": 0.0,
+        "count_tracked_pscorr": 0.0,
+        "good_time": 0.0,
+        "good_total_charge": 0.0,
+        "ps_factor": 9.0,
+        "time 1MHz 2u cut": 0.0
+    },
+    "7518": {
+        "charge bcm4b 2u cut": 0.0,
+        "count_e": 0.0,
+        "count_identified_pscorr": 0.0,
+        "count_raw": 40.0,
+        "count_raw_pscorr": 360.0,
+        "count_tracked": 0.0,
+        "count_tracked_pscorr": 0.0,
+        "good_time": 0.0,
+        "good_total_charge": 0.0,
+        "ps_factor": 9.0,
+        "time 1MHz 2u cut": 0.0
     }
 }

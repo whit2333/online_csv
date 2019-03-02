@@ -328,18 +328,22 @@
             7507,
             7508,
             7510,
+            7511,
+            7512,
             7513,
-            7514
+            7514,
+            7515,
+            7516
         ],
         "hms_angle": 16.5,
         "hms_momentum": 4.4,
-        "jpsi_count": 43.0,
+        "jpsi_count": 65.0,
         "name": "Medium-t",
         "radiator": "IN",
         "shms_angle": 24.5,
         "shms_momentum": -4.4,
-        "status": "7.841246%",
+        "status": "13.395448%",
         "target": "LH2",
-        "total_charge": 948.4770910603488
+        "total_charge": 1620.3134405585988
     }
 }
