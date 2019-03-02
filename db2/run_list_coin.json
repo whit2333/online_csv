@@ -10452,13 +10452,86 @@
       "radiator_status": "IN"
     },
     "run_info": {
-      "accumulated_charge": 0.0,
-      "beam_current": 55.5806062193751,
+      "accumulated_charge": 165343.47079377255,
+      "beam_current": 55.11448842744123,
       "beam_energy": 10.6,
       "run_number": 7512,
-      "run_time": 0.0001,
+      "run_time": 3000.0001,
       "run_type": "COIN",
-      "start_time": "18:04:52 03/01/19 EST"
+      "start_time": "18:04:52 03/01/19 EST",
+      "stop_time": "19:04:30 03/01/19 EST"
+    },
+    "spectrometers": {
+      "hms_angle": 16.5,
+      "hms_momentum": 4.4,
+      "shms_angle": 24.5,
+      "shms_momentum": -4.4
+    },
+    "target": {
+      "target_id": 2,
+      "target_label": "LH2",
+      "target_mass_amu": 1.00794,
+      "target_name": 0
+    }
+  },
+  "7513": {
+    "daq": {
+      "ps1": -1,
+      "ps2": 4,
+      "ps3": 5,
+      "ps4": -1,
+      "ps5": -1,
+      "ps6": 0
+    },
+    "radiator": {
+      "radiator_id": 1.115,
+      "radiator_status": "IN"
+    },
+    "run_info": {
+      "accumulated_charge": 7059.216686784163,
+      "beam_current": 51.90596688373143,
+      "beam_energy": 10.6,
+      "run_number": 7513,
+      "run_time": 136.0001,
+      "run_type": "COIN",
+      "start_time": "19:05:03 03/01/19 EST",
+      "stop_time": "19:07:59 03/01/19 EST"
+    },
+    "spectrometers": {
+      "hms_angle": 16.5,
+      "hms_momentum": 4.4,
+      "shms_angle": 24.5,
+      "shms_momentum": -4.4
+    },
+    "target": {
+      "target_id": 2,
+      "target_label": "LH2",
+      "target_mass_amu": 1.00794,
+      "target_name": 0
+    }
+  },
+  "7514": {
+    "daq": {
+      "ps1": -1,
+      "ps2": 4,
+      "ps3": 5,
+      "ps4": -1,
+      "ps5": -1,
+      "ps6": 0
+    },
+    "radiator": {
+      "radiator_id": 1.115,
+      "radiator_status": "IN"
+    },
+    "run_info": {
+      "accumulated_charge": 28600.438150845577,
+      "beam_current": 54.16748623881999,
+      "beam_energy": 10.6,
+      "run_number": 7514,
+      "run_time": 528.0001,
+      "run_type": "COIN",
+      "start_time": "19:13:12 03/01/19 EST",
+      "stop_time": "19:26:37 03/01/19 EST"
     },
     "spectrometers": {
       "hms_angle": 16.5,
