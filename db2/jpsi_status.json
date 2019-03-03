@@ -333,17 +333,23 @@
             7513,
             7514,
             7515,
-            7516
+            7516,
+            7520,
+            7521,
+            7522,
+            7524,
+            7525,
+            7526
         ],
         "hms_angle": 16.5,
         "hms_momentum": 4.4,
-        "jpsi_count": 65.0,
+        "jpsi_count": 85.0,
         "name": "Medium-t",
         "radiator": "IN",
         "shms_angle": 24.5,
         "shms_momentum": -4.4,
-        "status": "13.395448%",
+        "status": "17.001544%",
         "target": "LH2",
-        "total_charge": 1620.3134405585988
+        "total_charge": 2056.5067468494412
     }
 }

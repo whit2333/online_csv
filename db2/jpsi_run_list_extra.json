@@ -238,5 +238,17 @@
   },
   "7519": {
     "comment": "cosmics run (junk)"
+  },
+  "7522": {
+    "comment": "ended due to vacuum issue at west arc"
+  },
+  "7523": {
+    "comment": "junk - no beam"
+  },
+  "7524": {
+    "comment": "ended to reboot HMS ROCs - hodo ADC issue"
+  },
+  "7525": {
+    "comment": "all good after reboot"
   }
 }
