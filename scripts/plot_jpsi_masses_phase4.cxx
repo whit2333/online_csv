@@ -59,7 +59,8 @@ void plot_jpsi_masses_phase4(int start_run = 0) {
   }
   double total_charge = 0.000;
 
-  std::vector<int> kine_0_runs = {7504, 7505, 7506, 7507, 7508};
+  std::vector<int> kine_0_runs = {7504, 7505, 7506, 7507, 7508, 7510,
+                                  7511, 7512, 7513, 7514, 7515, 7516};
 
   // total histograms
   TH1D* hTotal       = nullptr;
