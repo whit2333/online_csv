@@ -94,7 +94,7 @@ bool root_file_exists(std::string rootfile) {
   return false;
 }
 
-void skim(int RunNumber = 7146, int nevents = -1) {
+void muskim(int RunNumber = 7146, int nevents = -1) {
 
   // ===============================================================================================
   // Initialization
