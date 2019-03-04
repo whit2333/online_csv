@@ -229,5 +229,32 @@
   },
   "7509": {
     "comment": "junk --> DC multiplicity issues in HMS, ROC had to be rebooted"
+  },
+  "7517": {
+    "comment": "junk - one of the RF cavities down"
+  },
+  "7518": {
+    "comment": "cosmics run (junk)"
+  },
+  "7519": {
+    "comment": "cosmics run (junk)"
+  },
+  "7522": {
+    "comment": "ended due to vacuum issue at west arc"
+  },
+  "7523": {
+    "comment": "junk - no beam"
+  },
+  "7524": {
+    "comment": "ended to reboot HMS ROCs - hodo ADC issue"
+  },
+  "7525": {
+    "comment": "all good after reboot"
+  },
+  "7528": {
+    "comment": "short run, trippy beam. tune beam sent for checks"
+  },
+  "7536": {
+    "comment": "ended early, lost beam"
   }
 }

@@ -39,7 +39,7 @@ constexpr const double M_P  = .938272;
 constexpr const double M_P2 = M_P * M_P;
 constexpr const double M_J  = 3.096916;
 constexpr const double M_J2 = M_J * M_J;
-constexpr const double M_e  = .000511;
+constexpr const double M_mu = .105;
 
 // =================================================================================
 // Cuts
@@ -57,10 +57,10 @@ std::string goodTrackHMS = "H.gtr.dp > -8 && H.gtr.dp < 8 && H.tr.n == 1&&"
 std::string goodTrackSHMS = "P.gtr.dp > -10 && P.gtr.dp < 22";
 std::string goodTrackHMS  = "H.gtr.dp > -8 && H.gtr.dp < 8 ";
 // std::string goodTrackHMS = "H.gtr.dp > -10 && H.gtr.dp < 10 ";
-std::string eCutSHMS = "P.cal.etottracknorm < 0.1 && P.cal.etottracknorm > 0.01 &&"
-                       "P.ngcer.npeSum > 2";
-std::string eCutHMS = "H.cal.etottracknorm < 0.10 && H.cal.etottracknorm > 0.01 &&"
-                      "H.cer.npeSum > 1.";
+std::string eCutSHMS = "P.cal.etottracknorm < 0.15 && P.cal.etottracknorm > 0.01 ";
+//&&" "P.ngcer.npeSum > 1";
+std::string eCutHMS = "H.cal.etottracknorm < 0.15 && H.cal.etottracknorm > 0.01";
+//"H.cer.npeSum > 1.";
 std::string Jpsi_cut = "M_jpsi > 3.05 && M_jpsi < 3.12";
 
 // =================================================================================
@@ -73,10 +73,10 @@ using Pvec4D = ROOT::Math::PxPyPzMVector;
 // J/psi reconstruction
 // =================================================================================
 auto p_electron = [](double px, double py, double pz) {
-  return Pvec4D{px * 0.996, py * 0.996, pz * 0.996, M_e};
+  return Pvec4D{px * 0.996, py * 0.996, pz * 0.996, M_mu};
 };
 auto p_positron = [](double px, double py, double pz) {
-  return Pvec4D{px * 0.994, py * 0.994, pz * 0.994, M_e};
+  return Pvec4D{px * 0.994, py * 0.994, pz * 0.994, M_mu};
 };
 auto p_jpsi  = [](const Pvec4D& e1, const Pvec4D& e2) { return e1 + e2; };
 auto E_gamma = [](const Pvec4D& jpsi) {
@@ -110,8 +110,8 @@ bool root_file_exists(std::string rootfile) {
   return false;
 }
 
-void good_muon_counter(int RunNumber = 7412, int nevents = -1, double redo_timing = false,
-                       int prompt = 0, int update = 1) {
+void good_muon_counter(int RunNumber = 7238, int nevents = -1, double redo_timing = false,
+                       int prompt = 0, int update = 0) {
 
   // ===============================================================================================
   // Initialization
@@ -163,7 +163,12 @@ void good_muon_counter(int RunNumber = 7412, int nevents = -1, double redo_timin
   bool found_good_file = false;
 
   std::string rootfile =
-      fmt::format("ROOTfiles_volatile/coin_replay_production_{}_{}.root", RunNumber, nevents);
+      fmt::format("full_online/coin_replay_production_{}_{}.root", RunNumber, nevents);
+  found_good_file = root_file_exists(rootfile.c_str());
+  if (!found_good_file) {
+    rootfile = fmt::format("ROOTfiles_volatile/coin_replay_production_{}_{}.root", RunNumber, nevents);
+    found_good_file = root_file_exists(rootfile.c_str());
+  }
   found_good_file = root_file_exists(rootfile.c_str());
   if (!found_good_file) {
     rootfile = fmt::format("ROOTfiles_jpsi/coin_replay_production_{}_{}.root", RunNumber, nevents);
@@ -236,7 +241,7 @@ void good_muon_counter(int RunNumber = 7412, int nevents = -1, double redo_timin
   }
   // timing cut lambdas
   // TODO: evaluate timing cut and offset for random background
-  auto timing_cut = [=](double coin_time) { return std::abs(coin_time - coin_peak_center) < 2.; };
+  auto timing_cut = [=](double coin_time) { return std::abs(coin_time - coin_peak_center) < 3.; };
   auto anti_timing_cut = [=](double coin_time) {
     return std::abs(coin_time - coin_peak_center - 28.) < 10.;
   };
@@ -259,7 +264,7 @@ void good_muon_counter(int RunNumber = 7412, int nevents = -1, double redo_timin
 
   // Output root file
   auto out_file =
-      new TFile(fmt::format("monitoring/{}/good_jpsi_counter.root", RunNumber).c_str(), "UPDATE");
+      new TFile(fmt::format("monitoring/{}/good_muon_counter.root", RunNumber).c_str(), "UPDATE");
   out_file->cd();
 
   // =========================================================================================
@@ -423,14 +428,14 @@ void good_muon_counter(int RunNumber = 7412, int nevents = -1, double redo_timin
 
   // J/psi invariant mass
   auto hJpsiMassNoCuts = dCOINGoodTrack.Histo1D(
-      {"JpsiMassNoCuts", "Cuts: Tracking;M_{J/#psi} [GeV];counts", 200, 2.5, 3.5}, "M_jpsi");
+      {"JpsiMassNoCuts", "Cuts: Tracking;M_{J/#psi} [GeV];counts", 100, 2.5, 3.5}, "M_jpsi");
   auto hJpsiMassAfterPID = dCOINEl.Histo1D(
-      {"JpsiMassAfterPID", "Cuts: Tracking+PID;M_{J/#psi} [GeV];counts", 200, 2.5, 3.5}, "M_jpsi");
+      {"JpsiMassAfterPID", "Cuts: Tracking+PID;M_{J/#psi} [GeV];counts", 100, 2.5, 3.5}, "M_jpsi");
   auto hJpsiMassAfterTiming = dCOINElInTime.Histo1D(
-      {"JpsiMassAfterTiming", "Cuts: Tracking+PID+Timing;M_{J/#psi} [GeV];counts", 200, 2.5, 3.5},
+      {"JpsiMassAfterTiming", "Cuts: Tracking+PID+Timing;M_{J/#psi} [GeV];counts", 100, 2.5, 3.5},
       "M_jpsi");
   auto hJpsiMassAfterCuts = dJpsi.Histo1D(
-      {"JpsiMassAfterCuts", "Cuts: Tracking+PID+Timing+J/#psi Mass;M_{J/#psi} [GeV];counts", 200,
+      {"JpsiMassAfterCuts", "Cuts: Tracking+PID+Timing+J/#psi Mass;M_{J/#psi} [GeV];counts", 100,
        2.5, 3.5},
       "M_jpsi");
   // E_gamma spectrum
@@ -1006,10 +1011,10 @@ void good_muon_counter(int RunNumber = 7412, int nevents = -1, double redo_timin
         return 0;
       },
       [](hallc::DisplayPlot& plt) { return 0; });
-  ddisplay->_data._root_folder = "/good_jpsi_counter/";
+  ddisplay->_data._root_folder = "/good_muon_counter/";
 
-  //out_file->Write();
+  out_file->Write();
 
-  //ddisplay->InitAll();
-  //ddisplay->UpdateAll();
+  ddisplay->InitAll();
+  ddisplay->UpdateAll();
 }
