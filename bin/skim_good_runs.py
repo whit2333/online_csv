@@ -56,10 +56,16 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     print('J/psi-007 SKIM')
-    print('Creating e+e- coincidence skim')
 
     if args.part not in script:
-        raise InvalidParticleError("No skim script know for particle", part)
+        raise InvalidParticleError(args.part)
+    if args.part == 'el':
+        print('Creating e+e- coincidence skim')
+    elif args.part == 'mu':
+        print('Creating mu+mu- coincidence skim')
+    else:
+        print('Creating skim for', args.part)
+        
 
     print('Reading configuration from: ', args.db)
     with open(args.db, 'r') as dbfile:

@@ -40,14 +40,15 @@ constexpr const double M_P2 = M_P * M_P;
 constexpr const double M_J  = 3.096916;
 constexpr const double M_J2 = M_J * M_J;
 constexpr const double M_e  = .000511;
+constexpr const double M_mu = .1056583745;
 
 // =================================================================================
 // Cuts -- Looser than the standard analysis cuts
 // =================================================================================
 std::string goodTrackSHMS = "P.gtr.dp > -15 && P.gtr.dp < 25";
 std::string goodTrackHMS  = "H.gtr.dp > -11 && H.gtr.dp < 11";
-std::string muCutSHMS     = "P.cal.etottracknorm < 0.1 && P.ngcer.npeSum > 2";
-std::string muCutHMS      = "H.cal.etottracknorm < 0.1 && H.cer.npeSum > 1.0";
+std::string muCutSHMS     = "P.cal.etottracknorm < 0.3 && P.ngcer.npeSum > -1";
+std::string muCutHMS      = "H.cal.etottracknorm < 0.3 && H.cer.npeSum > -1";
 std::string coinCut       = "std::abs(coin_time - 42.5) < 2";
 
 // =================================================================================
@@ -59,11 +60,11 @@ using Pvec4D = ROOT::Math::PxPyPzMVector;
 // =================================================================================
 // J/psi reconstruction --> apply central momentum corrections from Mark
 // =================================================================================
-auto p_electron = [](double px, double py, double pz) {
-  return Pvec4D{px * 0.996, py * 0.996, pz * 0.996, M_e};
+auto p_mumin = [](double px, double py, double pz) {
+  return Pvec4D{px * 0.996, py * 0.996, pz * 0.996, M_mu};
 };
-auto p_positron = [](double px, double py, double pz) {
-  return Pvec4D{px * 0.994, py * 0.994, pz * 0.994, M_e};
+auto p_muplus = [](double px, double py, double pz) {
+  return Pvec4D{px * 0.994, py * 0.994, pz * 0.994, M_mu};
 };
 auto p_jpsi  = [](const Pvec4D& e1, const Pvec4D& e2) { return e1 + e2; };
 auto E_gamma = [](const Pvec4D& jpsi) {
@@ -160,9 +161,9 @@ void muskim(int RunNumber = 7146, int nevents = -1) {
   // Good track cuts
   auto dHMSGoodTrack  = d_coin.Filter(goodTrackHMS);
   auto dCOINGoodTrack = dHMSGoodTrack.Filter(goodTrackSHMS)
-                            .Define("p_electron", p_electron, {"P.gtr.px", "P.gtr.py", "P.gtr.pz"})
-                            .Define("p_positron", p_positron, {"H.gtr.px", "H.gtr.py", "H.gtr.pz"})
-                            .Define("p_jpsi", p_jpsi, {"p_electron", "p_positron"})
+                            .Define("p_mumin", p_mumin, {"P.gtr.px", "P.gtr.py", "P.gtr.pz"})
+                            .Define("p_muplus", p_muplus, {"H.gtr.px", "H.gtr.py", "H.gtr.pz"})
+                            .Define("p_jpsi", p_jpsi, {"p_mumin", "p_muplus"})
                             .Define("M_jpsi", "p_jpsi.M()")
                             .Define("E_gamma", E_gamma, {"p_jpsi"})
                             .Define("abst", abst, {"E_gamma", "p_jpsi"})
@@ -186,6 +187,7 @@ void muskim(int RunNumber = 7146, int nevents = -1) {
                     "P.gtr.y",
                     "P.gtr.x",
                     "P.cal.etottracknorm",
+                    "P.cal.eprtracknorm",
                     "P.ngcer.npeSum",
                     "H.gtr.dp",
                     "H.gtr.th",
@@ -193,9 +195,11 @@ void muskim(int RunNumber = 7146, int nevents = -1) {
                     "H.gtr.y",
                     "H.gtr.x",
                     "H.cal.etottracknorm",
+                    "H.cal.eprtracknorm",
                     "H.cer.npeSum",
-                    "p_electron",
-                    "p_positron",
+                    "coin_time",
+                    "p_mumin",
+                    "p_muplus",
                     "p_jpsi",
                     "M_jpsi",
                     "E_gamma",
