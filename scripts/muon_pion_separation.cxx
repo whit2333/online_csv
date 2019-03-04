@@ -145,9 +145,9 @@ void muon_pion_separation(int RunNumber = 7146, int nevents = -1, int prompt = 0
         double p_track = P0_shms * (100.0 + dp) / 100.0;
         return (p_track > muon_threshold) && (p_track < pion_threshold);
       },
-      {"P.gtr.dp"}).Filter("P.hgcer.npeSum > 5.0");
+      {"P.gtr.dp"}).Filter("P.hgcer.npeSum > 3.0");
 
-  auto d_muons = d0.Filter("P.ngcer.npeSum > 5.0");
+  auto d_muons = d0.Filter("P.ngcer.npeSum > 3.0");
   auto d_pions = d0.Filter("P.ngcer.npeSum < 0.5");
 
   // Apply the electron cuts
@@ -155,20 +155,26 @@ void muon_pion_separation(int RunNumber = 7146, int nevents = -1, int prompt = 0
   //auto d_spec_cuts_coin_only = d_spec_cuts.Filter("fEvtHdr.fEvtType == 6");
   //auto d_spec_cuts_shms_only = d_spec_cuts.Filter("fEvtHdr.fEvtType == 1");
 
-  auto h_EOverP_0 = d_muons.Histo1D<doublers>(
-    {"shms_e_EoverP_0", "SHMS total shower; SHMS E/P", 200, 0.001, 1.3}, "P.cal.etottracknorm");
-  auto h_EOverP_2 = d_pions.Histo1D<doublers>(
-    {"shms_e_EoverP_2", "SHMS total shower; SHMS E/P", 200, 0.001, 1.3}, "P.cal.etottracknorm");
+  auto h_EOverP_0 = d_muons.Histo1D<doublers>( {"shms_e_EoverP_0", "SHMS total shower muons; SHMS E/P", 200, 0.001, 1.3}, "P.cal.etottracknorm");
+  auto h_EOverP_2 = d_pions.Histo1D<doublers>( {"shms_e_EoverP_2", "SHMS total shower pions; SHMS E/P", 200, 0.001, 1.3}, "P.cal.etottracknorm");
 
-  auto h_EprOverP_0 = d_muons.Histo1D<doublers>( {"shms_e_EoverP_0", "SHMS pre-shower; SHMS E/P", 200, 0.001, 1.3}, "P.cal.eprtracknorm");
-  auto h_EprOverP_2 = d_pions.Histo1D<doublers>( {"shms_e_EoverP_2", "SHMS pre-shower; SHMS E/P", 200, 0.001, 1.3}, "P.cal.eprtracknorm");
+  //auto h_h_EOverP_0 = d_muons.Histo1D<doublers>( {"hms_e_EoverP_0", "HMS total shower muons; HMS E/P", 200, 0.001, 1.3}, "H.cal.etottracknorm");
+  //auto h_h_EOverP_2 = d_pions.Histo1D<doublers>( {"hms_e_EoverP_2", "HMS total shower pions; HMS E/P", 200, 0.001, 1.3}, "H.cal.etottracknorm");
 
-  auto h_ngc_0 = d_muons.Histo1D<doublers>( {"shms_ngcer", "SHMS NGC; npe", 100, 0, 30}, "P.ngcer.npeSum");
-  auto h_ngc_1 = d_pions.Histo1D<doublers>( {"shms_ngcer2","SHMS NGC; npe", 100, 0, 30}, "P.ngcer.npeSum");
+  auto h_EprOverP_0 = d_muons.Histo1D<doublers>( {"shms_e_EoverP_0", "SHMS pre-shower muons; SHMS E/P", 200, 0.001, 1.3}, "P.cal.eprtracknorm");
+  auto h_EprOverP_2 = d_pions.Histo1D<doublers>( {"shms_e_EoverP_2", "SHMS pre-shower pions; SHMS E/P", 200, 0.001, 1.3}, "P.cal.eprtracknorm");
 
-  auto h_hgc_0 = d_muons.Histo1D<doublers>( {"shms_hgcer", "SHMS HGC; npe", 100, 0, 30}, "P.hgcer.npeSum");
-  auto h_hgc_1 =
-      d_pions.Histo1D<doublers>({"shms_hgcer2", "SHMS HGC; npe", 100, 0, 30}, "P.hgcer.npeSum");
+  //auto h_h_EprOverP_0 = d_muons.Histo1D<doublers>( {"hms_e_EoverP_0", "HMS pre-shower muons; HMS E/P", 200, 0.001, 1.3}, "H.cal.eprtracknorm");
+  //auto h_h_EprOverP_2 = d_pions.Histo1D<doublers>( {"hms_e_EoverP_2", "HMS pre-shower pions; HMS E/P", 200, 0.001, 1.3}, "H.cal.eprtracknorm");
+
+  auto h_ngc_0 = d_muons.Histo1D<doublers>( {"shms_ngcer", "SHMS NGC muons; npe", 100, 0, 30}, "P.ngcer.npeSum");
+  auto h_ngc_1 = d_pions.Histo1D<doublers>( {"shms_ngcer2","SHMS NGC pions; npe", 100, 0, 30}, "P.ngcer.npeSum");
+
+  auto h_hgc_0 = d_muons.Histo1D<doublers>( {"shms_hgcer", "SHMS HGC muons; npe", 100, 0, 30}, "P.hgcer.npeSum");
+  auto h_hgc_1 = d_pions.Histo1D<doublers>({"shms_hgcer2", "SHMS HGC pions; npe", 100, 0, 30}, "P.hgcer.npeSum");
+
+  //auto h_h_cer_0 = d_muons.Histo1D<doublers>( {"hms_cer", "HMS cer muons; npe", 100, 0, 30}, "H.cer.npeSum");
+  //auto h_h_cer_1 = d_pions.Histo1D<doublers>( {"hms_cer2","HMS cer pions; npe", 100, 0, 30}, "H.cer.npeSum");
 
   auto muon_counts = d_muons.Count();
   auto pion_counts = d_pions.Count();
@@ -191,7 +197,7 @@ void muon_pion_separation(int RunNumber = 7146, int nevents = -1, int prompt = 0
       [&](hallc::DisplayPlot& plt) {
         c = plt.SetCanvas( new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
         //c = plt._plot_data._canvas; // new TCanvas("c1", "c1", 1600, 1200);
-        c->Divide(2, 1);
+        c->Divide(2, 2);
         c->cd(1);
 
         // This call starts the loop over the data.
@@ -201,12 +207,25 @@ void muon_pion_separation(int RunNumber = 7146, int nevents = -1, int prompt = 0
         h_EOverP_2->SetLineColor(2);
         h_EOverP_2->DrawCopy("same");
 
+
         c->cd(2);
         // h_beta_0->DrawCopy();
 
         h_EprOverP_0->DrawCopy();
         h_EprOverP_2->SetLineColor(2);
         h_EprOverP_2->DrawCopy("same");
+
+        //c->cd(3);
+        //h_h_EOverP_0->DrawCopy();
+        //h_h_EOverP_2->SetLineColor(2);
+        //h_h_EOverP_2->DrawCopy("same");
+
+
+        //c->cd(4);
+        //// h_beta_0->DrawCopy();
+        //h_h_EprOverP_0->DrawCopy();
+        //h_h_EprOverP_2->SetLineColor(2);
+        //h_h_EprOverP_2->DrawCopy("same");
         return 0;
       },
       [&](hallc::DisplayPlot& plt) { return 0; });
@@ -215,7 +234,7 @@ void muon_pion_separation(int RunNumber = 7146, int nevents = -1, int prompt = 0
       "muon_pion_sep", "cherenkovs",
       [&](hallc::DisplayPlot& plt) {
         c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
-        c->Divide(2, 1);
+        c->Divide(2, 2);
         c->cd(1);
         // gPad->SetLogy(true);
         h_ngc_0->DrawCopy();
@@ -223,11 +242,19 @@ void muon_pion_separation(int RunNumber = 7146, int nevents = -1, int prompt = 0
         h_ngc_1->DrawCopy("same");
         gPad->BuildLegend();
 
-        c->cd(2);
-        h_hgc_0->DrawCopy();
-        h_hgc_1->SetLineColor(2);
-        h_hgc_1->DrawCopy("same");
-        gPad->BuildLegend();
+        //c->cd(2);
+        //h_hgc_0->DrawCopy();
+        //h_hgc_1->SetLineColor(2);
+        //h_hgc_1->DrawCopy("same");
+        //gPad->BuildLegend();
+
+        //c->cd(3);
+        //// gPad->SetLogy(true);
+        //h_h_cer_0->DrawCopy();
+        //h_h_cer_1->SetLineColor(2);
+        //h_h_cer_1->DrawCopy("same");
+        //gPad->BuildLegend();
+
         return 0;
       },
       [&](hallc::DisplayPlot& plt) { return 0; });

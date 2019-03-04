@@ -57,9 +57,9 @@ std::string goodTrackHMS = "H.gtr.dp > -8 && H.gtr.dp < 8 && H.tr.n == 1&&"
 std::string goodTrackSHMS = "P.gtr.dp > -10 && P.gtr.dp < 22";
 std::string goodTrackHMS  = "H.gtr.dp > -8 && H.gtr.dp < 8 ";
 // std::string goodTrackHMS = "H.gtr.dp > -10 && H.gtr.dp < 10 ";
-std::string eCutSHMS = "P.cal.etottracknorm < 0.15 && P.cal.etottracknorm > 0.01 ";
+std::string eCutSHMS = "P.cal.etottracknorm < 0.25 && P.cal.etottracknorm > 0.1 ";
 //&&" "P.ngcer.npeSum > 1";
-std::string eCutHMS = "H.cal.etottracknorm < 0.15 && H.cal.etottracknorm > 0.01";
+std::string eCutHMS = "H.cal.etottracknorm < 0.3 && H.cal.etottracknorm > 0.05";
 //"H.cer.npeSum > 1.";
 std::string Jpsi_cut = "M_jpsi > 3.05 && M_jpsi < 3.12";
 
@@ -162,13 +162,14 @@ void good_muon_counter(int RunNumber = 7238, int nevents = -1, double redo_timin
 
   bool found_good_file = false;
 
-  std::string rootfile =
-      fmt::format("full_online/coin_replay_production_{}_{}.root", RunNumber, nevents);
-  found_good_file = root_file_exists(rootfile.c_str());
-  if (!found_good_file) {
-    rootfile = fmt::format("ROOTfiles_volatile/coin_replay_production_{}_{}.root", RunNumber, nevents);
-    found_good_file = root_file_exists(rootfile.c_str());
-  }
+  //std::string rootfile =
+  //    fmt::format("full_online/coin_replay_production_{}_{}.root", RunNumber, nevents);
+  //if (!found_good_file) {
+  //  rootfile = fmt::format("ROOTfiles_volatile/coin_replay_production_{}_{}.root", RunNumber, nevents);
+  //  found_good_file = root_file_exists(rootfile.c_str());
+  //}
+
+  std::string rootfile = fmt::format("ROOTfiles_volatile/coin_replay_production_{}_{}.root", RunNumber, nevents);
   found_good_file = root_file_exists(rootfile.c_str());
   if (!found_good_file) {
     rootfile = fmt::format("ROOTfiles_jpsi/coin_replay_production_{}_{}.root", RunNumber, nevents);
