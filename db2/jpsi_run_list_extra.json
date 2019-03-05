@@ -280,5 +280,11 @@
   },
   "7573": {
     "comment": "prescaler set too low, junk"
+  },
+  "7575": {
+    "comment": "junk, no beam"
+  },
+  "7576": {
+    "comment": "junk, no beam"
   }
 }
