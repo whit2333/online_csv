@@ -5,7 +5,7 @@ import json
 import os
 from hallc.error import HallCError
 
-outdir='results/skim/'
+outdir='results/skim'
 script={
     'el': 'scripts/skim.cxx+',
     'mu': 'scripts/muskim.cxx+'}
@@ -20,17 +20,21 @@ class InvalidParticleError(HallCError):
 def skim(setting, db, script, particle, force_update=False):
     run_list = db[setting]['good_run_list']
     print('Creating skim for setting ', setting)
+    skims = []
     for run in run_list:
-        if not force_update and os.path.isfile('{}/skim_coin{}_{}.root'.format(outdir, particle, run)):
+        run_working = '{}/skim_coin{}_{}.root'.format(outdir, particle, run)
+        run_full = '{}/{}/skim_coin{}_{}.root'.format(outdir, setting, particle, run)
+        skims.append(run_full)
+        if not force_update and os.path.isfile('{}/{}/skim_coin{}_{}.root'.format(outdir, setting, particle, run)):
             print('Skipping run', run, ' (file already present)')
         else:
             print('Skimming run {}'.format(run))
             os.system('root -b -q "{}({})"'.format(script, run))
+            os.system('mv {} {}'.format(run_working, run_full))
     if len(run_list) > 0:
-        if_names = ['{}/skim_coin{}_{}.root'.format(outdir, particle, run) for run in run_list]
         odat_name = '{}/skim_coin{}_{}.root'.format(outdir, particle, setting)
         print('Combining runs into: ', odat_name)
-        os.system('hadd -f {} {}'.format(odat_name, ' '.join(if_names)))
+        os.system('hadd -f {} {}'.format(odat_name, ' '.join(skims)))
     else:
         print('No runs taken for ', setting)
 

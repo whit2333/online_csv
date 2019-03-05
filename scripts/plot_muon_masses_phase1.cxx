@@ -26,6 +26,8 @@ R__LOAD_LIBRARY(libScandalizer.so)
 
 #include "TBufferJSON.h"
 
+
+
 bool root_file_exists(std::string rootfile) {
   bool found_good_file = false;
   if (!gSystem->AccessPathName(rootfile.c_str())) {
@@ -150,6 +152,60 @@ void plot_muon_masses_phase1(int start_run = 0) {
         //    fmt::format("{:3.1f}\% of scheduled beam time ", 100.0 * (2.60943) / 66.0).c_str());
         hTotal->Draw("e1");
         hTotal->Draw("hist same");
+
+        // Lorentzian Peak function
+        auto lorentzianPeak = [](Double_t* x, Double_t* par) {
+          return (0.5 * par[0] * par[1] / TMath::Pi()) /
+                 TMath::Max(1.e-10, (x[0] - par[2]) * (x[0] - par[2]) + .25 * par[1] * par[1]);
+        };
+
+        // Quadratic background function
+        auto background = [](Double_t* x, Double_t* par) {
+          return par[0] + par[1] * x[0] + par[2] * x[0] * x[0] + par[3] * x[0] * x[0] * x[0] +
+                 par[4] * x[0] * x[0] * x[0] * x[0];
+        };
+
+        // Sum of background and peak function
+        auto fitFunction = [&](Double_t* x, Double_t* par) {
+          return background(x, par) + lorentzianPeak(x, &par[5]);
+        };
+
+        // create a TF1 with the range from 0 to 3 and 6 parameters
+        TF1* fitFcn = new TF1("fitFcn", fitFunction, 2.5, 3.5, 8);
+        fitFcn->SetNpx(200);
+        fitFcn->SetLineWidth(4);
+        fitFcn->SetLineColor(kMagenta);
+
+        // Fit the background shape
+        TF1* backFcn = new TF1("backFcn", background, 2.7, 3.4, 5);
+        backFcn->SetLineColor(kRed);
+        hTotal->Fit(backFcn, "+", "same ep", 2.7, 3.4);
+        Double_t bg_par[5];
+        backFcn->GetParameters(bg_par);
+
+        TF1* signalFcn = new TF1("signalFcn", lorentzianPeak, 2.7, 3.4, 3);
+        signalFcn->SetLineColor(kBlue);
+        signalFcn->SetNpx(200);
+
+        for (int i = 0; i < 5; i++) {
+          backFcn->FixParameter(i, bg_par[i]);
+          fitFcn->SetParameter(i, bg_par[i]);
+        }
+        fitFcn->SetParameter(5, 1);
+        fitFcn->SetParameter(6, 0.01); // width
+        fitFcn->SetParameter(7, 3.09); // peak
+
+        //hTotal->Draw();
+        hTotal->Fit(fitFcn, "I +", "ep same", 2.7, 3.35);
+
+        Double_t par[8];
+        //   // writes the fit results into the par array
+        fitFcn->GetParameters(par);
+        // backFcn->SetParameters(par);
+        backFcn->Draw("same");
+        signalFcn->SetParameters(&par[5]);
+        signalFcn->Draw("same");
+
         c->SaveAs("results/plot_muon_masses/c1-1.png");
         c->SaveAs("results/plot_muon_masses/c1-1.pdf");
         return 0;

@@ -59,7 +59,7 @@ std::string goodTrackHMS  = "H.gtr.dp > -8 && H.gtr.dp < 8 ";
 // std::string goodTrackHMS = "H.gtr.dp > -10 && H.gtr.dp < 10 ";
 std::string eCutSHMS = "P.cal.etottracknorm < 0.25 && P.cal.etottracknorm > 0.1 ";
 //&&" "P.ngcer.npeSum > 1";
-std::string eCutHMS = "H.cal.etottracknorm < 0.3 && H.cal.etottracknorm > 0.05";
+std::string eCutHMS = "H.cal.etottracknorm < 0.2 && H.cal.etottracknorm > 0.00";
 //"H.cer.npeSum > 1.";
 std::string Jpsi_cut = "M_jpsi > 3.05 && M_jpsi < 3.12";
 
