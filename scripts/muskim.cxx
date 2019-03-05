@@ -47,7 +47,7 @@ constexpr const double M_mu = .1056583745;
 // =================================================================================
 std::string goodTrackSHMS = "P.gtr.dp > -15 && P.gtr.dp < 25";
 std::string goodTrackHMS  = "H.gtr.dp > -11 && H.gtr.dp < 11";
-std::string muCutSHMS     = "P.cal.etottracknorm < 0.3 && P.ngcer.npeSum > -1";
+std::string muCutSHMS     = "P.cal.etottracknorm < 0.4 && P.ngcer.npeSum > -1";
 std::string muCutHMS      = "H.cal.etottracknorm < 0.3 && H.cer.npeSum > -1";
 std::string coinCut       = "std::abs(coin_time - 42.5) < 2";
 
@@ -186,16 +186,30 @@ void muskim(int RunNumber = 7146, int nevents = -1) {
                     "P.gtr.ph",
                     "P.gtr.y",
                     "P.gtr.x",
-                    "P.cal.etottracknorm",
+                    "P.cal.eprtrack",
                     "P.cal.eprtracknorm",
+                    "P.cal.etot",
+                    "P.cal.etotnorm",
+                    "P.cal.etottracknorm",
+                    "P.cal.etrack",
+                    "P.cal.etracknorm",
                     "P.ngcer.npeSum",
                     "H.gtr.dp",
                     "H.gtr.th",
                     "H.gtr.ph",
                     "H.gtr.y",
                     "H.gtr.x",
-                    "H.cal.etottracknorm",
+                    "H.cal.1pr.eplane",
+                    "H.cal.2ta.eplane",
+                    "H.cal.3ta.eplane",
+                    "H.cal.4ta.eplane",
+                    "H.cal.eprtrack",
                     "H.cal.eprtracknorm",
+                    "H.cal.etot",
+                    "H.cal.etotnorm",
+                    "H.cal.etottracknorm",
+                    "H.cal.etrack",
+                    "H.cal.etracknorm",
                     "H.cer.npeSum",
                     "coin_time",
                     "p_mumin",
@@ -203,7 +217,9 @@ void muskim(int RunNumber = 7146, int nevents = -1) {
                     "p_jpsi",
                     "M_jpsi",
                     "E_gamma",
-                    "abst"});
+                    "abst"
+
+                   });
 
   // also write total charge
   TFile ofile(ofname.c_str(), "update");
