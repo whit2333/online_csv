@@ -171,7 +171,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
   ROOT::RDataFrame d_sh("TSP", rootfile);
   // int N_scaler_events = *(d_sh.Count());
 
-  auto d_coin = d.Filter("fEvtHdr.fEvtType >= 4");
+  auto d_coin = d.Filter("fEvtHdr.fEvtType == 4");
 
   // Good track cuts
   auto dHMSGoodTrack  = d_coin.Filter(goodTrackHMS);
@@ -557,6 +557,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         c->SetLogy();
         hJpsiMassNoCuts->SetLineColor(kGreen + 2);
         hJpsiMassNoCuts->SetLineWidth(2);
+        hJpsiMassNoCuts->GetYaxis()->SetRangeUser(.05, hJpsiMassNoCuts->GetMaximum() * 1.2);
         hJpsiMassNoCuts->DrawClone();
         hJpsiMassAfterPID->SetLineColor(kMagenta + 2);
         hJpsiMassAfterPID->SetLineWidth(2);
@@ -585,6 +586,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         plt.SetPersist();
         // c->SetLogy();
         hJpsiEgammaNoCuts->SetLineColor(kGreen + 2);
+        hJpsiEgammaNoCuts->GetYaxis()->SetRangeUser(.05, hJpsiEgammaNoCuts->GetMaximum() * 1.2);
         hJpsiEgammaNoCuts->SetLineWidth(2);
         hJpsiEgammaNoCuts->DrawClone();
         hJpsiEgammaAfterPID->SetLineColor(kMagenta + 2);
@@ -615,6 +617,8 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         c->SetLogy();
         hJpsiEgammaFreeNoCuts->SetLineColor(kGreen + 2);
         hJpsiEgammaFreeNoCuts->SetLineWidth(2);
+        hJpsiEgammaFreeNoCuts->GetYaxis()->SetRangeUser(.05,
+                                                        hJpsiEgammaFreeNoCuts->GetMaximum() * 1.2);
         hJpsiEgammaFreeNoCuts->DrawClone();
         hJpsiEgammaFreeAfterPID->SetLineColor(kMagenta + 2);
         hJpsiEgammaFreeAfterPID->SetLineWidth(2);
@@ -643,6 +647,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         c->SetLogy();
         hJpsiAbstNoCuts->SetLineColor(kGreen + 2);
         hJpsiAbstNoCuts->SetLineWidth(2);
+        hJpsiAbstNoCuts->GetYaxis()->SetRangeUser(.05, hJpsiAbstNoCuts->GetMaximum() * 1.2);
         hJpsiAbstNoCuts->DrawClone();
         hJpsiAbstAfterPID->SetLineColor(kMagenta + 2);
         hJpsiAbstAfterPID->SetLineWidth(2);
@@ -680,6 +685,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         c->SetLogy();
         hPdpNoCuts->SetLineColor(kGreen + 2);
         hPdpNoCuts->SetLineWidth(2);
+        hPdpNoCuts->GetYaxis()->SetRangeUser(.05, hPdpNoCuts->GetMaximum() * 1.2);
         hPdpNoCuts->DrawClone();
         hPdpTracking->SetLineColor(kMagenta + 2);
         hPdpTracking->SetLineWidth(2);
@@ -702,6 +708,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         c->SetLogy();
         hPthNoCuts->SetLineColor(kGreen + 2);
         hPthNoCuts->SetLineWidth(2);
+        hPthNoCuts->GetYaxis()->SetRangeUser(.05, hPthNoCuts->GetMaximum() * 1.2);
         hPthNoCuts->DrawClone();
         hPthTracking->SetLineColor(kMagenta + 2);
         hPthTracking->SetLineWidth(2);
@@ -724,6 +731,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         c->SetLogy();
         hPphNoCuts->SetLineColor(kGreen + 2);
         hPphNoCuts->SetLineWidth(2);
+        hPphNoCuts->GetYaxis()->SetRangeUser(.05, hPphNoCuts->GetMaximum() * 1.2);
         hPphNoCuts->DrawClone();
         hPphTracking->SetLineColor(kMagenta + 2);
         hPphTracking->SetLineWidth(2);
@@ -746,6 +754,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         c->SetLogy();
         hPyNoCuts->SetLineColor(kGreen + 2);
         hPyNoCuts->SetLineWidth(2);
+        hPyNoCuts->GetYaxis()->SetRangeUser(.05, hPyNoCuts->GetMaximum() * 1.2);
         hPyNoCuts->DrawClone();
         hPyTracking->SetLineColor(kMagenta + 2);
         hPyTracking->SetLineWidth(2);
@@ -768,6 +777,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         c->SetLogy();
         hHdpNoCuts->SetLineColor(kGreen + 2);
         hHdpNoCuts->SetLineWidth(2);
+        hHdpNoCuts->GetYaxis()->SetRangeUser(.05, hHdpNoCuts->GetMaximum() * 1.2);
         hHdpNoCuts->DrawClone();
         hHdpTracking->SetLineColor(kMagenta + 2);
         hHdpTracking->SetLineWidth(2);
@@ -790,6 +800,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         c->SetLogy();
         hHthNoCuts->SetLineColor(kGreen + 2);
         hHthNoCuts->SetLineWidth(2);
+        hHthNoCuts->GetYaxis()->SetRangeUser(.05, hHthNoCuts->GetMaximum() * 1.2);
         hHthNoCuts->DrawClone();
         hHthTracking->SetLineColor(kMagenta + 2);
         hHthTracking->SetLineWidth(2);
@@ -812,6 +823,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         c->SetLogy();
         hHphNoCuts->SetLineColor(kGreen + 2);
         hHphNoCuts->SetLineWidth(2);
+        hHphNoCuts->GetYaxis()->SetRangeUser(.05, hHphNoCuts->GetMaximum() * 1.2);
         hHphNoCuts->DrawClone();
         hHphTracking->SetLineColor(kMagenta + 2);
         hHphTracking->SetLineWidth(2);
@@ -834,6 +846,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         c->SetLogy();
         hHyNoCuts->SetLineColor(kGreen + 2);
         hHyNoCuts->SetLineWidth(2);
+        hHyNoCuts->GetYaxis()->SetRangeUser(.05, hHyNoCuts->GetMaximum() * 1.2);
         hHyNoCuts->DrawClone();
         hHyTracking->SetLineColor(kMagenta + 2);
         hHyTracking->SetLineWidth(2);
@@ -856,6 +869,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         c->SetLogy();
         hCoinTimeNoCuts->SetLineColor(kGreen + 2);
         hCoinTimeNoCuts->SetLineWidth(2);
+        hCoinTimeNoCuts->GetYaxis()->SetRangeUser(.05, hCoinTimeNoCuts->GetMaximum() * 1.2);
         hCoinTimeNoCuts->DrawClone();
         hCoinTimeTracking->SetLineColor(kMagenta + 2);
         hCoinTimeTracking->SetLineWidth(2);
@@ -878,6 +892,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         c->SetLogy();
         hHcalEPNoCuts->SetLineColor(kGreen + 2);
         hHcalEPNoCuts->SetLineWidth(2);
+        hHcalEPNoCuts->GetYaxis()->SetRangeUser(.05, hHcalEPNoCuts->GetMaximum() * 1.2);
         hHcalEPNoCuts->DrawClone();
         hHcalEPTracking->SetLineColor(kMagenta + 2);
         hHcalEPTracking->SetLineWidth(2);
@@ -900,6 +915,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         c->SetLogy();
         hHcerNpheNoCuts->SetLineColor(kGreen + 2);
         hHcerNpheNoCuts->SetLineWidth(2);
+        hHcerNpheNoCuts->GetYaxis()->SetRangeUser(.05, hHcerNpheNoCuts->GetMaximum() * 1.2);
         hHcerNpheNoCuts->DrawClone();
         hHcerNpheTracking->SetLineColor(kMagenta + 2);
         hHcerNpheTracking->SetLineWidth(2);
@@ -922,6 +938,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         c->SetLogy();
         hPcalEPNoCuts->SetLineColor(kGreen + 2);
         hPcalEPNoCuts->SetLineWidth(2);
+        hPcalEPNoCuts->GetYaxis()->SetRangeUser(.05, hPcalEPNoCuts->GetMaximum() * 1.2);
         hPcalEPNoCuts->DrawClone();
         hPcalEPTracking->SetLineColor(kMagenta + 2);
         hPcalEPTracking->SetLineWidth(2);
@@ -944,6 +961,7 @@ void good_jpsi_counter(int RunNumber = 7146, int nevents = -1, double redo_timin
         c->SetLogy();
         hPcerNpheNoCuts->SetLineColor(kGreen + 2);
         hPcerNpheNoCuts->SetLineWidth(2);
+        hPcerNpheNoCuts->GetYaxis()->SetRangeUser(.05, hPcerNpheNoCuts->GetMaximum() * 1.2);
         hPcerNpheNoCuts->DrawClone();
         hPcerNpheTracking->SetLineColor(kMagenta + 2);
         hPcerNpheTracking->SetLineWidth(2);
