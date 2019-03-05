@@ -271,5 +271,14 @@
   },
   "7570": {
     "comment": "lumi scan 10uA"
+  },
+  "7571": {
+    "comment": "lumi scan 20uA"
+  },
+  "7572": {
+    "comment": "lumi scan 30uA"
+  },
+  "7573": {
+    "comment": "prescaler set too low"
   }
 }

@@ -12612,13 +12612,85 @@
       "radiator_status": "IN"
     },
     "run_info": {
-      "accumulated_charge": 0.0,
-      "beam_current": 18.797723093009886,
+      "accumulated_charge": 13915.377298423355,
+      "beam_current": 28.750773601954535,
       "beam_energy": 10.6,
       "run_number": 7572,
+      "run_time": 484.0001,
+      "run_type": "COIN",
+      "start_time": "22:12:17 03/04/19 EST",
+      "stop_time": "22:24:15 03/04/19 EST"
+    },
+    "spectrometers": {
+      "hms_angle": 16.5,
+      "hms_momentum": 4.4,
+      "shms_angle": 24.5,
+      "shms_momentum": -4.4
+    },
+    "target": {
+      "target_id": 2,
+      "target_label": "LH2",
+      "target_mass_amu": 1.00794,
+      "target_name": 0
+    }
+  },
+  "7573": {
+    "daq": {
+      "ps1": -1,
+      "ps2": 1,
+      "ps3": 3,
+      "ps4": -1,
+      "ps5": -1,
+      "ps6": 0
+    },
+    "radiator": {
+      "radiator_id": 1.115,
+      "radiator_status": "IN"
+    },
+    "run_info": {
+      "accumulated_charge": 1963.2752962449981,
+      "beam_current": 42.679804962271774,
+      "beam_energy": 10.6,
+      "run_number": 7573,
+      "run_time": 46.0001,
+      "run_type": "COIN",
+      "start_time": "22:26:30 03/04/19 EST",
+      "stop_time": "22:27:15 03/04/19 EST"
+    },
+    "spectrometers": {
+      "hms_angle": 16.5,
+      "hms_momentum": 4.4,
+      "shms_angle": 24.5,
+      "shms_momentum": -4.4
+    },
+    "target": {
+      "target_id": 2,
+      "target_label": "LH2",
+      "target_mass_amu": 1.00794,
+      "target_name": 0
+    }
+  },
+  "7574": {
+    "daq": {
+      "ps1": -1,
+      "ps2": 4,
+      "ps3": 5,
+      "ps4": -1,
+      "ps5": -1,
+      "ps6": 0
+    },
+    "radiator": {
+      "radiator_id": 1.115,
+      "radiator_status": "IN"
+    },
+    "run_info": {
+      "accumulated_charge": 0.0,
+      "beam_current": 42.679804962271774,
+      "beam_energy": 10.6,
+      "run_number": 7574,
       "run_time": 0.0001,
       "run_type": "COIN",
-      "start_time": "22:12:17 03/04/19 EST"
+      "start_time": "22:27:50 03/04/19 EST"
     },
     "spectrometers": {
       "hms_angle": 16.5,
