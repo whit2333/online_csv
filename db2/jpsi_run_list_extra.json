@@ -279,6 +279,6 @@
     "comment": "lumi scan 30uA"
   },
   "7573": {
-    "comment": "prescaler set too low"
+    "comment": "prescaler set too low, junk"
   }
 }
