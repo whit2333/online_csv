@@ -380,18 +380,18 @@
             7570,
             7571,
             7572,
-            7573
+            7574
         ],
         "hms_angle": 16.5,
         "hms_momentum": 4.4,
-        "jpsi_count": 250.0,
+        "jpsi_count": 256.0,
         "name": "Medium-t",
         "radiator": "IN",
         "shms_angle": 24.5,
         "shms_momentum": -4.4,
-        "status": "51.424703%",
+        "status": "52.962471%",
         "target": "LH2",
-        "total_charge": 6220.332094293098
+        "total_charge": 6406.340432406086
     },
     "phase4-dummy": {
         "charge_goal": 200.0,
