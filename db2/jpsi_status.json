@@ -360,17 +360,53 @@
             7544,
             7545,
             7546,
-            7547
+            7547,
+            7548,
+            7549,
+            7550,
+            7551,
+            7552,
+            7553,
+            7554,
+            7555,
+            7556,
+            7557,
+            7558,
+            7559,
+            7560,
+            7561,
+            7568,
+            7569,
+            7570,
+            7571
         ],
         "hms_angle": 16.5,
         "hms_momentum": 4.4,
-        "jpsi_count": 186.0,
+        "jpsi_count": 248.0,
         "name": "Medium-t",
         "radiator": "IN",
         "shms_angle": 24.5,
         "shms_momentum": -4.4,
-        "status": "37.158385%",
+        "status": "51.297664%",
         "target": "LH2",
-        "total_charge": 4494.678297422052
+        "total_charge": 6204.965435863487
+    },
+    "phase4-dummy": {
+        "charge_goal": 200.0,
+        "good_run_list": [
+            7565,
+            7566,
+            7567
+        ],
+        "hms_angle": 16.5,
+        "hms_momentum": 4.4,
+        "jpsi_count": 3.0,
+        "name": "Medium-t",
+        "radiator": "IN",
+        "shms_angle": 24.5,
+        "shms_momentum": -4.4,
+        "status": "98.456236%",
+        "target": "DUMMY",
+        "total_charge": 196.9124728490745
     }
 }

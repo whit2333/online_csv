@@ -256,5 +256,20 @@
   },
   "7536": {
     "comment": "ended early, lost beam"
+  },
+  "7562": {
+    "comment": "junk, no beam"
+  },
+  "7563": {
+    "comment": "junk, no beam"
+  },
+  "7564": {
+    "comment": "junk, still waiting for beam"
+  },
+  "7566": {
+    "comment": "WARNING: SHMS Q1 interlock near end of run"
+  },
+  "7570": {
+    "comment": "lumi scan 10uA"
   }
 }
