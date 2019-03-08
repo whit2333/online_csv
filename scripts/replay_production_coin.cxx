@@ -48,12 +48,13 @@ void replay_production_coin(Int_t RunNumber = 7224, Int_t MaxEvent = 50000) {
   pathList.push_back(".");
   pathList.push_back("./raw_coda");
   pathList.push_back("./raw");
+  pathList.push_back("./raw_jpsi");
   pathList.push_back("./raw.copiedtotape");
   pathList.push_back("./raw/../raw.copiedtotape");
   pathList.push_back("./cache");
 
   // const char* RunFileNamePattern = "raw/coin_all_%05d.dat";
-  const char* ROOTFileNamePattern = "ROOTfiles_jpsi/coin_replay_production_%d_%d.root";
+  const char* ROOTFileNamePattern = "ROOTfiles/coin_replay_production_%d_%d.root";
 
   // Load global parameters
   gHcParms->Define("gen_run_number", "Run Number", RunNumber);

@@ -106,7 +106,7 @@ module load ruby/2.5.3
 
 hcana -b -q "scripts/replay_production_coin.cxx(${run_number},${n_events})"
 
-./bin/do_good_jpsi -r ${run_number}
+#./bin/do_good_jpsi -r ${run_number}
 
 #root -b -q "scripts/good_jpsi_counter.cxx(${run_number})"
 #sleep 1

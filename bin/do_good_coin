@@ -117,13 +117,9 @@ then
 fi
 
 
-#pushd /home/cdaq/hallc-online/hallc_replay_sidis_fall18
-#./run_full_auto_sidis.sh ${run_number} ${num_events}
-#popd
 
 #run_good_counter(){
 #  echo " running counter...."
-#  root -l -b -q  "good_coin_counter.cxx(${run_number},${num_events},0,${update_run_info},${count_goal})" & 
 #}
 #trap run_good_counter SIGINT
 
@@ -131,9 +127,11 @@ fi
 #./bin/hc_coin -r ${run_number} -n ${num_events}
 #popd
 pushd $CURRENT_REPLAY_DIR
+mkdir -p monitoring/${run_number}
+root -l -b -q  "scripts/good_coin_counter2.cxx(${run_number},${num_events},0,${update_run_info},${count_goal})" 
 #root -l -b -q  "good_coin_counter.cxx(${run_number},${num_events},0,${update_run_info},${count_goal})"
 #@root -l -b -q  "good_hms_counter.cxx(${run_number},${num_events})"
-root -l -b -q  "scripts/good_shms_counter.cxx(${run_number},${num_events})"
+#root -l -b -q  "scripts/good_shms_counter.cxx(${run_number},${num_events})"
 popd
 
 
