@@ -32,9 +32,16 @@ namespace fs = std::experimental::filesystem;
 //#include "scandalizer/PostProcessors.h"
 R__LOAD_LIBRARY(libScandalizer.so)
 
-// =================================================================================
-// Constants
-// =================================================================================
+using RDFNode = decltype(ROOT::RDataFrame{0}.Filter(""));
+using Histo1DProxy =
+    decltype(ROOT::RDataFrame{0}.Histo1D(ROOT::RDF::TH1DModel{"", "", 128u, 0., 0.}, ""));
+
+struct RDFInfo {
+  RDFNode&          df;
+  const std::string title;
+  RDFInfo(RDFNode& df, std::string_view title) : df{df}, title{title} {}
+};
+
 constexpr const double M_P     = .938272;
 constexpr const double M_P2    = M_P * M_P;
 constexpr const double M_pion  = 0.139;
@@ -44,19 +51,12 @@ constexpr const double M_e     = .000511;
 // =================================================================================
 // Cuts
 // =================================================================================
-#if 0
-std::string goodTrackSHMS = "P.gtr.dp > -10 && P.gtr.dp < 22 && P.tr.n == 1 && "
-                            "TMath::Abs(P.gtr.th) < 0.05 "
-                            "&& -0.035 < P.gtr.ph && P.gtr.ph < 0.025"
-                            "& P.gtr.y > -2.0 && P.gtr.y < 3";
-std::string goodTrackHMS = "H.gtr.dp > -8 && H.gtr.dp < 8 && H.tr.n == 1&&"
-                           "-0.08 < H.gtr.th && H.gtr.th < 0.06 && "
-                           "-0.03 < H.gtr.ph && H.gtr.ph < 0.04"
-                           "&& TMath::Abs(H.gtr.y) < 2.0";
-#endif
 std::string goodTrackSHMS = "P.gtr.dp > -10 && P.gtr.dp < 22";
 std::string goodTrackHMS  = "H.gtr.dp > -10 && H.gtr.dp < 10 ";
-std::string piCutSHMS = "P.aero.npeSum > 1.0 && P.cal.eprtracknorm < 0.2 && P.cal.etottracknorm<1.0";
+
+std::string piCutSHMS =
+    "P.aero.npeSum > 1.0 && P.cal.eprtracknorm < 0.2 && P.cal.etottracknorm<1.0";
+
 std::string eCutHMS = "H.cal.etottracknorm > 0.80 && H.cal.etottracknorm < 2. && "
                       "H.cer.npeSum > 1.";
 
@@ -64,9 +64,6 @@ std::string epiCut = "P.aero.npeSum > 1.0 && P.cal.eprtracknorm < 0.2 && "
                      "H.cer.npeSum > 1.0 && H.cal.etottracknorm > 0.6 && "
                      "H.cal.etottracknorm < 2.0 && P.cal.etottracknorm<1.0";
 
-// =================================================================================
-// Definitions
-// =================================================================================
 using Pvec3D = ROOT::Math::XYZVector;
 using Pvec4D = ROOT::Math::PxPyPzMVector;
 
@@ -102,8 +99,8 @@ bool root_file_exists(std::string rootfile) {
   return false;
 }
 
-void good_coin_counter2(int RunNumber = 7146, int nevents = -1, double redo_timing = false,
-                        int prompt = 0, int update = 1) {
+void good_coin_counter2(int RunNumber = 7146, int nevents = -1, int prompt = 0, int update = 1,
+                        int default_count_goal = 30000, int redo_timing = 0) {
 
   // ===============================================================================================
   // Initialization
@@ -126,6 +123,8 @@ void good_coin_counter2(int RunNumber = 7146, int nevents = -1, double redo_timi
     std::cout << "Check that run number and replay exists. \n";
     std::cout << "If problem persists please contact Sylvester (217-848-0565)\n";
   }
+  double P0_shms_setting = j[runnum_str]["spectrometers"]["shms_momentum"].get<double>();
+  double P0_shms         = std::abs(P0_shms_setting);
 
   bool found_good_file = false;
 
@@ -175,7 +174,17 @@ void good_coin_counter2(int RunNumber = 7146, int nevents = -1, double redo_timi
   // PID cuts
   auto dHMSEl  = dHMSGoodTrack.Filter(eCutHMS);
   auto dSHMSEl = dSHMSGoodTrack.Filter(piCutSHMS);
-  auto dCOINEl = dCOINGoodTrack.Filter(eCutHMS + " && " + piCutSHMS);
+  auto dCOINEl = dCOINGoodTrack.Filter(eCutHMS + " && " + piCutSHMS)
+                     .Filter(
+                         [=](double npe, double dp) {
+                           double p_track = P0_shms * (100.0 + dp) / 100.0;
+                           // no cerenkov cut needed when momentum is below 2.8 GeV/c
+                           if (p_track < 2.8) {
+                             return true;
+                           }
+                           return npe > 1.0;
+                         },
+                         {"P.hgcer.npeSum", "P.gtr.dp"});
 
   // Timing cuts
   // Find the timing peak
@@ -189,7 +198,7 @@ void good_coin_counter2(int RunNumber = 7146, int nevents = -1, double redo_timi
     coin_peak_center  = h_coin_time->GetBinCenter(coin_peak_bin);
     std::cout << "COINCIDENCE time peak found at: " << coin_peak_center << std::endl;
   } else {
-    coin_peak_center = 42.5; // run 7240-7241
+    coin_peak_center = 43.0; // run 7240-7241
     std::cout << "COINCIDENCE time peak: using pre-calculated value at: " << coin_peak_center
               << std::endl;
     ;
@@ -210,7 +219,6 @@ void good_coin_counter2(int RunNumber = 7146, int nevents = -1, double redo_timi
 
   auto dCOINElInTime = dCOINEl.Filter(timing_cut, {"CTime.ePiCoinTime_ROC2"});
   auto dCOINElRandom = dCOINEl.Filter(anti_timing_cut, {"CTime.ePiCoinTime_ROC2"});
-
 
   // Output root file
   auto out_file =
@@ -248,6 +256,11 @@ void good_coin_counter2(int RunNumber = 7146, int nevents = -1, double redo_timi
   auto hCoinTimeTiming = dCOINElInTime.Histo1D(
       {"coin_time.Timing", "Cuts: Tracking+PID+Timing;coin_time;counts", 8000, 0, 1000},
       "CTime.ePositronCoinTime_ROC2");
+
+  auto hRandCoinTimePID = dCOINElRandom.Histo1D(
+      {"rand_coin_time.PID", "Cuts: Tracking+PID;coin_time;counts", 8000, 0, 1000},
+      "CTime.ePositronCoinTime_ROC2");
+
   // P.gtr.dp
   auto hPdpNoCuts =
       d_coin.Histo1D({"P.gtr.dp.NoCuts", "No Cuts;#deltap [%];counts", 200, -30, 40}, "P.gtr.dp");
@@ -312,6 +325,18 @@ void good_coin_counter2(int RunNumber = 7146, int nevents = -1, double redo_timi
   auto hPcerNpheAll = dCOINElInTime.Histo1D(
       {"P.ngcer.npeSum.All", "Cuts: Tracking+PID+Coincidence;SHMS NGC #phe;counts", 200, -5, 76},
       "P.ngcer.npeSum");
+  // P.hgcer.npeSum
+  auto hPhgcerNpheNoCuts = d_coin.Histo1D(
+      {"P.hgcer.npeSum.NoCuts", "No Cuts;SHMS HGC #phe;counts", 200, -5, 76}, "P.hgcer.npeSum");
+  auto hPhgcerNpheTracking = dSHMSGoodTrack.Histo1D(
+      {"P.hgcer.npeSum.Tracking", "Cuts: Tracking;SHMS HGC #phe;counts", 200, -5, 76},
+      "P.hgcer.npeSum");
+  auto hPhgcerNphePID = dSHMSEl.Histo1D(
+      {"P.hgcer.npeSum.PID", "Cuts: Tracking+PID;SHMS HGC #phe;counts", 200, -5, 76},
+      "P.hgcer.npeSum");
+  auto hPhgcerNpheAll = dCOINElInTime.Histo1D(
+      {"P.hgcer.npeSum.All", "Cuts: Tracking+PID+Coincidence;SHMS HGC #phe;counts", 200, -5, 76},
+      "P.hgcer.npeSum");
   // H.cal.etottracknorm
   auto hHcalEPNoCuts =
       d_coin.Histo1D({"H.cal.etottracknorm.NoCuts", "No Cuts;HMS E/P;counts", 200, -.5, 1.5},
@@ -376,7 +401,6 @@ void good_coin_counter2(int RunNumber = 7146, int nevents = -1, double redo_timi
   auto hHyTiming = dHMSElInTime.Histo1D(
       {"H.gtr.y.Timing", "Cuts: Tracking+PID+Timing;ytar;counts", 200, -10., 10.}, "H.gtr.y");
 
-
   // scalers
   auto total_charge        = d_sh.Max("P.BCM4B.scalerChargeCut");
   auto shms_el_real_scaler = d_sh.Max("P.pEL_REAL.scaler");
@@ -420,16 +444,19 @@ void good_coin_counter2(int RunNumber = 7146, int nevents = -1, double redo_timi
       {"shms_e_yield_coin", (*yield_SHMSEl) / (good_total_charge)},
       {"hms_e_yield_coin", (*yield_HMSEl) / (good_total_charge)},
       {"coin_ee_yield", (*yield_COINEl) / (good_total_charge)},
-      {"hms_e_intime", (*yield_HMSElInTime) / (good_total_charge)},
-      {"shms_e_intime", (*yield_SHMSElInTime) / (good_total_charge)},
-      {"coin_e_intime", (*yield_COINElInTime) / (good_total_charge)},
-      {"hms_e_random", (*yield_HMSElRandom) / (good_total_charge) / 5.},
-      {"shms_e_random", (*yield_SHMSElRandom) / (good_total_charge) / 5.},
-      {"coin_e_random", (*yield_COINElRandom) / (good_total_charge) / 5.},
+      {"hms_intime", (*yield_HMSElInTime) / (good_total_charge)},
+      {"shms_intime", (*yield_SHMSElInTime) / (good_total_charge)},
+      {"coin_intime", (*yield_COINElInTime) / (good_total_charge)},
+      {"coin_intime count", (*yield_COINElInTime) },
+      {"hms_random", (*yield_HMSElRandom) / (good_total_charge) / 5.},
+      {"shms_random", (*yield_SHMSElRandom) / (good_total_charge) / 5.},
+      {"coin_random", (*yield_COINElRandom) / (good_total_charge) / 5.},
+      {"coin_random count", (*yield_COINElRandom)  / 5.},
+      {"coin_bg_corrected count", (*yield_COINElInTime) - (*yield_COINElRandom)  / 5.},
       {"hms_e_good", (n_HMSElGood) / (good_total_charge)},
       {"shms_e_good", (n_SHMSElGood) / (good_total_charge)},
       {"coin_e_good", (n_COINElGood) / (good_total_charge)},
-      {"coin count", *yield_coin_raw},
+      {"coin count", n_COINElGood},
       {"coin yield", *yield_coin_raw / (good_total_charge)},
       {"coin random background count", *yield_coin_random / 5.},
       {"coin random background", *yield_coin_random / (good_total_charge) / 5.},
@@ -468,140 +495,56 @@ void good_coin_counter2(int RunNumber = 7146, int nevents = -1, double redo_timi
     std::ofstream json_output_file("db2/csv_run_count_list.json");
     json_output_file << std::setw(4) << jruns << "\n";
   }
+
+  int count_goal = default_count_goal;
+
+  // if (prompt) {
+  //  std::cout << "----------------------------------------------------------\n";
+  //  std::cout << "Reference the run plan for this setting found on the wiki\n"
+  //               "       https://hallcweb.jlab.org/wiki/index.php/CSV_Fall_2018_Run_Plan\n";
+  //  std::cout << "----------------------------------------------------------\n";
+  //  std::cout << "Please enter **total count** goal for this setting. \n";
+  //  std::cout << "   Desired count [default=30000] : ";
+  //  // std::cin >> count_goal ;
+  //  // int number = 0;
+  //  if (std::cin.peek() == '\n') { // check if next character is newline
+  //    // count_goal = 30000; //and assign the default
+  //  } else if (!(std::cin >> count_goal)) { // be sure to handle invalid input
+  //    std::cout << "Invalid input.\n";
+  //    // error handling
+  //  }
+  //  std::cout << "\n";
+  //}
+
+  double n_seconds      = double(*time_1MHz_cut);
+  int    nev_tot        = (*yield_all);
+  double time_remaining = (count_goal * n_seconds) - (n_seconds);
+  double charge_goal    = count_goal * (good_total_charge) / counts["coin_bg_corrected count"];
+  double goal_Nevents   = double(nev_tot) * charge_goal / good_total_charge;
+
+  std::cout << " GOOD COUNTS : " << counts["coin_bg_corrected count"] << "\n";
+
+  std::cout << "----------------------------------------------------------\n";
+  std::cout << " N events to reach goal  : " << goal_Nevents / 1000000.0 << "M events\n";
+  std::cout << " Charge   to reach goal  : " << charge_goal << " mC\n";
+
+  if (update) {
+    std::string cmd = "caput hcRunPlanChargeGoal " + std::to_string(charge_goal) + " &> /dev/null ";
+    system(cmd.c_str());
+
+    cmd = "caput hcRunPlanNTrigEventsGoal " + std::to_string(goal_Nevents) + " &> /dev/null ";
+    system(cmd.c_str());
+
+    cmd = "caput hcRunPlanCountGoal " + std::to_string(count_goal) + " &> /dev/null ";
+    system(cmd.c_str());
+  }
+
   // =====================================================================================
   // Display
   // =====================================================================================
   // This is a naked pointer that we 'leak' on purpose so the connection stays alive
   // as long as the root session is running
-  auto ddisplay = new hallc::MonitoringDisplay(RunNumber);
-  //auto JpsiMass = ddisplay->CreateDisplayPlot(
-  //    "Jpsi", "Invariant Mass",
-  //    [&](hallc::DisplayPlot& plt) {
-  //      auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
-  //      plt.SetPersist();
-  //      c->SetLogy();
-  //      hJpsiMassNoCuts->SetLineColor(kGreen + 2);
-  //      hJpsiMassNoCuts->SetLineWidth(2);
-  //      hJpsiMassNoCuts->GetYaxis()->SetRangeUser(.8, hJpsiMassNoCuts->GetMaximum() * 1.2);
-  //      hJpsiMassNoCuts->DrawClone();
-  //      hJpsiMassAfterPID->SetLineColor(kMagenta + 2);
-  //      hJpsiMassAfterPID->SetLineWidth(2);
-  //      hJpsiMassAfterPID->DrawClone("same");
-  //      hJpsiMassAfterTiming->SetLineColor(kBlue + 1);
-  //      hJpsiMassAfterTiming->SetLineWidth(2);
-  //      hJpsiMassAfterTiming->DrawClone("same");
-  //      hJpsiMassAfterCuts->SetLineColor(kBlack);
-  //      hJpsiMassAfterCuts->SetLineWidth(2);
-  //      hJpsiMassAfterCuts->DrawClone("same");
-
-  //      out_file->cd();
-  //      hJpsiMassNoCuts->Write();
-  //      hJpsiMassAfterPID->Write();
-  //      hJpsiMassAfterTiming->Write();
-  //      hJpsiMassAfterCuts->Write();
-
-  //      c->BuildLegend();
-  //      return 0;
-  //    },
-  //    [](hallc::DisplayPlot& plt) { return 0; });
-  //auto JpsiEgamma = ddisplay->CreateDisplayPlot(
-  //    "Jpsi", "Photon Energy",
-  //    [&](hallc::DisplayPlot& plt) {
-  //      auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
-  //      plt.SetPersist();
-  //      // c->SetLogy();
-  //      hJpsiEgammaNoCuts->SetLineColor(kGreen + 2);
-  //      hJpsiEgammaNoCuts->GetYaxis()->SetRangeUser(.8, hJpsiEgammaNoCuts->GetMaximum() * 1.2);
-  //      hJpsiEgammaNoCuts->SetLineWidth(2);
-  //      hJpsiEgammaNoCuts->DrawClone();
-  //      hJpsiEgammaAfterPID->SetLineColor(kMagenta + 2);
-  //      hJpsiEgammaAfterPID->SetLineWidth(2);
-  //      hJpsiEgammaAfterPID->DrawClone("same");
-  //      hJpsiEgammaAfterTiming->SetLineColor(kBlue + 1);
-  //      hJpsiEgammaAfterTiming->SetLineWidth(2);
-  //      hJpsiEgammaAfterTiming->DrawClone("same");
-  //      hJpsiEgammaAfterCuts->SetLineColor(kBlack);
-  //      hJpsiEgammaAfterCuts->SetLineWidth(2);
-  //      hJpsiEgammaAfterCuts->DrawClone("same");
-  //      c->BuildLegend();
-
-  //      out_file->cd();
-  //      hJpsiEgammaNoCuts->Write();
-  //      hJpsiEgammaAfterPID->Write();
-  //      hJpsiEgammaAfterTiming->Write();
-  //      hJpsiEgammaAfterCuts->Write();
-
-  //      return 0;
-  //    },
-  //    [](hallc::DisplayPlot& plt) { return 0; });
-  //auto JpsiEgammaFree = ddisplay->CreateDisplayPlot(
-  //    "Jpsi", "Photon Energy (Unconstrained)",
-  //    [&](hallc::DisplayPlot& plt) {
-  //      auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
-  //      plt.SetPersist();
-  //      c->SetLogy();
-  //      hJpsiEgammaFreeNoCuts->SetLineColor(kGreen + 2);
-  //      hJpsiEgammaFreeNoCuts->SetLineWidth(2);
-  //      hJpsiEgammaFreeNoCuts->GetYaxis()->SetRangeUser(.8,
-  //                                                      hJpsiEgammaFreeNoCuts->GetMaximum() * 1.2);
-  //      hJpsiEgammaFreeNoCuts->DrawClone();
-  //      hJpsiEgammaFreeAfterPID->SetLineColor(kMagenta + 2);
-  //      hJpsiEgammaFreeAfterPID->SetLineWidth(2);
-  //      hJpsiEgammaFreeAfterPID->DrawClone("same");
-  //      hJpsiEgammaFreeAfterTiming->SetLineColor(kBlue + 1);
-  //      hJpsiEgammaFreeAfterTiming->SetLineWidth(2);
-  //      hJpsiEgammaFreeAfterTiming->DrawClone("same");
-  //      hJpsiEgammaFreeAfterCuts->SetLineColor(kBlack);
-  //      hJpsiEgammaFreeAfterCuts->SetLineWidth(2);
-  //      hJpsiEgammaFreeAfterCuts->DrawClone("same");
-  //      c->BuildLegend();
-
-  //      out_file->cd();
-  //      hJpsiEgammaFreeNoCuts->Write();
-  //      hJpsiEgammaFreeAfterPID->Write();
-  //      hJpsiEgammaFreeAfterTiming->Write();
-  //      hJpsiEgammaFreeAfterCuts->Write();
-  //      return 0;
-  //    },
-  //    [](hallc::DisplayPlot& plt) { return 0; });
-  //auto JpsiAbst = ddisplay->CreateDisplayPlot(
-  //    "Jpsi", "abs t",
-  //    [&](hallc::DisplayPlot& plt) {
-  //      auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
-  //      plt.SetPersist();
-  //      c->SetLogy();
-  //      hJpsiAbstNoCuts->SetLineColor(kGreen + 2);
-  //      hJpsiAbstNoCuts->SetLineWidth(2);
-  //      hJpsiAbstNoCuts->GetYaxis()->SetRangeUser(.8, hJpsiAbstNoCuts->GetMaximum() * 1.2);
-  //      hJpsiAbstNoCuts->DrawClone();
-  //      hJpsiAbstAfterPID->SetLineColor(kMagenta + 2);
-  //      hJpsiAbstAfterPID->SetLineWidth(2);
-  //      hJpsiAbstAfterPID->DrawClone("same");
-  //      hJpsiAbstAfterTiming->SetLineColor(kBlue + 1);
-  //      hJpsiAbstAfterTiming->SetLineWidth(2);
-  //      hJpsiAbstAfterTiming->DrawClone("same");
-  //      hJpsiAbstAfterCuts->SetLineColor(kBlack);
-  //      hJpsiAbstAfterCuts->SetLineWidth(2);
-  //      hJpsiAbstAfterCuts->DrawClone("same");
-  //      hJpsiAbstAfterCuts_lowE->SetLineColor(kRed);
-  //      hJpsiAbstAfterCuts_lowE->SetLineWidth(2);
-  //      hJpsiAbstAfterCuts_lowE->DrawClone("same");
-  //      hJpsiAbstAfterCuts_highE->SetLineColor(kRed + 4);
-  //      hJpsiAbstAfterCuts_highE->SetLineWidth(2);
-  //      hJpsiAbstAfterCuts_highE->DrawClone("same");
-
-  //      out_file->cd();
-  //      hJpsiAbstNoCuts->Write();
-  //      hJpsiAbstAfterPID->Write();
-  //      hJpsiAbstAfterTiming->Write();
-  //      hJpsiAbstAfterCuts->Write();
-  //      hJpsiAbstAfterCuts_lowE->Write();
-  //      hJpsiAbstAfterCuts_highE->Write();
-
-  //      c->BuildLegend();
-  //      return 0;
-  //    },
-  //    [](hallc::DisplayPlot& plt) { return 0; });
+  auto ddisplay    = new hallc::MonitoringDisplay(RunNumber);
   auto TrackingPdp = ddisplay->CreateDisplayPlot(
       "Tracking", "P.gtr.dp",
       [&](hallc::DisplayPlot& plt) {
@@ -805,6 +748,9 @@ void good_coin_counter2(int RunNumber = 7146, int nevents = -1, double redo_timi
         hCoinTimeTiming->SetLineColor(kBlack);
         hCoinTimeTiming->SetLineWidth(2);
         hCoinTimeTiming->DrawClone("same");
+        hRandCoinTimePID->SetLineColor(kRed);
+        hRandCoinTimePID->SetLineWidth(2);
+        hRandCoinTimePID->DrawClone("same");
         c->BuildLegend();
         return 0;
       },
@@ -874,6 +820,29 @@ void good_coin_counter2(int RunNumber = 7146, int nevents = -1, double redo_timi
         hPcalEPAll->SetLineColor(kBlack);
         hPcalEPAll->SetLineWidth(2);
         hPcalEPAll->DrawClone("same");
+        c->BuildLegend();
+        return 0;
+      },
+      [](hallc::DisplayPlot& plt) { return 0; });
+  auto PIDPhgcerNphe = ddisplay->CreateDisplayPlot(
+      "PID", "P.hgcer.nphe",
+      [&](hallc::DisplayPlot& plt) {
+        auto c = plt.SetCanvas(new TCanvas(plt.GetName().c_str(), plt.GetName().c_str()));
+        plt.SetPersist();
+        c->SetLogy();
+        hPhgcerNpheNoCuts->SetLineColor(kGreen + 2);
+        hPhgcerNpheNoCuts->SetLineWidth(2);
+        hPhgcerNpheNoCuts->GetYaxis()->SetRangeUser(.8, hPhgcerNpheNoCuts->GetMaximum() * 1.2);
+        hPhgcerNpheNoCuts->DrawClone();
+        hPhgcerNpheTracking->SetLineColor(kMagenta + 2);
+        hPhgcerNpheTracking->SetLineWidth(2);
+        hPhgcerNpheTracking->DrawClone("same");
+        hPhgcerNphePID->SetLineColor(kBlue + 1);
+        hPhgcerNphePID->SetLineWidth(2);
+        hPhgcerNphePID->DrawClone("same");
+        hPhgcerNpheAll->SetLineColor(kBlack);
+        hPhgcerNpheAll->SetLineWidth(2);
+        hPhgcerNpheAll->DrawClone("same");
         c->BuildLegend();
         return 0;
       },

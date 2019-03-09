@@ -64,7 +64,7 @@ fi
 count_goal=0
 num_events=-1
 run_number=$(latest_run -t shms)
-update_run_info=0
+update_run_info=1
 
 POSITIONAL=()
 while [[ $# -gt 0 ]]
@@ -118,17 +118,13 @@ fi
 
 
 
-#run_good_counter(){
-#  echo " running counter...."
-#}
-#trap run_good_counter SIGINT
 
-#pushd $CURRENT_REPLAY_DIR
-#./bin/hc_coin -r ${run_number} -n ${num_events}
-#popd
 pushd $CURRENT_REPLAY_DIR
 mkdir -p monitoring/${run_number}
 root -l -b -q  "scripts/good_coin_counter2.cxx(${run_number},${num_events},0,${update_run_info},${count_goal})" 
+root -l -b -q  "scripts/good_coin_counter3.cxx(${run_number},${num_events},0,${update_run_info},${count_goal})" 
+./bin/monitor_singles -r ${run_number}
+
 #root -l -b -q  "good_coin_counter.cxx(${run_number},${num_events},0,${update_run_info},${count_goal})"
 #@root -l -b -q  "good_hms_counter.cxx(${run_number},${num_events})"
 #root -l -b -q  "scripts/good_shms_counter.cxx(${run_number},${num_events})"

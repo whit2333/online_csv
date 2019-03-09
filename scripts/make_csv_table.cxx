@@ -56,14 +56,14 @@ void make_csv_table() {
     fmt::print(" {:<5} ", "Run");
     fmt::print(" {:^5} ", "Target");
     //fmt::print(" {:^4} ", "rad");
-    fmt::print(" {:>7} ", "P_hms");
+    fmt::print(" {:>6} ", "P_hms");
     fmt::print(" {:<7} ", "th_hms");
     fmt::print(" {:>7} ", "P_shms");
     fmt::print(" {:<7} ", "th_shms");
     fmt::print(" {:^8} ", "start");
     fmt::print(" {:^17} ", "end time");
-    fmt::print(" {:^7} ", "HMS e yield");
-    fmt::print(" {:^7} ", "SHMS e yield");
+    fmt::print(" {:^15} ", "HMS e yield");
+    fmt::print(" {:^15} ", "SHMS e yield");
     fmt::print(" {:>7} ", "count");
     fmt::print(" {:>9} ", "charge");
     fmt::print(" {:>9} ", "yield");
@@ -83,7 +83,7 @@ void make_csv_table() {
   for (json::iterator it = j.begin(); it != j.end(); ++it) {
     auto runjs = it.value();
 
-    if( std::stoi(it.key()) < 7400) {
+    if( std::stoi(it.key()) < 7580) {
       continue;
     }
 
@@ -148,11 +148,11 @@ void make_csv_table() {
       double charge    = rl_hms["good_total_charge"].get<double>();
       double hms_yield = n_hms * ps_factor / charge;
       double hms_unc   = sqrt(n_hms) * ps_factor / charge;
-      fmt::print(" {:>5.1f}", hms_yield);
-      fmt::print(" ± {:<5.1f}", hms_unc);
+      fmt::print(" {:>7.1f}", hms_yield);
+      fmt::print(" ± {:<7.1f}", hms_unc);
     } else {
-      fmt::print(" {:>5.1f}", 0.);
-      fmt::print(" ± {:<5.1f}", 0.);
+      fmt::print(" {:>7.1f}", 0.);
+      fmt::print(" ± {:<7.1f}", 0.);
     }
     if (j_shms.count(it.key()) != 0) {
       auto   rl_shms    = j_shms[it.key()];
@@ -161,11 +161,11 @@ void make_csv_table() {
       double charge     = rl_shms["good_total_charge"].get<double>();
       double shms_yield = n_shms * ps_factor / charge;
       double shms_unc   = sqrt(n_shms) * ps_factor / charge;
-      fmt::print(" {:>5.0f}", shms_yield);
-      fmt::print(" ± {:<5.0f}", shms_unc);
+      fmt::print(" {:>7.1f}", shms_yield);
+      fmt::print(" ± {:<7.1f}", shms_unc);
     } else {
-      fmt::print(" {:>5.0f}", 0.);
-      fmt::print(" ± {:<5.0f}", 0.);
+      fmt::print(" {:>7.0f}", 0.);
+      fmt::print(" ± {:<7.0f}", 0.);
     }
     if (j2.count(it.key()) != 0) {
       try {
@@ -180,8 +180,8 @@ void make_csv_table() {
         } else {
           fmt::print(" {:>15} ", "");
         }
-        fmt::print(" {:>9.5f} ", shms_yield / total_charge);
-        fmt::print(" ± {:<8.5f} ", std::sqrt(shms_yield) / total_charge);
+        fmt::print(" {:>5.1f} ", shms_yield / total_charge);
+        fmt::print(" ± {:<5.1f} ", std::sqrt(shms_yield) / total_charge);
         int n_events = j2[it.key()]["total trigger events"].get<int>();
         fmt::print(" {:>9d} ", n_events);
       } catch (std::domain_error) {
