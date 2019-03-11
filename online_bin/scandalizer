@@ -6,6 +6,7 @@ function print_the_help {
   echo "  OPTIONS: "
   echo "            -r,--run           Required run number"
   echo "            -n,--n-events      Required number of eventsrun number"
+  echo "            -s,--start-event   Skips this many events before starting replay"
   echo "            -c,--container     Run using singularity container "
   echo "            -C,--calibrate     Replay N-calibrate events and run calibrations before full replay"
   echo "            --N-calibrate      Number of events to replay for calibration (Default: 50000)"

@@ -2,8 +2,9 @@
 
 function print_the_help {
   echo "USAGE: $0 -c"
-#  echo "  OPTIONS: "
-  echo "            -c,--attach       Attach to tmux session"
+  echo "  OPTIONS: "
+  echo "     -c,--attach                    Attach to tmux session"
+  echo "     -r,--full-replay RUN_NUMBER    Attach to full replay"
 #  echo "            -n,--n-events        Required number of eventsrun number"
 #  #echo "            -o,--online-only   Log online only"
 #  #echo "            -a,--all           Log all plots (online, detectors, physics)"
@@ -38,8 +39,14 @@ do
       print_the_help
       ;;
     -c|-a|--attach|--connect)
-      tmux -L replay attach -t auto_full_service.0
+      tmux -L replay attach -t auto_full_service.
       exit
+      shift # past value
+      ;;
+    -r|--full-run)
+      tmux -L replay attach -t full_replay:coin_run_${2}
+      exit
+      shift # past value
       shift # past value
       ;;
     #-n|--n-events)
@@ -59,3 +66,4 @@ done
 
 #tmux -L replay list-sessions 
 tmux -L replay list-windows -a | grep "coin_run_"
+

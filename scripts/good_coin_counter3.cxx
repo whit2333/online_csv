@@ -315,6 +315,10 @@ void good_coin_counter3(int RunNumber = 7146, int nevents = -1, int prompt = 0, 
         df.Histo1D({("P.hgcer.npeSum-" + name).c_str(), (title + ";SHMS HGC #phe;counts").c_str(),
                     200, -5, 75},
                    "P.hgcer.npeSum");
+    histos["P.aero.npeSum"][name] =
+        df.Histo1D({("P.aero.npeSum-" + name).c_str(), (title + ";SHMS aerogel #phe;counts").c_str(),
+                    200, -5, 75},
+                   "P.aero.npeSum");
     histos["H.cal.etottracknorm"][name] =
         df.Histo1D({("H.cal.etottracknorm-" + name).c_str(), (title + ";HMS E/P;counts").c_str(),
                     200, -.5, 1.5},
