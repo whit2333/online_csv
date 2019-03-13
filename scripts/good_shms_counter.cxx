@@ -1,6 +1,9 @@
 #include "nlohmann/json.hpp"
 #include <cmath>
 #include <iostream>
+#include "Math/Vector3D.h"
+#include "Math/Vector4D.h"
+#include "Math/VectorUtil.h"
 
 #include "ROOT/RDataFrame.hxx"
 
@@ -30,6 +33,10 @@ struct RDFInfo {
   const std::string title;
   RDFInfo(RDFNode& df, std::string_view title) : df{df}, title{title} {}
 };
+
+using Pvec3D = ROOT::Math::XYZVector;
+using Pvec4D = ROOT::Math::PxPyPzMVector;
+
 bool root_file_exists(std::string rootfile) {
   bool found_good_file = false;
   if (!gSystem->AccessPathName(rootfile.c_str())) {
@@ -48,6 +55,12 @@ bool root_file_exists(std::string rootfile) {
   return false;
 }
 
+constexpr const double M_P     = .938272;
+constexpr const double M_P2    = M_P * M_P;
+constexpr const double M_pion  = 0.139;
+constexpr const double M_pion2 = M_pion * M_pion;
+constexpr const double M_e     = .000511;
+
 // =================================================================================
 // Cuts
 // =================================================================================
@@ -57,6 +70,18 @@ std::string goodTrack = "P.gtr.dp > -10 && P.gtr.dp < 22 && P.tr.n == 1&&"
                         "&& P.gtr.y > -2.0 && P.gtr.y < 3.0";
 std::string eCut = "P.cal.etottracknorm > 0.80 && P.cal.etottracknorm < 2.&&"
                    "P.ngcer.npeSum > 2.";
+
+  std::string piCut = "P.aero.npeSum > 1.0 && P.cal.eprtracknorm < 0.2 && "
+                       " P.cal.etottracknorm<1.0";
+  std::string hgc_cut = " p_pion.P() < 2.8 || P.hgcer.npeSum > 1.0";
+
+auto p_pion = [](double px, double py, double pz) {
+  return Pvec4D{px * 0.996, py * 0.996, pz * 0.996, M_e};
+};
+auto p_electron = [](double px, double py, double pz) {
+  return Pvec4D{px * 0.994, py * 0.994, pz * 0.994, M_e};
+};
+
 void good_shms_counter(int RunNumber = 7146, int nevents = -1, const std::string& mode = "coin",
                        int update = 1) {
 
@@ -170,13 +195,15 @@ void good_shms_counter(int RunNumber = 7146, int nevents = -1, const std::string
   ROOT::RDataFrame d_sh("TSP", rootfile);
 
   // Select SHMS singles only
-  auto dSHMS = d.Filter(singles_trigger ? "fEvtHdr.fEvtType == 1" : "fEvtHdr.fEvtType == 4");
+  auto dSHMS = d.Filter(singles_trigger ? "fEvtHdr.fEvtType == 1" : "fEvtHdr.fEvtType == 4")
+                   .Define("p_electron", p_electron, {"P.gtr.px", "P.gtr.py", "P.gtr.pz"})
+                   .Define("p_pion", p_pion, {"P.gtr.px", "P.gtr.py", "P.gtr.pz"});
 
   // Good track cuts
   auto dGoodTrack = dSHMS.Filter(goodTrack);
 
   // PID cuts
-  auto dEl = dGoodTrack.Filter(eCut);
+  auto dEl = dGoodTrack.Filter(piCut);
 
   // Data frame index
   std::vector<std::pair<std::string, RDFInfo>> dfs = {{"raw", {dSHMS, "SHMS"}},

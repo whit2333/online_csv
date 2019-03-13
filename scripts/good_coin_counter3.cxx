@@ -169,7 +169,7 @@ void good_coin_counter3(int RunNumber = 7146, int nevents = -1, int prompt = 0, 
   std::string epiCut = "P.aero.npeSum > 1.0 && P.cal.eprtracknorm < 0.2 && "
                        "H.cer.npeSum > 1.0 && H.cal.etottracknorm > 0.6 && "
                        "H.cal.etottracknorm < 2.0 && P.cal.etottracknorm<1.0";
-  std::string hgc_cut = " p_pion.P() < 2.8 || P.hgcer.npeSum > 1.0";
+  std::string hgc_cut = " (p_pion.P() < 2.8 || P.hgcer.npeSum > 1.0) ";//&& P.ngcer.npeSum < 0.5 ";
 
   // ===============================================================================================
   // Dataframe
@@ -447,6 +447,7 @@ void good_coin_counter3(int RunNumber = 7146, int nevents = -1, int prompt = 0, 
             h.second->SetLineColor(colors[idx]);
             h.second->SetLineWidth(2);
             h.second->DrawClone((idx == 0) ? "hist" : "histsame");
+            h.second->Write();
             idx += 1;
           }
           c->BuildLegend();
@@ -456,6 +457,7 @@ void good_coin_counter3(int RunNumber = 7146, int nevents = -1, int prompt = 0, 
   }
   ddisplay->_data._root_folder = "/csv_coin/";
 
+  out_file->Write();
   ddisplay->InitAll();
   ddisplay->UpdateAll();
 

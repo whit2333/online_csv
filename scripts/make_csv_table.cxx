@@ -63,7 +63,7 @@ void make_csv_table() {
     fmt::print(" {:^8} ", "start");
     fmt::print(" {:^17} ", "end time");
     fmt::print(" {:^15} ", "HMS e yield");
-    fmt::print(" {:^15} ", "SHMS e yield");
+    fmt::print(" {:^15} ", "SHMS pi yield (M)");
     fmt::print(" {:>7} ", "count");
     fmt::print(" {:>9} ", "charge");
     fmt::print(" {:>9} ", "yield");
@@ -161,8 +161,8 @@ void make_csv_table() {
       double charge     = rl_shms["good_total_charge"].get<double>();
       double shms_yield = n_shms * ps_factor / charge;
       double shms_unc   = sqrt(n_shms) * ps_factor / charge;
-      fmt::print(" {:>7.1f}", shms_yield);
-      fmt::print(" ± {:<7.1f}", shms_unc);
+      fmt::print(" {:>7.3f}", shms_yield/1000000.0);
+      fmt::print(" ± {:<7.3f}", shms_unc/1000000.0);
     } else {
       fmt::print(" {:>7.0f}", 0.);
       fmt::print(" ± {:<7.0f}", 0.);

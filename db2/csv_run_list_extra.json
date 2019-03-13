@@ -301,5 +301,44 @@
   },
   "7624": {
     "comment": "This is junk run"
+  },
+  "7651": {
+    "comment": "running at 23 uA"
+  },
+  "7653": {
+    "comment": "junk"
+  },
+  "7656": {
+    "comment": "junk"
+  },
+  "7665": {
+    "comment": "mode 10 run"
+  },
+  "7683": {
+    "comment": "junk"
+  },
+  "7691": {
+    "comment": " junk run , no beam "
+  },
+  "7693": {
+    "comment": " junk prescales not saved "
+  },
+  "7696": {
+    "comment": "junk"
+  },
+  "7700": {
+    "comment": "junk"
+  },
+  "7701": {
+    "comment": "junk"
+  },
+  "7704": {
+    "comment": "junk"
+  },
+  "7705": {
+    "comment": "junk"
+  },
+  "7712": {
+    "comment": "p_SHMS = +2.928 GeV/c"
   }
 }

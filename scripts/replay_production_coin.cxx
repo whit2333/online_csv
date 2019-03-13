@@ -285,6 +285,7 @@ void replay_production_coin(Int_t RunNumber = 7224, Int_t MaxEvent = 50000) {
   analyzer->SetOutFile(ROOTFileName.Data());
   // Define DEF-file+
   //analyzer->SetOdefFile("UTIL_SIDIS/DEF-files/coin_production_sidis.def");
+  //analyzer->SetOdefFile("DEF-files/COIN/PRODUCTION/coin_production_hElec_pProt.def");
   analyzer->SetOdefFile("DEF-files/COIN/PRODUCTION/coin_production_hElec_pProt.def");
   // Define cuts file
   // analyzer->SetCutFile("UTIL_SIDIS/DEF-files/coin_production_sidis_cuts.def");  // optional

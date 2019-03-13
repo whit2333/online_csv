@@ -39,7 +39,7 @@ using floaters = ROOT::VecOps::RVec<float>;
 using shorters = ROOT::VecOps::RVec<short>;
 using nlohmann::json;
 
-void plot_waveforms(int RunNumber = 7111, int nevents = -1) {
+void plot_waveforms(int RunNumber = 7665, int nevents = 20000) {
 
   //using nlohmann::json;
   //json j;
@@ -63,9 +63,9 @@ void plot_waveforms(int RunNumber = 7111, int nevents = -1) {
   //double P0_shms_setting = j[runnum_str]["spectrometers"]["shms_momentum"].get<double>();
   //double P0_shms         = std::abs(P0_shms_setting);
 
-  std::string coda_type = "SHMS";
+  std::string coda_type = "COIN";
   std::string rootfile  = "ROOTfiles/";
-  rootfile += std::string("shms_replay_production_");
+  rootfile += std::string("coin_replay_production_");
   rootfile += std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
 
   bool found_good_file = false;
@@ -83,7 +83,7 @@ void plot_waveforms(int RunNumber = 7111, int nevents = -1) {
   }
   if (!found_good_file) {
     rootfile = "ROOTfiles_online/";
-    rootfile += std::string("shms_replay_production_");
+    rootfile += std::string("coin_replay_production_");
     rootfile += std::to_string(RunNumber) + "_" + std::to_string(nevents) + ".root";
 
     if (!gSystem->AccessPathName(rootfile.c_str())) {
@@ -120,7 +120,8 @@ void plot_waveforms(int RunNumber = 7111, int nevents = -1) {
   std::string hpdelta = "P.gtr.dp > -10 && P.gtr.dp < 20 && "
                         "H.gtr.dp > -10 && H.gtr.dp < 10";
 
-  auto ddisplay = new hallc::MonitoringDisplay(RunNumber);
+  //auto ddisplay = new hallc::MonitoringDisplay(RunNumber);
+  auto ddisplay      = new hallc::MonitoringDisplay({"cdaql1.jlab.org",9091},RunNumber);
   // auto exp_monitor = new hallc::ExperimentMonitor(RunNumber,"derp");
   auto waveform_plot = ddisplay->CreateDisplayPlot(
       "test", "A",
@@ -142,14 +143,14 @@ void plot_waveforms(int RunNumber = 7111, int nevents = -1) {
       },
       [&](hallc::DisplayPlot& plt) {
 
-plt._plot_data._graphs1[0]->Set(0);
-plt._plot_data._graphs1[1]->Set(0);
-plt._plot_data._graphs1[2]->Set(0);
-plt._plot_data._graphs1[3]->Set(0);
-plt._plot_data._graphs1[0]->Set(1);
-plt._plot_data._graphs1[1]->Set(1);
-plt._plot_data._graphs1[2]->Set(1);
-plt._plot_data._graphs1[3]->Set(1);
+        plt._plot_data._graphs1[0]->Set(0);
+        plt._plot_data._graphs1[1]->Set(0);
+        plt._plot_data._graphs1[2]->Set(0);
+        plt._plot_data._graphs1[3]->Set(0);
+        plt._plot_data._graphs1[0]->Set(1);
+        plt._plot_data._graphs1[1]->Set(1);
+        plt._plot_data._graphs1[2]->Set(1);
+        plt._plot_data._graphs1[3]->Set(1);
 
         // do nothing
         plt._plot_data._canvas->cd();
@@ -167,7 +168,7 @@ plt._plot_data._graphs1[3]->Set(1);
 
   ddisplay->InitAll();
 
-  auto d1 = d.Range(2005,0);
+  auto d1 = d.Range(0,10);
 
   d1.Foreach(
     [&](std::vector<hallc::data::PulseWaveForm>& wf_data) {
@@ -191,9 +192,9 @@ plt._plot_data._graphs1[3]->Set(1);
         if( wf_count >= 1) {
           ddisplay->UpdateAll();
           wf_count = 0;
-          std::this_thread::sleep_for(std::chrono::seconds(2));
+          std::this_thread::sleep_for(std::chrono::seconds(1));
         }
         return 0;
       },
-      {"P_ngcer_waveforms"});
+      {"T_coin_waveforms"});
 }
