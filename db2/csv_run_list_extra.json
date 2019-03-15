@@ -340,5 +340,38 @@
   },
   "7712": {
     "comment": "p_SHMS = +2.928 GeV/c"
+  },
+  "7729": {
+    "comment": "ion chamber calib"
+  },
+  "7731": {
+    "comment": "junk"
+  },
+  "7732": {
+    "comment": "junk no beam"
+  },
+  "7734": {
+    "comment": "junk"
+  },
+  "7744": {
+    "comment": "junk, missing reference times"
+  },
+  "7745": {
+    "comment": "junk missing ref times"
+  },
+  "7746": {
+    "comment": "junk"
+  },
+  "7756": {
+    "comment": "junk"
+  },
+  "7761": {
+    "comment": "junk"
+  },
+  "7764": {
+    "comment": "junk"
+  },
+  "7772": {
+    "comment": "pshms=3.214"
   }
 }

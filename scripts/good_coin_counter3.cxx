@@ -191,6 +191,7 @@ void good_coin_counter3(int RunNumber = 7146, int nevents = -1, int prompt = 0, 
   auto dCOINGoodTrack = dHMSGoodTrack.Filter(goodTrackSHMS)
                             .Define("p_electron", p_electron, {"H.gtr.px", "H.gtr.py", "H.gtr.pz"})
                             .Define("p_pion", p_pion, {"P.gtr.px", "P.gtr.py", "P.gtr.pz"})
+                            .Define("p_pion_HMS", p_pion, {"H.gtr.px", "H.gtr.py", "H.gtr.pz"})
                             .Define("p_q", p_q, {"p_electron"})
                             .Define("z", z, {"p_q","p_pion"})
                             .Define("Q2", Q2, {"p_q"})
@@ -199,6 +200,8 @@ void good_coin_counter3(int RunNumber = 7146, int nevents = -1, int prompt = 0, 
                             .Define("Wp2", Wprime2, {"p_q","p_pion"})
                             .Define("W", "std::sqrt(W2)")
                             .Define("Wp", "std::sqrt(Wp2)")
+                            .Define("InvMass","p_electron.Dot(p_pion)")
+                            .Define("InvMass_pions","p_pion_HMS.Dot(p_pion)")
                             ;
 
   // PID cuts
@@ -259,11 +262,11 @@ void good_coin_counter3(int RunNumber = 7146, int nevents = -1, int prompt = 0, 
       new TFile(fmt::format("monitoring/{}/good_csv_counter.root", RunNumber).c_str(), "UPDATE");
   out_file->cd();
 
-  DFIndex dfs = {{"1. tracks", {dCOINGoodTrack, "Cuts: + Delta"}},
-                 {"2. sidis (K+pi)", {dCOIN_sidis, "Cuts: + e and hadron"}},
-                 {"3. pion sidis", {dCOIN_sidis_pion, "Cuts: + pion HGC"}},
-                 {"4. timing", {dCOIN_sidis_pion_intime, "Cuts: + timing"}},
-                 {"5. rand bg", {dCOIN_sidis_pion_randbg, "Cuts: random bg coin"}}};
+  DFIndex dfs = {{"1_tracks", {dCOINGoodTrack, "Cuts: + Delta"}},
+                 {"2_sidis_K_and_pi", {dCOIN_sidis, "Cuts: + e and hadron"}},
+                 {"3_pion_sidis", {dCOIN_sidis_pion, "Cuts: + pion HGC"}},
+                 {"4_timing", {dCOIN_sidis_pion_intime, "Cuts: + timing"}},
+                 {"5_rand_bg", {dCOIN_sidis_pion_randbg, "Cuts: random bg coin"}}};
 
   // =========================================================================================
   // Histograms
@@ -368,6 +371,15 @@ void good_coin_counter3(int RunNumber = 7146, int nevents = -1, int prompt = 0, 
         df.Histo1D({("Wp" + name).c_str(), (title + ";Wp;counts").c_str(),
                     200, 0.0,8.0},
                    "Wp");
+     histos["coin.InvMass"][name] =
+        df.Histo1D({("InvMass" + name).c_str(), (title + ";InvMass ;counts").c_str(),
+                    200, 0.0,8.0},
+                   "InvMass");
+     histos["coin.InvMass_pions"][name] =
+        df.Histo1D({("InvMass_pions" + name).c_str(), (title + ";InvMass_pions ;counts").c_str(),
+                    200, 0.0,8.0},
+                   "InvMass_pions");
+
     // J/psi invariant mass
     // histos["Jpsi.mass"][name] =
     //    df.Histo1D({("Jpsi_mass-" + name).c_str(), (title + ";M_{J/#psi} [GeV];counts").c_str(),
