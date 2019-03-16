@@ -121,8 +121,8 @@ fi
 
 pushd $CURRENT_REPLAY_DIR
 mkdir -p monitoring/${run_number}
-root -l -b -q  "scripts/good_coin_counter2.cxx(${run_number},${num_events},0,${update_run_info},${count_goal})" 
-root -l -b -q  "scripts/good_coin_counter3.cxx(${run_number},${num_events},0,${update_run_info},${count_goal})" 
+root -l -b -q  "scripts/good_coin_counter2.cxx+(${run_number},${num_events},0,${update_run_info},${count_goal})" 
+root -l -b -q  "scripts/good_coin_counter3.cxx+(${run_number},${num_events},0,${update_run_info},${count_goal})" 
 ./bin/monitor_singles -r ${run_number}
 
 #root -l -b -q  "good_coin_counter.cxx(${run_number},${num_events},0,${update_run_info},${count_goal})"
