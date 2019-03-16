@@ -376,5 +376,17 @@
   },
   "7780": {
     "comment": "junk, coda restart required"
+  },
+  "7788": {
+    "comment": "junk"
+  },
+  "7789": {
+    "comment": "junk, no beam"
+  },
+  "7791": {
+    "comment": "short, good run"
+  },
+  "7795": {
+    "comment": "junk run"
   }
 }
