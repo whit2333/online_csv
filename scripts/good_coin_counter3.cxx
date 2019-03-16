@@ -345,7 +345,7 @@ void good_coin_counter3(int RunNumber = 7146, int nevents = -1, int prompt = 0, 
                    "CTime.ePiCoinTime_ROC2");
      histos["coin.z"][name] =
         df.Histo1D({("z" + name).c_str(), (title + ";z;counts").c_str(),
-                    100, 0,1},
+                    120, 0,1.2},
                    "z");
      histos["coin.xbj"][name] =
         df.Histo1D({("xbj" + name).c_str(), (title + ";x;counts").c_str(),
