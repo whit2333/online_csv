@@ -388,5 +388,20 @@
   },
   "7795": {
     "comment": "junk run"
+  },
+  "7810": {
+    "comment": "junk"
+  },
+  "7818": {
+    "comment": "junk"
+  },
+  "7819": {
+    "comment": "bpm show drifting position, mcc forgot to restore locks"
+  },
+  "7821": {
+    "comment": "junk, took run while setting magnets"
+  },
+  "7825": {
+    "comment": "junk"
   }
 }
