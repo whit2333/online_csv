@@ -7225,16 +7225,16 @@
         "time 1MHz 2u cut": 99.735576
     },
     "7830": {
-        "charge bcm4b 2u cut": 20.634400718758464,
-        "count_e": 3978.0,
-        "count_identified_pscorr": 35802.0,
-        "count_raw": 35076.0,
-        "count_raw_pscorr": 315684.0,
-        "count_tracked": 4209.0,
-        "count_tracked_pscorr": 37881.0,
-        "good_time": 330.345043,
-        "good_total_charge": 20.634400718758464,
+        "charge bcm4b 2u cut": 76.42475585973648,
+        "count_e": 15013.0,
+        "count_identified_pscorr": 135117.0,
+        "count_raw": 133009.0,
+        "count_raw_pscorr": 1197081.0,
+        "count_tracked": 15807.0,
+        "count_tracked_pscorr": 142263.0,
+        "good_time": 1265.35446,
+        "good_total_charge": 76.42475585973648,
         "ps_factor": 9.0,
-        "time 1MHz 2u cut": 330.345043
+        "time 1MHz 2u cut": 1265.35446
     }
 }
