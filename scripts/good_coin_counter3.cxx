@@ -56,13 +56,13 @@ using Pvec4D = ROOT::Math::PxPyPzMVector;
 // reconstruction
 // =================================================================================
 auto p_pion = [](double px, double py, double pz) {
-  return Pvec4D{px * 0.996, py * 0.996, pz * 0.996, M_e};
+  return Pvec4D{px , py , pz , M_e};
 };
 auto p_electron = [](double px, double py, double pz) {
-  return Pvec4D{px * 0.994, py * 0.994, pz * 0.994, M_e};
+  return Pvec4D{px , py , pz , M_e};
 };
 auto p_q = [](Pvec4D& pe ) {
-  return Pvec4D{0.0,0.0,10.219, M_e}-pe;
+  return Pvec4D{0.0,0.0,10.214, M_e}-pe;
 };
 auto t = [](const double Egamma, Pvec4D& jpsi) {
   Pvec4D beam{0, 0, Egamma, 0};
@@ -158,18 +158,20 @@ void good_coin_counter3(int RunNumber = 7146, int nevents = -1, int prompt = 0, 
   // Cuts
   // =================================================================================
   std::string goodTrackSHMS = "P.gtr.dp > -10 && P.gtr.dp < 22";
-  std::string goodTrackHMS  = "H.gtr.dp > -10 && H.gtr.dp < 10 ";
+  std::string goodTrackHMS  = "H.gtr.dp > -8 && H.gtr.dp < 8 ";
 
-  std::string piCutSHMS =
-      "P.aero.npeSum > 1.0 && P.cal.eprtracknorm < 0.2 && P.cal.etottracknorm<1.0";
+  //std::string piCutSHMS =
+  //    "P.aero.npeSum > 1.0 && P.cal.eprtracknorm < 0.2 && P.cal.etottracknorm<1.0";
+  std::string piCutSHMS = " P.cal.etottracknorm<1.0";
 
   std::string eCutHMS = "H.cal.etottracknorm > 0.80 && H.cal.etottracknorm < 2. && "
                         "H.cer.npeSum > 1.";
 
-  std::string epiCut = "P.aero.npeSum > 1.0 && P.cal.eprtracknorm < 0.2 && "
+  //std::string epiCut = "P.aero.npeSum > 1.0 && P.cal.eprtracknorm < 0.2 && "
+  std::string epiCut = " P.cal.eprtracknorm < 0.2 && "
                        "H.cer.npeSum > 1.0 && H.cal.etottracknorm > 0.6 && "
                        "H.cal.etottracknorm < 2.0 && P.cal.etottracknorm<1.0";
-  std::string hgc_cut = " (p_pion.P() < 2.8 || P.hgcer.npeSum > 1.0) ";//&& P.ngcer.npeSum < 0.5 ";
+  std::string hgc_cut = "  " ;//(p_pion.P() < 2.8 || P.hgcer.npeSum > 1.0) ";//&& P.ngcer.npeSum < 0.5 ";
 
   // ===============================================================================================
   // Dataframe
@@ -208,7 +210,7 @@ void good_coin_counter3(int RunNumber = 7146, int nevents = -1, int prompt = 0, 
   auto dHMS_electron    = dHMSGoodTrack.Filter(eCutHMS);
   auto dSHMS_pion       = dSHMSGoodTrack.Filter(piCutSHMS);
   auto dCOIN_sidis      = dCOINGoodTrack.Filter(eCutHMS + " && " + piCutSHMS);
-  auto dCOIN_sidis_pion = dCOIN_sidis.Filter(hgc_cut);
+  auto dCOIN_sidis_pion = dCOIN_sidis;//.Filter(hgc_cut);
       //[=](double npe, double dp) {
       //  double p_track = P0_shms * (100.0 + dp) / 100.0;
       //  // no cerenkov cut needed when momentum is below 2.8 GeV/c
@@ -365,7 +367,7 @@ void good_coin_counter3(int RunNumber = 7146, int nevents = -1, int prompt = 0, 
                    "Wp2");
      histos["coin.W"][name] =
         df.Histo1D({("W" + name).c_str(), (title + ";W;counts").c_str(),
-                    200, 0.0,8.0},
+                    200, 0.0,2.0},
                    "W");
      histos["coin.Wp"][name] =
         df.Histo1D({("Wp" + name).c_str(), (title + ";Wp;counts").c_str(),
