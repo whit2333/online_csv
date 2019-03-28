@@ -1,9 +1,11 @@
 import json
-with open('../online_csv/db2/run_list_coin.json') as json_file:
+with open('../db2/run_list_coin.json') as json_file:
      data = json.load(json_file)
      for runs in data:
+         #update beam energy
          if(int(runs)>=7593):
              data[runs]["run_info"]["beam_energy"] = 10.214
+         #update angles
          if(7593<=int(runs)<=7670):
              data[runs]["spectrometers"]["hms_angle"] = 17.65
              data[runs]["spectrometers"]["shms_angle"] = 19.93
@@ -25,9 +27,9 @@ with open('../online_csv/db2/run_list_coin.json') as json_file:
          if(7826<=int(runs)<=7828):
              data[runs]["spectrometers"]["hms_angle"] = 21.93
              data[runs]["spectrometers"]["shms_angle"] = 23.45
-         if(7830<=int(runs)<=7830):
+         if(7829<=int(runs)<=7830):
              data[runs]["spectrometers"]["hms_angle"] = 20.71
              data[runs]["spectrometers"]["shms_angle"] = 24.71
-         
-     with open("run_list_update.json",'w') as outfile : 
+          
+     with open("/group/c-csv/shuo/online_csv/db2/run_list_update.json",'w') as outfile : 
         outfile.write(json.dumps(data, indent=2,sort_keys=True))
