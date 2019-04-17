@@ -27,13 +27,13 @@ using floaters = ROOT::VecOps::RVec<float>;
 using shorters = ROOT::VecOps::RVec<short>;
 using nlohmann::json;
 
-void good_coin_counter(int RunNumber = 6018, int nevents = -1, int prompt = 0, int update = 1,
+void good_coin_counter(int RunNumber = 7593, int nevents = -1, int prompt = 0, int update = 1,
                        int default_count_goal = 30000) {
 
   using nlohmann::json;
   json j;
   {
-    std::ifstream json_input_file("db2/run_list_coin.json");
+    std::ifstream json_input_file("db2/run_list_update.json");
     try {
       json_input_file >> j;
     } catch (json::parse_error) {

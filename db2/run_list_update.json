@@ -22447,9 +22447,9 @@
       "stop_time": "14:44:08 03/17/19 EDT"
     }, 
     "spectrometers": {
-      "hms_angle": 20.712, 
+      "hms_angle": 20.71, 
       "hms_momentum": -5.714, 
-      "shms_angle": 24.720000000000002, 
+      "shms_angle": 24.71, 
       "shms_momentum": 5.07
     }, 
     "target": {

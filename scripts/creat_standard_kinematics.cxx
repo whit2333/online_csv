@@ -29,7 +29,8 @@ void creat_standard_kinematics(){
     case 1:
       std::cout<<"What range do you want? eg. 7593 7693"<<"\n";
       std::cin>>runstart>>runend;
-      if (runstart>runend){std::cout<<"wrong input";}
+      if (runstart>runend){std::cout<<"wrong input";
+        std::quick_exit(-127);}
       out_file.open("custom_standard.kinematics");
       break;
     case 2:
@@ -39,6 +40,7 @@ void creat_standard_kinematics(){
       break;
     default:
       std::cout<<"wrong input"<<"\n";
+      std::quick_exit(-127);
       break;
   }
 
@@ -51,8 +53,8 @@ void creat_standard_kinematics(){
     out_file << "ptheta_lab = " << it.value()["spectrometers"]["shms_angle"]<<"\n";
     out_file << "hpcentral = " << it.value()["spectrometers"]["hms_momentum"]<<"\n";
     out_file << "ppcentral = " << it.value()["spectrometers"]["shms_momentum"]<<"\n";
-    out_file << "ppartmass = " << 0.0005109<<"\n";
-    out_file << "hpartmass = " << 0.93827231<<"\n";
+    out_file << "ppartmass = " << 0.93827231<<"\n";
+    out_file << "hpartmass = " << 0.0005109<<"\n";
     
     
     out_file<<"\n";
