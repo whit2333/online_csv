@@ -917,5 +917,4 @@ void good_coin_counter3(int RunNumber = 7146, int nevents = -1, int prompt = 0, 
 
   // ddisplay->InitAll();
   // ddisplay->UpdateAll();
-
 }

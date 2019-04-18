@@ -2,12 +2,12 @@
 #include <iostream>
 #include "TCanvas.h"
 int readsimroot(){
-  std::string rootfile = std::string("/u/home/shuojia/simc_gfortran/worksim/csv6009.root");
+  std::string rootfile = std::string("/u/home/shuojia/simc_gfortran/worksim/csvelas7822.root");
   ROOT::RDataFrame d("h666",rootfile);
-  auto h_P_etottracknorm = d.Histo1D({"hmsgtrdp","hms goodtr dp",100,-14,14},"hsdelta");
+  auto h_Emiss = d.Histo1D({"hmsgtrdp","emiss",100,-1,1},"Em");
 
   auto *c = new TCanvas;
-  h_P_etottracknorm->DrawCopy();
+  h_Emiss->DrawCopy();
 
   return 0;
 }

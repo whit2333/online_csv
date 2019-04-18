@@ -30,7 +30,7 @@ void creat_standard_kinematics(){
       std::cout<<"What range do you want? eg. 7593 7693"<<"\n";
       std::cin>>runstart>>runend;
       if (runstart>runend){std::cout<<"wrong input";
-        std::quick_exit(-127);}
+        std::quick_exit();}
       out_file.open("custom_standard.kinematics");
       break;
     case 2:
@@ -40,7 +40,7 @@ void creat_standard_kinematics(){
       break;
     default:
       std::cout<<"wrong input"<<"\n";
-      std::quick_exit(-127);
+      std::quick_exit();
       break;
   }
 
