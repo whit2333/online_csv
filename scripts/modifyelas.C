@@ -62,8 +62,6 @@ bool root_file_exists(std::string rootfile) {
   }
   return false;
 }
-//double Eb = 10.214;
-//double M_P = 0.938272;
 constexpr const double M_P     = 0.938272;
 constexpr const double M_P2    = M_P * M_P;
 constexpr const double M_pion  = 0.139;
@@ -73,6 +71,9 @@ double Eb = 10.214;
 using Pvec3D = ROOT::Math::XYZVector;
 using Pvec4D = ROOT::Math::PxPyPzMVector;
 
+auto p_proton = [](double px, double py, double pz){
+  return Pvec4D{px , py , pz , M_P};
+};
 auto p_pion = [](double px, double py, double pz) {
   return Pvec4D{px , py , pz , M_pion};
 };
@@ -103,7 +104,10 @@ auto W2 = [](Pvec4D& pq) {
   auto Ptot = Pvec4D{0.0,0.0,0.0, M_P} + pq;
   return Ptot.Dot(Ptot);
 };
-
+//Emiss = Ebeam+Mp - sqrt(P_p^2 + Mp^2) - sqrt(P_e+Me^2)
+auto Emiss = [](Pvec4D& p_proton, Pvec4D& p_electron){
+  return Eb+M_P-p_proton.E()-p_electron.E();
+};
 
 //main function
 void modifyelas(){
@@ -143,7 +147,6 @@ void modifyelas(){
     double hms_angle    = runjs["htheta_lab"].get<double>() * 3.1415926 / 180.;
     double hms_momentum = runjs["hpcentral"].get<double>();
     double charge       = runjs["charge"].get<double>();
-    double normfac      = runjs["normfac"].get<double>();
     std::cout<<"hms angle "<<hms_angle<<std::endl;
     double Ep = Eb/(1.0+((2.0*Eb/M_P)*(sin(hms_angle/2.0)*sin(hms_angle/2.0))));
     double Ep_diff = Ep-hms_momentum;
@@ -153,8 +156,8 @@ void modifyelas(){
     fmt::print("{} data run check {}", runnumber, hms_momentum);
 
     std::string rootfile_sim =
-        fmt::format("/u/home/shuojia/simc_gfortran/worksim/csvelas{}.root", runnumber);
-    std::string rootfile_data = fmt::format("/group/c-csv/shuo/hallc_replay_sidis_fall18/ROOTfiles/coin_replay_production_{}_-1.root", runnumber);
+        fmt::format("/u/home/shuojia/simc_gfortran/worksim/csv{}.root", runnumber);
+    std::string rootfile_data = fmt::format("ROOTfiles/coin_replay_production_{}_-1.root", runnumber);
 
     std::cout << rootfile_data << std::endl;
     std::cout << rootfile_sim << std::endl;
@@ -174,10 +177,10 @@ void modifyelas(){
 
   //std::string piCutSHMS =
   //    "P.aero.npeSum > 1.0 && P.cal.eprtracknorm < 0.2 && P.cal.etottracknorm<1.0";
-  std::string piCutSHMS = " P.cal.etottracknorm<1.0";
+  //std::string piCutSHMS = " P.cal.etottracknorm<1.0";
 
-  std::string eCutHMS = "H.cal.etottracknorm > 0.80 && H.cal.etottracknorm < 2. && "
-                        "H.cer.npeSum > 1.";
+  //std::string eCutHMS = "H.cal.etottracknorm > 0.80 && H.cal.etottracknorm < 2. && "
+  //                      "H.cer.npeSum > 1.";
 
   //std::string epiCut = "P.aero.npeSum > 1.0 && P.cal.eprtracknorm < 0.2 && "
   //std::string epiCut = " P.cal.eprtracknorm < 0.2 && "
@@ -200,8 +203,9 @@ void modifyelas(){
   // Good "track" cuts
   auto dHMSGoodTrack  = d_coin.Filter(goodTrackHMS);
   auto dSHMSGoodTrack = d_coin.Filter(goodTrackSHMS);
-  auto dCOINGoodTrack = dHMSGoodTrack.Filter(goodTrackSHMS)
-                            .Define("p_electron", p_electron, {"H.gtr.px", "H.gtr.py", "H.gtr.pz"})
+ // auto dCOINGoodTrack = dHMSGoodTrack.Filter(goodTrackSHMS)
+  /*                          .Define("p_electron", p_electron, {"H.gtr.px", "H.gtr.py", "H.gtr.pz"})
+                            .Define("p_proton",p_proton, {"P.gtr.px", "P.gtr.py", "P.gtr.pz"})
                             .Define("p_pion", p_pion, {"P.gtr.px", "P.gtr.py", "P.gtr.pz"})
                             .Define("p_pion_HMS", p_pion, {"H.gtr.px", "H.gtr.py", "H.gtr.pz"})
                             .Define("p_q", p_q, {"p_electron"})
@@ -214,7 +218,27 @@ void modifyelas(){
                             .Define("Wp", "std::sqrt(Wp2)")
                             .Define("InvMass","p_electron.Dot(p_pion)")
                             .Define("InvMass_pions","p_pion_HMS.Dot(p_pion)")
+                            .Define("emiss",Emiss,{"p_proton","p_electron"})
                             ;
+ 
+                            */
+  auto dCOINGoodTrack = dHMSGoodTrack.Filter(goodTrackSHMS)
+ .Define("p_electron", p_electron, {"H.gtr.px", "H.gtr.py", "H.gtr.pz"})
+ .Define("p_proton",p_proton, {"P.gtr.px", "P.gtr.py", "P.gtr.pz"})
+ .Define("p_pion", p_pion, {"P.gtr.px", "P.gtr.py", "P.gtr.pz"})
+ .Define("p_pion_HMS", p_pion, {"H.gtr.px", "H.gtr.py", "H.gtr.pz"})
+ .Define("p_q", p_q, {"p_electron"})
+ .Define("z", z, {"p_q","p_pion"})
+ .Define("Q2", Q2, {"p_q"})
+ .Define("xbj", xbj, {"Q2","p_q"})
+ .Define("W2", W2, {"p_q"})
+ .Define("Wp2", Wprime2, {"p_q","p_pion"})
+ .Define("W", "std::sqrt(W2)")
+ .Define("Wp", "std::sqrt(Wp2)")
+ .Define("InvMass","p_electron.Dot(p_pion)")
+ .Define("InvMass_pions","p_pion_HMS.Dot(p_pion)")
+ .Define("emiss",Emiss,{"p_proton","p_electron"})
+ ;
 
   // PID cuts
 //  auto dHMS_electron    = dHMSGoodTrack.Filter(eCutHMS);
@@ -272,18 +296,18 @@ void modifyelas(){
     
 
     auto yield_data_before = *dCOINGoodTrack.Count()/charge;
-    std::cout<<yield_data_before<<std::endl;
+    std::cout<<"yield data before"<<yield_data_before<<std::endl;
 
 
 
     //building dataframe for data
-    auto d1data = dCOINGoodTrack//.Filter([](double etottracknorm){return etottracknorm>0.8;},{"H.cal.etottracknorm"})
-    //.Filter([](double emiss){return  emiss<0.6 && emiss>0.4;},{"P.kin.secondary.emiss"})
-    //.Filter([](double hindex){return hindex>-2;},{"H.gtr.index"})
-    //.Filter([](double pindex){return pindex>-2;},{"P.gtr.index"})
-    .Define("Ep_cal",[](double th){return  Eb/(1.0+((2.0*Eb/M_P)*(sin(th*3.1415926/360))*(sin(th* 3.1415926/360))));},{"H.kin.primary.scat_ang_deg"})
-    .Define("Ep_diff",[](double Ee,double hmom){return Ee-hmom;},{"Ep_cal","H.gtr.p"});
-
+    auto d1data = dCOINGoodTrack.Filter([](double etottracknorm){return etottracknorm>0.8;},{"H.cal.etottracknorm"})
+    .Filter([](double emiss){return  emiss<0.1 && emiss>-0.1;},{"emiss"})
+    .Filter([](double hindex){return hindex>-1;},{"H.gtr.index"})
+    .Filter([](double pindex){return pindex>-1;},{"P.gtr.index"})
+      .Define("Ep_cal",[](double th){return  Eb/(1.0+((2.0*Eb/M_P)*(sin(th*3.1415926/360))*(sin(th* 3.1415926/360))));},{"H.kin.primary.scat_ang_deg"})
+      .Define("Ep_diff",[](double Ee,double hmom){return Ee-hmom;},{"Ep_cal","H.gtr.p"});
+    std::cout<<"Check"<<"\n";
     auto h_W_data = d1data.Histo1D({"W data","W d",100,0.4,1.6},"W");
     h_W_data->Fit("gaus","O","",0.4,1.6);
 
@@ -311,7 +335,7 @@ void modifyelas(){
     auto d0data = d1data;//.Filter([&Wmax,&Wmin](double w){return w<Wmax &&w>Wmin;},{"H.kin.primary.W"});
     //.Filter([dpcut_data](double dp){return dp<dpcut_data;},{"H.gtr.dp"});
     auto yield_data_after = *d0data.Count()/(charge);
-    std::cout<<yield_data_after<<std::endl;
+    std::cout<<"yield data after"<<yield_data_after<<std::endl;
 
     G_yield_data->SetPoint(i,runnumber+0.1,yield_data_after);
     G_yield_data->SetPointError(i,0,std::sqrt(*d0data.Count())/charge);
@@ -321,52 +345,6 @@ void modifyelas(){
 
     G_yield_data_angle->SetPoint(i,hms_angle*180/3.14+0.05,yield_data_after);
     G_yield_data_angle->SetPointError(i,0,std::sqrt(*d0data.Count())/charge);
-
-    //building dataframe for simulation
-    double sim_charge = 100.0; //mC
-    double dcharge = charge;//data[5][i]; //mC read from /REPORT_OUTPUT/COIN/PRODUCTION/replay_coin_production_num_-1.root
-    //std::cout<<"dcharge check"<<dcharge<<std::endl;
-    double shmsTE = runjs["shmsTE"].get<double>();//data[7][i];//as last
-    //std::cout<<"shmsTE check"<<shmsTE<<std::endl;
-    double hmsTE =  runjs["hmsTE"].get<double>();//data[8][i];//as last
-    //std::cout<<"hmsTE check"<<hmsTE<<std::endl;
-    double coinlive =  runjs["ComputerLT"].get<double>();// data[6][i];//as last
-    //std::cout<<"coinlive check "<<coinlive<<std::endl;
-    //double normfac = data[9][i];//from /simc/outfiles/csvnum.hist
-    auto nentries = dsim.Count();
-    double wfac = (normfac / *nentries) *(dcharge /sim_charge);
-    //double wfac = dcharge/charge;
-    std::cout<<"wfac "<<wfac<<std::endl;
-    auto weightcalculate = [wfac,coinlive,shmsTE,hmsTE](float weight){return wfac*coinlive*shmsTE*hmsTE*weight;};
-    auto d1sim = dsim.Define("weight",weightcalculate,{"Weight"})
-    .Filter([](float emiss){return emiss<0.1 && emiss>-0.1;},{"Em"});
-    
-    //float dpmax = *d1sim.Max("hsdelta");
-    //float dpmin = *d1sim.Min("hsdelta");
-    //float dpcut = 0.75*dpmax+0.25*dpmin;
-    auto d0sim = d1sim;//.Filter(        [Wmax, Wmin](float w) { return w < Wmax && w > Wmin; }, {"W"});
-    //.Filter([dpcut](float dp){return dp<dpcut;},{"hsdelta"});
-    //.Filter([](float EOVerP){return EOverP>0.8},{""});
-
-    std::cout<<*d1sim.Count()<<std::endl;
-
-    auto Q2_sim_sum = d0sim.Histo1D({"Q2 sim","Q2 sim",100,7,12},"Q2","weight")->Integral();
-    std::cout<<"runnumber "<<runnumber<<" sim "<<Q2_sim_sum<<" data "<<*d0data.Count()<<std::endl;
-    auto yield_sim = Q2_sim_sum/charge;
-    //auto yield_beforeweight = *d1sim.Count()/data[5][i];
-
-    G_yield_sim->SetPoint(i,runnumber,yield_sim);
-    G_yield_sim->SetPointError(i,0,std::sqrt(Q2_sim_sum)/charge);
-
-    G_yield_sim_momentum->SetPoint(i,hms_momentum,yield_sim);
-    G_yield_sim_momentum->SetPointError(i,0,std::sqrt(Q2_sim_sum)/charge);
-
-    G_yield_sim_angle->SetPoint(i,hms_angle*180/3.14,yield_sim);
-    G_yield_sim_angle->SetPointError(i,0,std::sqrt(Q2_sim_sum)/charge);
-    //auto c = new TCanvas;
-    //h_yield_sim->Draw();
-    //h_Q2_sim->DrawCopy();
-    //std::cout<<h_Q2_sim<<std::endl;
 
     //building histo for data kin
     auto h_Q2_data = d0data.Histo1D({"Q2 data","Q2 data",100,7,12},"Q2");
@@ -381,9 +359,53 @@ void modifyelas(){
        std::cout<<"data mean "<<h_W_data_mean<<std::endl;
        std::cout<<"data sigma"<<h_W_data_sigm<<std::endl;
        */
-    //auto h_Emiss_data = d0data.Histo1D({"Missing Energy data","Missing E data",100,-0.2,0.2},"P.kin.secondary.emiss");
+    auto h_Emiss_data = d0data.Histo1D({"Missing Energy data","Missing E data",100,-0.2,0.2},"emiss");
     //auto h_Pmiss_data = d0data.Histo1D({"Missing Momentum data","Missing P data",100,-0.2,0.2},"P.kin.secondary.pmiss");
     //auto h_om_data = d0data.Histo1D({"Omega data","Om d",100,4.0,6.4},"H.kin.primary.omega");
+
+    //building dataframe for simulation
+    double sim_charge = charge; //mC
+    double dcharge = charge;//mC read from /REPORT_OUTPUT/COIN/PRODUCTION/replay_coin_production_num_-1.root
+    std::cout<<"data charge"<<dcharge<<"\n";
+    double shmsTE = runjs["shmsTE"].get<double>();//as last
+    double hmsTE =  runjs["hmsTE"].get<double>();//as last
+    double coinlive =  runjs["ComputerLT"].get<double>();// data[6][i];//as last
+    double normfac      = runjs["normfac"].get<double>();//read from /simc/outfiles/csv.hist
+    std::cout<<"normfac"<<normfac<<"\n";
+    auto nentries = dsim.Count();
+    double wfac = (normfac / *nentries)*(dcharge/sim_charge) ;
+    std::cout<<"wfac "<<wfac<<std::endl;
+    //auto weightcalculate = [wfac,coinlive,shmsTE,hmsTE](float weight){return 0.7*wfac*weight;};
+    auto weightcalculate = [wfac,coinlive,shmsTE,hmsTE](float weight){return wfac*coinlive*shmsTE*hmsTE*weight;};
+    auto d1sim = dsim.Define("weight",weightcalculate,{"Weight"});
+    //.Filter([](float emiss){return emiss<0.1 && emiss>-0.1;},{"Em"});
+    
+    //float dpmax = *d1sim.Max("hsdelta");
+    //float dpmin = *d1sim.Min("hsdelta");
+    //float dpcut = 0.75*dpmax+0.25*dpmin;
+    auto d0sim = d1sim;//.Filter(        [Wmax, Wmin](float w) { return w < Wmax && w > Wmin; }, {"W"});
+    //.Filter([dpcut](float dp){return dp<dpcut;},{"hsdelta"});
+    //.Filter([](float EOVerP){return EOverP>0.8},{""});
+
+    std::cout<<*d1sim.Count()<<std::endl;
+    auto h_weight = d0sim.Histo1D({"weight","weight",100,-0.2,0.2},"weight","weight");
+    //auto W_sim_sum = d0sim.Histo1D({"W sim","W sim",100,-1,1},"weight")->Integral();
+    auto W_sim_sum = d0sim.Sum("weight");
+    std::cout<<"runnumber "<<runnumber<<" sim "<<*W_sim_sum<<" data "<<*d0data.Count()<<std::endl;
+    auto yield_sim = *W_sim_sum/sim_charge;
+    std::cout<<"runnumber"<<runnumber<<"sim"<<yield_sim<<"data"<<yield_data_after<<"\n";
+    G_yield_sim->SetPoint(i,runnumber,yield_sim);
+    G_yield_sim->SetPointError(i,0,std::sqrt(*W_sim_sum)/sim_charge);
+
+    G_yield_sim_momentum->SetPoint(i,hms_momentum,yield_sim);
+    G_yield_sim_momentum->SetPointError(i,0,std::sqrt(*W_sim_sum)/sim_charge);
+
+    G_yield_sim_angle->SetPoint(i,hms_angle*180/3.14,yield_sim);
+    G_yield_sim_angle->SetPointError(i,0,std::sqrt(*W_sim_sum)/sim_charge);
+    //auto c = new TCanvas;
+    //h_yield_sim->Draw();
+    //h_Q2_sim->DrawCopy();
+    //std::cout<<h_Q2_sim<<std::endl;
 
     //building histo for simulation
     auto h_Q2_sim = d1sim.Histo1D({"Q2 simulation","Q2 sim",100,7,12},"Q2","weight");
@@ -397,8 +419,8 @@ void modifyelas(){
     //auto h_Q2_sim_without = d1sim_withoutweight.Histo1D({"Q2 simulation","Q2 sim",100,7,12},"Q2");
     //auto h_Q2_sim_without = d1sim_withoutweight.Histo1D({"Q2 simulation","Q2 sim",100,7,12},"Q2");
     //auto h_weight = d1sim_withoutweight.Histo1D({"Weight","Weight",100,0,0.00001},"Weight");
-    auto h_Emiss_sim = d1sim.Histo1D({"Missing energy sim","Missing energy sim",100,-0.2,0.2},"Em","weight");
-    auto h_Pmiss_sim = d1sim.Histo1D({"Missing momentum sim","Missing P sim",100,-0.2,0.2},"Pm","weight");
+    auto h_Emiss_sim = d1sim.Histo1D({"Missing energy sim","Missing energy sim",100,-0.5,0.5},"Em","weight");
+    auto h_Pmiss_sim = d1sim.Histo1D({"Missing momentum sim","Missing P sim",100,-0.5,0.5},"Pm","weight");
     auto h_om_sim = d1sim.Histo1D({"Omega","om d",100,4.0,6.4},"nu","weight");
 
     // -------------------------------------------------------
@@ -408,7 +430,7 @@ void modifyelas(){
     TMultiGraph* mg = nullptr;
 
     c = new TCanvas("c_kine","ckin");
-    c->Divide(2, 3);
+    c->Divide(2, 2);
     c->cd(1);
     hs = new THStack("hs0","Q2; Q2 ");
     hs->Add((TH1D*)h_Q2_data->Clone());
@@ -424,13 +446,14 @@ void modifyelas(){
     //L_Wmax->Draw("same");
 
     c->cd(3);
-    h_Emiss_sim ->DrawCopy("same");
-
+    //hs = new THStack("Emiss","Emiss");
+    //hs->Add((TH1D*)h_Emiss_data->Clone());
+    //hs->Add((TH1D*)h_Emiss_sim->Clone());
+    h_Emiss_data->DrawCopy();
+    h_Emiss_sim->DrawCopy("same");
     c->cd(4);
-    h_Pmiss_sim->DrawCopy("same");
+    h_weight->DrawCopy("");
 
-    c->cd(5);
-    h_om_sim->DrawCopy("same");
 
     c->SaveAs(fmt::format("csvresult/c_kin_{}.pdf",runnumber).c_str());
 
@@ -458,7 +481,7 @@ void modifyelas(){
 
 
     //good track
-    auto h_htarxpd   = d0data.Histo1D({"hms xp_tar", "htarxpd", 100, -0.1, 0.1}, "H.gtr.th");
+    /*auto h_htarxpd   = d0data.Histo1D({"hms xp_tar", "htarxpd", 100, -0.1, 0.1}, "H.gtr.th");
     auto h_htarypd   = d0data.Histo1D({"hms yp_tar", "htarypd", 100, -0.1, 0.1}, "H.gtr.ph");
     auto h_hdeltad   = d0data.Histo1D({"hms dp", "hms dp", 100, -14, 14.0}, "H.gtr.dp");
     auto h_hdeltad_2 = d1data.Histo1D(
@@ -502,6 +525,7 @@ void modifyelas(){
     //h_ptarypd->DrawCopy();
     //h_ptaryps->DrawCopy("same");
     c_gtr->SaveAs(fmt::format("csvresult/c_gtr_{}.pdf",runnumber).c_str());
+    */
     /*
     //focal plane data
     auto h_sx_fp_data = d0data.Histo1D({"shms fp x data","shms fp x data",100,-30,15},"P.dc.x_fp");
@@ -630,7 +654,7 @@ void modifyelas(){
     G_yield_sim->SetMarkerStyle(21);
     */
   mg->Draw("ap");
-  c_yield->BuildLegend(0.7,0.7,0.9,0.9);
+  c_yield->BuildLegend(0.0,0.7,0.2,0.9);
   c_yield->SaveAs("csvresult/c_yield.pdf");
   TCanvas *c_yield_momentum = new TCanvas;
   c_yield_momentum->SetTitle("yield vs. momentum");

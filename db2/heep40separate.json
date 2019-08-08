@@ -7,8 +7,8 @@
       "charge": 136.074,
       "ComputerLT": 0.9999,
       "shmsTE": 0.7756,
-      "hmsTE": 0.3952,
-      "normfac": 0.960894E+09
+      "hmsTE": 0.9872,
+      "normfac": 0.131176E+10
    },
    "7823": {
       "hpcentral": 5.714,
@@ -18,8 +18,8 @@
       "charge": 75.572,
       "ComputerLT": 1,
       "shmsTE": 0.7817,
-      "hmsTE": 0.4058,
-      "normfac": 0.960894E+09
+      "hmsTE": 0.9851,
+      "normfac": 0.728519E+09
    },
    "7826": {
       "hpcentral": 5.714,
@@ -29,8 +29,8 @@
       "charge": 123.243,
       "ComputerLT": 0.9999,
       "shmsTE": 0.8135,
-      "hmsTE": 0.6671,
-      "normfac": 0.870215E+09
+      "hmsTE": 0.9867,
+      "normfac": 0.107340E+10
    },
    "7827": {
       "hpcentral": 5.714,
@@ -40,8 +40,8 @@
       "charge": 92.085,
       "ComputerLT": 0.9999,
       "shmsTE": 0.8111,
-      "hmsTE": 0.6672,
-      "normfac": 0.870215E+09
+      "hmsTE": 0.9867,
+      "normfac": 0.802026E+09
    },
    "7830": {
       "hpcentral": 5.714,
@@ -51,8 +51,8 @@
       "charge": 154.479,
       "ComputerLT": 0.9999,
       "shmsTE": 0.8549,
-      "hmsTE": 0.7949,
-      "normfac": 0.742782E+09
+      "hmsTE": 0.9866,
+      "normfac": 0.115034E+10
    }
    
 }
