@@ -3,8 +3,8 @@ gpbeam = 10.214
 gtargmass = 2.014101
 htheta_lab = 17.65
 ptheta_lab = 19.93
-hpcentral = -5.714
-ppcentral = -3.15
+hpcentral = 5.714
+ppcentral = 3.15
 ppartmass = 0.938272
 hpartmass = 0.0005109
 

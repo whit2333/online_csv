@@ -83,7 +83,7 @@ void replay_production_coin(Int_t RunNumber = 7224, Int_t MaxEvent = 50000) {
 
   // const char* RunFileNamePattern = "raw/coin_all_%05d.dat";
   //const char* ROOTFileNamePattern = "/lcrc/project/jlab/data/hallc/jpsi-007/replay/data/coin_replay_production_%d_%d.root";
-  const char* ROOTFileNamePattern = "/scratch/replay-%d/full/coin_replay_production_%d_%d.root";
+  const char* ROOTFileNamePattern = "ROOTfiles/coin_replay_production_%d_%d.root";
 
   // Load global parameters
   gHcParms->Define("gen_run_number", "Run Number", RunNumber);
