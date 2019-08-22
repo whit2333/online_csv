@@ -1,4 +1,5 @@
 #ifndef ROOT_THcPShowerCalib
+
 #define ROOT_THcPShowerCalib
 
 #include "THcPShTrack.h"
@@ -476,8 +477,8 @@ void THcPShowerCalib::CalcThresholds() {
   TF1 *fit = hEunc->GetFunction("gaus");
   Double_t gmean  = fit->GetParameter(1);
   Double_t gsigma = fit->GetParameter(2);
-  fLoThr = gmean - 1.8*gsigma;
-  fHiThr = gmean + 1.8*gsigma;
+  fLoThr = gmean - 1.3*gsigma;
+  fHiThr = gmean + 2*gsigma;
   cout << "CalcThreshods: fLoThr=" << fLoThr << "  fHiThr=" << fHiThr 
        << "  nev=" << nev << endl;
 
@@ -619,7 +620,8 @@ void THcPShowerCalib::ComposeVMs() {
       if (Enorm>fLoThr && Enorm<fHiThr) {
 
 	trk.SetEs(falpha1);   // Set energies with unit gains for now.
-	// trk.Print(cout);
+//	 std::cout<<"in compose"<<std::endl;
+//         trk.Print(cout);
 
 	fe0 += trk.GetP();    // Accumulate track momenta.
 
@@ -638,7 +640,7 @@ void THcPShowerCalib::ComposeVMs() {
 
 	  fqe[nb-1] += hit->GetEdep() * trk.GetP();
 	  fq0[nb-1] += hit->GetEdep();
-
+          //std::cout<<fq0[nb-1]<<" "<<nb<<std::endl;
 	  // Save the PMT hit.
 
 	  pmt_hit_list.push_back( pmt_hit{hit->GetEdep(), nb} );
@@ -654,7 +656,7 @@ void THcPShowerCalib::ComposeVMs() {
 
 	  UInt_t ic = (*i).channel;
 	  Double_t is = (*i).signal;
-
+        
 	  for (vector<pmt_hit>::iterator j=i;
 	       j < pmt_hit_list.end(); j++) {
 
@@ -662,6 +664,7 @@ void THcPShowerCalib::ComposeVMs() {
 	    Double_t js = (*j).signal;
 
 	    fQ[ic-1][jc-1] += is*js;
+            //std::cout<<"Q "<<ic-1<<" "<<jc-1<<" "<<fQ[ic-1][jc-1]<<std::endl;
 	    if (jc != ic) fQ[jc-1][ic-1] += is*js;
 	  }
 	}
@@ -677,6 +680,7 @@ void THcPShowerCalib::ComposeVMs() {
   // Take averages.
 
   fe0 /= fNev;
+  //std::cout<<"number fNev"<<fNev<<std::endl;
   for (UInt_t i=0; i<THcPShTrack::fNpmts; i++) {
     fqe[i] /= fNev;
     fq0[i] /= fNev;
@@ -775,7 +779,10 @@ void THcPShowerCalib::SolveAlphas() {
     qe[i] = fqe[i];
     for (UInt_t k=0; k<THcPShTrack::fNpmts; k++) {
       Q[i][k] = fQ[i][k];
+   //   if(Q[i][k]!=0.0)
+   //   std::cout<<i<<" "<<k<<" "<<Q[i][k]<<"\n";
     }
+  // std::cout<<std::endl;
   }
 
   // Sanity check.
@@ -792,10 +799,12 @@ void THcPShowerCalib::SolveAlphas() {
 	     << fHitCount[i] << ", q0=" << q0[i] << ", qe=" << qe[i];
 
 	for (UInt_t k=0; k<THcPShTrack::fNpmts; k++) {
-	  if (Q[i][k] !=0. || Q[k][i] !=0.)
-	    cout << ", Q[" << i << "," << k << "]=" << Q[i][k]
-		 << ", Q[" << k << "," << i << "]=" << Q[k][i];
-	}
+		if ((Q[i][k] !=0.) || (Q[k][i] !=0.))
+		{
+			cout << ", Q[" << i << "," << k << "]=" << Q[i][k]
+				<< ", Q[" << k << "," << i << "]=" << Q[k][i];
+		}
+}
 
 	cout << " ***" << endl;
       }
@@ -849,24 +858,24 @@ void THcPShowerCalib::SolveAlphas() {
 
   au = lu.Solve(qe,ok);
   cout << "au: ok=" << ok << endl;
-  //  au.Print();
+    au.Print();
 
   // Find the sought 'constrained' calibration constants next.
 
   Double_t t1 = fe0 - au * q0;         // temporary variable.
-  //  cout << "t1 =" << t1 << endl;
+    cout << "t1 =" << t1 << endl;
 
   TVectorD Qiq0(THcPShTrack::fNpmts);   // an intermittent result
   Qiq0 = lu.Solve(q0,ok);
   cout << "Qiq0: ok=" << ok << endl;
-  //  Qiq0.Print();
+    Qiq0.Print();
 
   Double_t t2 = q0 * Qiq0;             // another temporary variable
-  //  cout << "t2 =" << t2 << endl;
+    cout << "t2 =" << t2 << endl;
 
   ac = (t1/t2) *Qiq0 + au;             // the sought gain constants
   // cout << "ac:" << endl;
-  //  ac.Print();
+    ac.Print();
 
   // Assign the gain arrays.
 

@@ -7,6 +7,7 @@
 500	Binning of uncalibrated energy deposition histogram
 1.0 1.8	Gaussian fit range around e- peak in the uncalibrated Edep histogram
 
+
 ; Calibration constants for run 1791_300000, 38067 events processed (dec. 17 defocused run)
 
 pcal_neg_gain_cor = 31.20, 28.28, 28.19, 29.18, 31.57, 27.67, 30.21, 32.54, 31.59, 28.61, 30.12, 28.67, 35.35,  0.00,
