@@ -186,7 +186,6 @@ Double_t THcPShTrack::Enorm() {
   for (THcPShHitIt iter = Hits.begin(); iter != Hits.end(); iter++) {
     sum += (*iter)->GetEdep();
   };
-
   return sum/P/1000.;         //Momentum in MeV.
 }
 
@@ -202,7 +201,6 @@ Double_t THcPShTrack::EPRnorm() {
     if ((*iter)->GetBlkNumber() <= fNpmts_pr)
       sum += (*iter)->GetEdep();
   };
-
   return sum/P/1000.;         //Momentum in MeV.
 }
 
@@ -218,7 +216,6 @@ Double_t THcPShTrack::ESHnorm() {
     if ((*iter)->GetBlkNumber() > fNpmts_pr)
       sum += (*iter)->GetEdep();
   };
-
   return sum/P/1000.;         //Momentum in MeV.
 }
 

@@ -477,7 +477,7 @@ void THcPShowerCalib::CalcThresholds() {
   TF1 *fit = hEunc->GetFunction("gaus");
   Double_t gmean  = fit->GetParameter(1);
   Double_t gsigma = fit->GetParameter(2);
-  fLoThr = gmean - 1.3*gsigma;
+  fLoThr = gmean - 0.5*gsigma;
   fHiThr = gmean + 2*gsigma;
   cout << "CalcThreshods: fLoThr=" << fLoThr << "  fHiThr=" << fHiThr 
        << "  nev=" << nev << endl;
@@ -779,10 +779,11 @@ void THcPShowerCalib::SolveAlphas() {
     qe[i] = fqe[i];
     for (UInt_t k=0; k<THcPShTrack::fNpmts; k++) {
       Q[i][k] = fQ[i][k];
-   //   if(Q[i][k]!=0.0)
-   //   std::cout<<i<<" "<<k<<" "<<Q[i][k]<<"\n";
     }
   // std::cout<<std::endl;
+      if(Q[i][i]!=0)
+      std::cout<<i<<" "<<Q[i][i]<<"\n";
+   
   }
 
   // Sanity check.
@@ -858,7 +859,7 @@ void THcPShowerCalib::SolveAlphas() {
 
   au = lu.Solve(qe,ok);
   cout << "au: ok=" << ok << endl;
-    au.Print();
+  //  au.Print();
 
   // Find the sought 'constrained' calibration constants next.
 
@@ -868,14 +869,14 @@ void THcPShowerCalib::SolveAlphas() {
   TVectorD Qiq0(THcPShTrack::fNpmts);   // an intermittent result
   Qiq0 = lu.Solve(q0,ok);
   cout << "Qiq0: ok=" << ok << endl;
-    Qiq0.Print();
+//    Qiq0.Print();
 
   Double_t t2 = q0 * Qiq0;             // another temporary variable
     cout << "t2 =" << t2 << endl;
 
   ac = (t1/t2) *Qiq0 + au;             // the sought gain constants
   // cout << "ac:" << endl;
-    ac.Print();
+  //  ac.Print();
 
   // Assign the gain arrays.
 
