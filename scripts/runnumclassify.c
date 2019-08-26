@@ -68,10 +68,10 @@ void runnumclassify(){
   std::map<run_key,vector<int>> mymap;
   for(json::iterator it = j.begin(); it!= j.end(); ++it){
     if(std::stoi(it.key())>=6009 && std::stoi(it.key())<= 6532){
-      runskey.hms_p() = it.value()["spectrometers"]["hms_momentum"];
-      runskey.hms_th() = it.value()["spectrometers"]["hms_angle"];
-      runskey.shms_p() = it.value()["spectrometers"]["shms_momentum"];
-      runskey.shms_th() = it.value()["spectrometers"]["shms_angle"];
+      runskey.hms_p() = it.value()["spectrometers"]["hms_momentum"].get<double>();
+      runskey.hms_th() = it.value()["spectrometers"]["hms_angle"].get<double>();
+      runskey.shms_p() = it.value()["spectrometers"]["shms_momentum"].get<double>();
+      runskey.shms_th() = it.value()["spectrometers"]["shms_angle"].get<double>();
       //mymap.insert(std::make_pair<run_key,int>(runskey,std::stoi(it.key())));
       //std::cout << "pre: " << setw(5) << mymap.size() << std::endl;//<< setw(5) << mymap.at(runskey).size() << endl;
       mymap[runskey].push_back(std::stoi(it.key()));
