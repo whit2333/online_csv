@@ -142,7 +142,6 @@ void runnumclassify1(){
     int targetid = runkey.shms_th();
     int shmsp = runkey.shms_p();
     std::string ii = std::to_string(i);
-    //json jout;
     jout[ii]["hms_p"]=runkey.hms_p();
     jout[ii]["shms_p"]=runkey.shms_p();
     //jout[ii]["targetid"]=runkey.shms_th();
@@ -229,13 +228,7 @@ void runnumclassify1(){
     jout[ii]["pos"]["H2"]=runs_pos_2;
     jout[ii]["pos"]["D2"]=runs_pos_3;
     jout[ii]["pos"]["Dummy"]=runs_pos_5;
-    //if(shmsp>0){
-    //  if(targetid==2)
-    //  { 
-    //    std::vector<int> runs2;
-    //    for(auto ik = it->second.begin();ik!= it->second.end();++ik){
-    //      outfile<<*ik<<" ";
-    //      int runnum = *ik;
+    out<<jout<<std::endl;
     //      runs.push_back(*ik);
     //      nn++;
     //      runs2.push_back(*ik);
@@ -310,33 +303,7 @@ void runnumclassify1(){
     //      out<<jout<<std::endl;
     //    }
     //  }
-    //}
-   i++;
    outfile<<"\n";
-   // string _hms_cal_spring = "csvspringcalib/hms_cal/pcal.param.coin_replay_production_";
-   // string _shms_cal_spring = "csvspringcalib/shms_cal/pcal.param.coin_replay_production_";
-   // string _shms_cal_fall = "csvfallcalib/shms_cal/pcal.param.coin_replay_production_";
-   // for(auto ik = it->second.begin();ik!= it->second.end();++ik){
-   //   string name_hms_cal_spring = _hms_cal_spring+std::to_string(*ik)+"_-1_0_-1";
-   //  // std::cout<<name_hms_cal_spring<<std::endl;
-   //   std::ifstream infile_hms_cal_spring;
-   //   infile_hms_cal_spring.open(name_hms_cal_spring);
-   //   if(infile_hms_cal_spring.good()){outfile<<"#include \"PARAM/HMS/CAL/pcal.param.coin_replay_production_"<<std::to_string(*ik)<<"_-1_0_-1"<<"\""<<"\n";}
-   //   string name_shms_cal_spring = _shms_cal_spring+std::to_string(*ik)+"_-1_0_-1";
-   // //  std::cout<<name_shms_cal_spring<<std::endl;
-   //   std::ifstream infile_shms_cal_spring;
-   //   infile_shms_cal_spring.open(name_shms_cal_spring);
-   //   if(infile_shms_cal_spring.good()){
-   //     std::cout<<name_shms_cal_spring<<std::endl;
-   //     outfile<<"#include \"PARAM/SHMS/CAL/pcal.param.coin_replay_production_"<<std::to_string(*ik)<<"_-1_0_-1"<<"\""<<"\n";}
-   //   string name_shms_cal_fall = _shms_cal_fall+std::to_string(*ik)+"_-1_0_-1";
-   //   //std::cout<<name_shms_cal_fall<<std::endl;
-   //   std::ifstream infile_shms_cal_fall;
-   //   infile_shms_cal_fall.open(name_shms_cal_fall);
-   //   if(infile_shms_cal_fall.good()){outfile<<"#include \"PARAM/SHMS/CAL/pcal.param.coin_replay_production_"<<std::to_string(*ik)<<"_-1_0_-1"<<"\""<<"\n";}
-   //   
-   // }  
-   // outfile<<"\n";  
   }
     out<<jout.dump(4)<<std::endl;
   

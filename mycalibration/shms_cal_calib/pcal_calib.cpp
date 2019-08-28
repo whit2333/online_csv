@@ -56,7 +56,7 @@ void pcal_calib(string Prefix, int nstop=-1, int nstart=0) {
   Double_t gsigma = fit->GetParameter(2);
   double gLoThr = gmean - 2.*gsigma;
   double gHiThr = gmean + 2.*gsigma;
-  cout << "gLoThr=" << gLoThr << "  gHiThr=" << gHiThr << endl;
+  cout << "after calib gLoThr=" << gLoThr << "  gHiThr=" << gHiThr << endl;
   theShowerCalib.hEcal->Fit("gaus","","",gLoThr,gHiThr);
 
   theShowerCalib.hEcal->GetFunction("gaus")->SetLineColor(2);
@@ -69,11 +69,11 @@ void pcal_calib(string Prefix, int nstop=-1, int nstart=0) {
   theShowerCalib.hDPvsEcal->Draw("colz");
 
   // Save canvas in a pdf format.
-  Canvas->Print(Form("%s_%d_%d.pdf",Prefix.c_str(),nstart,nstop));
+  Canvas->Print(Form("Calib/%s_%d_%d.pdf",Prefix.c_str(),nstart,nstop));
 
   // Save histograms in root file.
 
-  TFile* froot=new TFile(Form("%s_%d_%d.root",Prefix.c_str(),nstart,nstop),
+  TFile* froot=new TFile(Form("Calib/%s_%d_%d.root",Prefix.c_str(),nstart,nstop),
 			 "RECREATE");
   theShowerCalib.hEunc->Write();
   theShowerCalib.hEuncSel->Write();

@@ -1,5 +1,5 @@
 void rootlogon() {
-  gSystem->SetBuildDir("$HOME/.root_build_dir");
+  gSystem->SetBuildDir("$HOME/.root_build_dir/tmp");
   //gPrintViaErrorHandler = kTRUE;
   //gErrorIgnoreLevel = kWarning;
   gROOT->SetStyle("Plain");
