@@ -19,7 +19,9 @@ echo "================================"
 cd ${REPLAYDIR}
 mkdir -p $TMPDIR/full
 mkdir -p $TMPDIR/logs
-hcana -q -b "jlabana/grepcurrent_to_json.c+($RUN)" || exit $?
+mkdir -p values
+strings -n 8 raw/coin_all_0${RUN}.dat > values/strings_${RUN}.txt
+#hcana -q -b "scripts/grep_current_to_json.cxx+($RUN)" || exit $?
 rsync -va $TMPDIR/full/* $ODIR/full
 mkdir -p $ODIR/log/log-$RUN
 rsync -va $TMPDIR/logs/* $ODIR/log/log-$RUN

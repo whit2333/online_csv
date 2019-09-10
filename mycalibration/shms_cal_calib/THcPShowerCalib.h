@@ -640,8 +640,9 @@ void THcPShowerCalib::ComposeVMs() {
 
 	  fqe[nb-1] += hit->GetEdep() * trk.GetP();
 	  fq0[nb-1] += hit->GetEdep();
-          //std::cout<<fq0[nb-1]<<" "<<nb<<std::endl;
-	  // Save the PMT hit.
+          //std::cout<<fq0[nb-1]<<" "<<nb<<" "<<fqe[nb-1]<<std::endl;
+         // std::cout<<fqe[nb-1]<<" "<<nb<<std::endl;
+          // Save the PMT hit.
 
 	  pmt_hit_list.push_back( pmt_hit{hit->GetEdep(), nb} );
 
@@ -691,7 +692,7 @@ void THcPShowerCalib::ComposeVMs() {
       fQ[i][j] /= fNev;
 
   // Output vectors and matrixes, for debug purposes.
-  /*
+  
   ofstream q0out;
   q0out.open("q0.deb",ios::out);
   for (UInt_t i=0; i<THcPShTrack::fNpmts; i++)
@@ -731,7 +732,7 @@ void THcPShowerCalib::ComposeVMs() {
     sout << sig << " " << err << " " << nhit << " " << i << endl;
   }
   sout.close();
-  */
+  
 };
 
 //------------------------------------------------------------------------------
@@ -859,7 +860,7 @@ void THcPShowerCalib::SolveAlphas() {
 
   au = lu.Solve(qe,ok);
   cout << "au: ok=" << ok << endl;
-  //  au.Print();
+    au.Print();
 
   // Find the sought 'constrained' calibration constants next.
 
