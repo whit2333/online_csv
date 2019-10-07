@@ -29,7 +29,7 @@ void get_run_number(int run_group = 0, int polarity = 0,int target = 0){
 
   json j;
   {
-    std::ifstream infile("results/ratio_run_group_updated.json");
+    std::ifstream infile("db2/ratio_run_group_updated.json");
     infile>>j;
   }
 

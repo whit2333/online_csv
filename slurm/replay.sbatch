@@ -37,4 +37,4 @@ parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog ${JOBLOG} --tmpdir ${TM
 
 # Run the script, coin_replay.sh, using GNU parallel and srun. Parallel
 # will run the runtask script for the numbers 1 through $SLURM_NTASKS 
-$parallel "$srun ./coin_replay.sh {1} &> $LOGDIR/coin_replay.sh.{1}" ::: {7594..7835}
+$parallel "$srun ./coin_replay.sh {1} &> $LOGDIR/coin_replay.sh.{1}" ::: {6009..6500}
