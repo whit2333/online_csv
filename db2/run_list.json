@@ -8424,8 +8424,8 @@
     }, 
     "start_time": "13:55:05 11/09/18 EST", 
     "target": {
-      "target_id": 5, 
-      "target_label": "DUMMY", 
+      "target_id": 3, 
+      "target_label": "LD2", 
       "target_name": "Loop 3 10cm"
     }, 
     "total_charge": 107889.93198235655
@@ -8818,9 +8818,9 @@
     }, 
     "start_time": "20:07:12 11/09/18 EST", 
     "target": {
-      "target_id": 2, 
-      "target_label": "LH2", 
-      "target_name": null
+      "target_id": 3, 
+      "target_label": "LD2", 
+      "target_name": "Loop 3 10cm"
     }, 
     "total_charge": 12379.242746571195
   }, 
@@ -9168,7 +9168,7 @@
       "hms_angle": 16.63, 
       "hms_momentum": -4.508, 
       "shms_angle": 11.610000000000001, 
-      "shms_momentum": -3.043
+      "shms_momentum": -3.653
     }, 
     "start_time": "21:15:21 11/09/18 EST", 
     "target": {

@@ -54,7 +54,7 @@ void pcal_calib(string Prefix, int nstop=-1, int nstart=0) {
   TF1 *fit = theShowerCalib.hEcal->GetFunction("gaus");
   Double_t gmean  = fit->GetParameter(1);
   Double_t gsigma = fit->GetParameter(2);
-  double gLoThr = gmean - 2.*gsigma;
+  double gLoThr = gmean - 0.5*gsigma;
   double gHiThr = gmean + 2.*gsigma;
   cout << "after calib gLoThr=" << gLoThr << "  gHiThr=" << gHiThr << endl;
   theShowerCalib.hEcal->Fit("gaus","","",gLoThr,gHiThr);
