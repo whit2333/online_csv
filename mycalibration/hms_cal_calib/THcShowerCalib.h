@@ -837,7 +837,7 @@ void THcShowerCalib::FillHEcal() {
 
       hETAvsEPR->Fill(trk.EPRnorm(), trk.ETAnorm());
 
-      output << Enorm*P/1000. << " " << P/1000. << " " << delta << " "
+      output << Enorm << " " <<Enorm*P/1000. << " " << P/1000. << " " << delta << " "
       	     << trk.GetX() << " " << trk.GetY() << endl;
 
       nev++;

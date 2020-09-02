@@ -1,0 +1,1080 @@
+{
+    "100.000000": {
+        "neg": {
+            "D2": {
+                "charge": 93.22200000000001,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 125.53900000000002,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "110.000000": {
+        "neg": {
+            "D2": {
+                "charge": 75.92099999999999,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 49.833,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "120.000000": {
+        "neg": {
+            "D2": {
+                "charge": 89.37899999999999,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 67.99199999999999,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "130.000000": {
+        "neg": {
+            "D2": {
+                "charge": 155.776,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 64.273,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "140.000000": {
+        "neg": {
+            "D2": {
+                "charge": 132.017,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 71.86699999999999,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "150.000000": {
+        "neg": {
+            "D2": {
+                "charge": 191.22199999999998,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 110.774,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "160.000000": {
+        "neg": {
+            "D2": {
+                "charge": 200.45999999999998,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 110.452,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "170.000000": {
+        "neg": {
+            "D2": {
+                "charge": 264.913,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 150.751,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "180.000000": {
+        "neg": {
+            "D2": {
+                "charge": 228.325,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 140.248,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "190.000000": {
+        "neg": {
+            "D2": {
+                "charge": 190.918,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 128.662,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "200.000000": {
+        "neg": {
+            "D2": {
+                "charge": 187.56,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 117.21000000000001,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "210.000000": {
+        "neg": {
+            "D2": {
+                "charge": 307.846,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 155.606,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "220.000000": {
+        "neg": {
+            "D2": {
+                "charge": 257.683,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 209.69599999999997,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "230.000000": {
+        "neg": {
+            "D2": {
+                "charge": 248.82,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 353.52,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "240.000000": {
+        "neg": {
+            "D2": {
+                "charge": 243.27100000000002,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 170.582,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "250.000000": {
+        "neg": {
+            "D2": {
+                "charge": 316.138,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 200.858,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "260.000000": {
+        "neg": {
+            "D2": {
+                "charge": 289.704,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 216.428,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "270.000000": {
+        "neg": {
+            "D2": {
+                "charge": 224.89499999999998,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 244.142,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "280.000000": {
+        "neg": {
+            "D2": {
+                "charge": 468.04099999999994,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 272.973,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "290.000000": {
+        "neg": {
+            "D2": {
+                "charge": 290.42,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 164.82999999999998,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "300.000000": {
+        "neg": {
+            "D2": {
+                "charge": 284.598,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 184.294,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "320.000000": {
+        "neg": {
+            "D2": {
+                "charge": 104.754,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 74.618,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "330.000000": {
+        "neg": {
+            "D2": {
+                "charge": 87.464,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 113.46,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "340.000000": {
+        "neg": {
+            "D2": {
+                "charge": 164.60500000000002,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 73.514,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "350.000000": {
+        "neg": {
+            "D2": {
+                "charge": 168.05899999999997,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 92.307,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "360.000000": {
+        "neg": {
+            "D2": {
+                "charge": 370.636,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 200.589,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "370.000000": {
+        "neg": {
+            "D2": {
+                "charge": 396.613,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 212.873,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "380.000000": {
+        "neg": {
+            "D2": {
+                "charge": 109.872,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 61.924,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "390.000000": {
+        "neg": {
+            "D2": {
+                "charge": 108.606,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 55.816,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "400.000000": {
+        "neg": {
+            "D2": {
+                "charge": 120.434,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 75.789,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "420.000000": {
+        "neg": {
+            "D2": {
+                "charge": 557.302,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 200.29299999999998,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "430.000000": {
+        "neg": {
+            "D2": {
+                "charge": 476.518,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 266.06600000000003,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "440.000000": {
+        "neg": {
+            "D2": {
+                "charge": 861.9599999999998,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 496.3380000000001,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "450.000000": {
+        "neg": {
+            "D2": {
+                "charge": 1085.933,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 330.908,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "460.000000": {
+        "neg": {
+            "D2": {
+                "charge": 333.733,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 228.11200000000002,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "470.000000": {
+        "neg": {
+            "D2": {
+                "charge": 425.536,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 263.887,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "480.000000": {
+        "neg": {
+            "D2": {
+                "charge": 402.81100000000004,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 233.59300000000002,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "490": {
+        "neg": {
+            "D2": {
+                "charge": 104.158,
+                "coinlive": 1,
+                "factor": 8,
+                "hmsTE": 0.8589,
+                "normfac": 23065800000.0,
+                "shmsTE": 0.99
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 111.502,
+                "coinlive": 1,
+                "factor": 21,
+                "hmsTE": 0.8589,
+                "normfac": 23042700000.0,
+                "shmsTE": 0.99
+            }
+        }
+    },
+    "490.000000": {
+        "neg": {
+            "D2": {
+                "charge": 104.158,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 111.502,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "500": {
+        "neg": {
+            "D2": {
+                "charge": 337.199,
+                "coinlive": 1,
+                "factor": 2,
+                "hmsTE": 0.9989,
+                "normfac": 76548900000.0,
+                "shmsTE": 0.99
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 173.452,
+                "coinlive": 1,
+                "factor": 4,
+                "hmsTE": 0.9989,
+                "normfac": 76548900000.0,
+                "shmsTE": 0.971
+            }
+        }
+    },
+    "500.000000": {
+        "neg": {
+            "D2": {
+                "charge": 337.19899999999996,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 176.638,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "510.000000": {
+        "neg": {
+            "D2": {
+                "charge": 503.835,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 242.471,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "520.000000": {
+        "neg": {
+            "D2": {
+                "charge": 461.976,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 270.89599999999996,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "530.000000": {
+        "neg": {
+            "D2": {
+                "charge": 300.883,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 169.059,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "540.000000": {
+        "neg": {
+            "D2": {
+                "charge": 387.71000000000004,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 172.16500000000002,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "550.000000": {
+        "neg": {
+            "D2": {
+                "charge": 283.382,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 171.286,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "70.000000": {
+        "neg": {
+            "D2": {
+                "charge": 131.215,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 198.32999999999998,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "80.000000": {
+        "neg": {
+            "D2": {
+                "charge": 121.482,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 95.15,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    },
+    "90.000000": {
+        "neg": {
+            "D2": {
+                "charge": 111.893,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        },
+        "pos": {
+            "D2": {
+                "charge": 62.112,
+                "coinlive": 1,
+                "factor": 1,
+                "hmsTE": 1,
+                "normfac": 1,
+                "shmsTE": 1
+            }
+        }
+    }
+}

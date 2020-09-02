@@ -314,18 +314,20 @@ void replay_production_coin(Int_t RunNumber = 7224, Int_t MaxEvent = 50000) {
   analyzer->SetOutFile(ROOTFileName.Data());
   // Define DEF-file+
   // analyzer->SetOdefFile("UTIL_SIDIS/DEF-files/coin_production_sidis.def");
-  analyzer->SetOdefFile("DEF-files/COIN/PRODUCTION/coin_production_hElec_pPion_csv.def");
+  //analyzer->SetOdefFile("DEF-files/COIN/PRODUCTION/coin_production_hElec_pPion_csv.def"); //most skimed
+  analyzer->SetOdefFile("DEF-files/COIN/PRODUCTION/coin_production_hElec_pPion.def");  //for tracking efficiency
+  //analyzer->SetOdefFile("DEF-files/COIN/PRODUCTION/coin_production_ep.def");  //everything
   // Define cuts file
   // analyzer->SetCutFile("UTIL_SIDIS/DEF-files/coin_production_sidis_cuts.def");  // optional
   analyzer->SetCutFile("DEF-files/COIN/PRODUCTION/CUTS/coin_production_cuts.def"); // optional
   // File to record accounting information for cuts
-  analyzer->SetSummaryFile(Form("/lcrc/project/jlab/data/hallc/jpsi-007/replay/report/COIN/summary_production_%d_%d.report",
+  analyzer->SetSummaryFile(Form("/lcrc/project/jlab/data/hallc/csv/replay/report/COIN/summary_production_%d_%d.report",
                                 RunNumber, MaxEvent)); // optional
   // Start the actual analysis.
   analyzer->Process(run);
   // Create report file from template
   analyzer->PrintReport("TEMPLATES/COIN/PRODUCTION/coin_production.template",
-                        Form("/lcrc/project/jlab/data/hallc/jpsi-007/replay/report/COIN/replay_coin_production_%d_%d.report",
+                        Form("/lcrc/project/jlab/data/hallc/csv/replay/report/COIN/replay_coin_production_%d_%d.report",
                              RunNumber, MaxEvent)); // optional
 
   //ddisplay->CreateDisplayPlot(
