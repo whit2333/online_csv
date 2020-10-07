@@ -680,10 +680,10 @@
       }
     }, 
     "spectrometers": {
-      "hms_angle": 21.29, 
+      "hms_angle": 18.56, 
       "hms_momentum": -6.358, 
-      "shms_angle": 23.39, 
-      "shms_momentum": 5.471
+      "shms_angle": 26.445, 
+      "shms_momentum": 4.768
     }, 
     "start_time": "18:10:14 11/07/18 EST", 
     "target": {
