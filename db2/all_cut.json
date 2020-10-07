@@ -1,0 +1,23 @@
+{
+    "H_cal_high": 2.0,
+    "H_cal_low": 0.85,
+    "H_cer": 10,
+    "H_dp_high": 10,
+    "H_dp_low": -10,
+    "P_aero": 2,
+    "P_hgcer": 2,
+    "P_cal_pi_high": 0.85,
+    "P_cal_pi_low": 0.05,
+    "P_dp_high": 22,
+    "P_dp_low": -10,
+    "cointime_high_fall": 2.504,
+    "cointime_low_fall": -2.504,
+    "cointime_high_spring": 1.504,
+    "cointime_low_spring": -1.504,
+    "rf_pi_high": 1.5,
+    "rf_pi_low": 0.5,
+    "random_bg_left_low": -7,
+    "random_bg_left_high": -1,
+    "random_bg_right_low": 3,
+    "random_bg_right_high": 9
+}

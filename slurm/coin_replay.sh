@@ -2,7 +2,7 @@
 
 module load singularity
 module use /lcrc/project/jlab/local/etc/modulefiles
-module load hallac_container/1.1.0
+module load hallac_container/1.9.1
 
 RUN=$1
 
