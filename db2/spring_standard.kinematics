@@ -2279,7 +2279,7 @@ ppartmass = 0.938272
 hpartmass = 0.0005109
 
 7822
-gpbeam = 10.214
+gpbeam = 10.205
 gtargmass = 1.00794
 htheta_lab = -23.22
 ptheta_lab = 22.25
@@ -2289,7 +2289,7 @@ ppartmass = 0.938272
 hpartmass = 0.0005109
 
 7823
-gpbeam = 10.214
+gpbeam = 10.205
 gtargmass = 1.00794
 htheta_lab = -23.22
 ptheta_lab = 22.25
@@ -2299,7 +2299,7 @@ ppartmass = 0.938272
 hpartmass = 0.0005109
 
 7824
-gpbeam = 10.214
+gpbeam = 10.205
 gtargmass = 26.92
 htheta_lab = -23.22
 ptheta_lab = 22.25
@@ -2309,7 +2309,7 @@ ppartmass = 0.938272
 hpartmass = 0.0005109
 
 7825
-gpbeam = 10.214
+gpbeam = 10.205
 gtargmass = 1.00794
 htheta_lab = -21.932
 ptheta_lab = 23.46
@@ -2319,7 +2319,7 @@ ppartmass = 0.938272
 hpartmass = 0.0005109
 
 7826
-gpbeam = 10.214
+gpbeam = 10.205
 gtargmass = 1.00794
 htheta_lab = -21.93
 ptheta_lab = 23.45
@@ -2329,7 +2329,7 @@ ppartmass = 0.938272
 hpartmass = 0.0005109
 
 7827
-gpbeam = 10.214
+gpbeam = 10.205
 gtargmass = 1.00794
 htheta_lab = -21.93
 ptheta_lab = 23.45
@@ -2339,7 +2339,7 @@ ppartmass = 0.938272
 hpartmass = 0.0005109
 
 7828
-gpbeam = 10.214
+gpbeam = 10.205
 gtargmass = 26.92
 htheta_lab = -21.93
 ptheta_lab = 23.45
@@ -2349,7 +2349,7 @@ ppartmass = 0.938272
 hpartmass = 0.0005109
 
 7829
-gpbeam = 10.214
+gpbeam = 10.205
 gtargmass = 26.92
 htheta_lab = -20.71
 ptheta_lab = 24.71
@@ -2359,7 +2359,7 @@ ppartmass = 0.938272
 hpartmass = 0.0005109
 
 7830
-gpbeam = 10.214
+gpbeam = 10.205
 gtargmass = 1.00794
 htheta_lab = -20.71
 ptheta_lab = 24.71

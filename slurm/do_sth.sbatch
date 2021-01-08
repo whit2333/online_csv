@@ -37,5 +37,5 @@ parallel="parallel --delay 0.2 -j $SLURM_NTASKS --joblog ${JOBLOG}"
 
 # Run the script, using GNU parallel and srun. Parallel
 # will run the runtask script for the numbers 1 through $SLURM_NTASKS 
-$parallel "$srun ./do_sth2.sh {1} &> $LOGDIR/do_sth2.sh.{1}" ::: {1..58}
+$parallel "$srun ./do_sth.sh {1} &> $LOGDIR/do_sth.sh.{1}" ::: {1..58}
 #$parallel "$srun ./do_sth2.sh {1} &> $LOGDIR/do_sth2.sh.{1}" ::: {33..42}
