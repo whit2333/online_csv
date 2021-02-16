@@ -680,10 +680,10 @@
       }
     }, 
     "spectrometers": {
-      "hms_angle": 21.29, 
+      "hms_angle": 18.56, 
       "hms_momentum": -6.358, 
-      "shms_angle": 23.39, 
-      "shms_momentum": 5.471
+      "shms_angle": 26.445, 
+      "shms_momentum": 4.768
     }, 
     "start_time": "18:10:14 11/07/18 EST", 
     "target": {
@@ -8424,8 +8424,8 @@
     }, 
     "start_time": "13:55:05 11/09/18 EST", 
     "target": {
-      "target_id": 5, 
-      "target_label": "DUMMY", 
+      "target_id": 3, 
+      "target_label": "LD2", 
       "target_name": "Loop 3 10cm"
     }, 
     "total_charge": 107889.93198235655
@@ -8818,9 +8818,9 @@
     }, 
     "start_time": "20:07:12 11/09/18 EST", 
     "target": {
-      "target_id": 2, 
-      "target_label": "LH2", 
-      "target_name": null
+      "target_id": 3, 
+      "target_label": "LD2", 
+      "target_name": "Loop 3 10cm"
     }, 
     "total_charge": 12379.242746571195
   }, 
@@ -9168,7 +9168,7 @@
       "hms_angle": 16.63, 
       "hms_momentum": -4.508, 
       "shms_angle": 11.610000000000001, 
-      "shms_momentum": -3.043
+      "shms_momentum": -3.653
     }, 
     "start_time": "21:15:21 11/09/18 EST", 
     "target": {
@@ -31304,7 +31304,7 @@
       "hms_angle": 17.26, 
       "hms_momentum": -4.973, 
       "shms_angle": 14.159, 
-      "shms_momentum": -2.246
+      "shms_momentum": -2.810
     }, 
     "start_time": "17:03:41 11/16/18 EST", 
     "target": {
@@ -63492,7 +63492,7 @@
       "hms_angle": 15.38, 
       "hms_momentum": -5.27, 
       "shms_angle": 14.209000000000001, 
-      "shms_momentum": 3.195
+      "shms_momentum": 3.729
     }, 
     "start_time": "17:59:48 11/25/18 EST", 
     "target": {

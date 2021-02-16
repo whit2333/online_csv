@@ -2,26 +2,55 @@
 #include <fmt/ostream.h>
 R__LOAD_LIBRARY(libfmt.so)
 
+#include <chrono>
+#include <iostream>
+
+using namespace std;
+
+#include "spdlog/spdlog.h"
 
 //#include "THaPostProcess.h"
 //
 R__LOAD_LIBRARY(libHallC.so)
 #include "hcana/HallC_Data.h"
 //
-R__LOAD_LIBRARY(libScandalizer.so)
+//R__LOAD_LIBRARY(libScandalizer.so)
 //#include "monitor/DetectorDisplay.h"
 //#include "monitor/DisplayPlots.h"
 //#include "monitor/MonitoringDisplay.h"
-#include "scandalizer/PostProcessors.h"
-#include "scandalizer/ScriptHelpers.h"
+//#include "scandalizer/PostProcessors.h"
+//#include "scandalizer/ScriptHelpers.h"
 //
 //#include "THaPostProcess.h"
 //#include "monitor/ExperimentMonitor.h"
 //#include "scandalizer/PostProcessors.h"
-
+#include "THcAnalyzer.h"
+#include "THaCut.h"
+#include "THcGlobals.h"
+#include "THcHallCSpectrometer.h"
+#include "THcDetectorMap.h"
+#include "THcCherenkov.h"
+#include "THcDC.h"
+#include "THcHodoscope.h"
+#include "THcParmList.h"
+#include "THaGoldenTrack.h"
+#include "THcHodoEff.h"
+#include "THcScalerEvtHandler.h"
+#include "THcShower.h"
+#include "THaReactionPoint.h"
+#include "THcExtTarCor.h"
+#include "THcRasteredBeam.h"
+#include "THcRun.h"
+#include "THcCoinTime.h"
+#include "THcConfigEvtHandler.h"
+#include "THcTrigDet.h"
+#include "THcTrigApp.h"
+#include "THcSecondaryKine.h"
+#include "THcAerogel.h"
+#include "THcPrimaryKine.h"
 void replay_production_coin(Int_t RunNumber = 7224, Int_t MaxEvent = 50000) {
 
-  hallc::helper::script_requires_hcana();
+  //hallc::helper::script_requires_hcana();
 
   spdlog::set_level(spdlog::level::trace);
   spdlog::flush_every(std::chrono::seconds(5));
@@ -38,7 +67,7 @@ void replay_production_coin(Int_t RunNumber = 7224, Int_t MaxEvent = 50000) {
     cin >> MaxEvent;
     if (MaxEvent == 0) {
       cerr << "...Invalid entry\n";
-      exit;
+      throw 0;
     }
   }
 
@@ -46,14 +75,14 @@ void replay_production_coin(Int_t RunNumber = 7224, Int_t MaxEvent = 50000) {
   const char*     RunFileNamePattern = "coin_all_%05d.dat";
   vector<TString> pathList;
   pathList.push_back(".");
-  pathList.push_back("./raw_coda");
+  pathList.push_back("./DATA/raw");
   pathList.push_back("./raw");
-  pathList.push_back("./raw_jpsi");
   pathList.push_back("./raw.copiedtotape");
   pathList.push_back("./raw/../raw.copiedtotape");
   pathList.push_back("./cache");
 
   // const char* RunFileNamePattern = "raw/coin_all_%05d.dat";
+  //const char* ROOTFileNamePattern = "/lcrc/project/jlab/data/hallc/jpsi-007/replay/data/coin_replay_production_%d_%d.root";
   const char* ROOTFileNamePattern = "ROOTfiles/coin_replay_production_%d_%d.root";
 
   // Load global parameters
@@ -254,7 +283,7 @@ void replay_production_coin(Int_t RunNumber = 7224, Int_t MaxEvent = 50000) {
   run->Print();
 
   // Define the analysis parameters
-  TString ROOTFileName = Form(ROOTFileNamePattern, RunNumber, MaxEvent);
+  TString ROOTFileName = Form(ROOTFileNamePattern, RunNumber, RunNumber, MaxEvent);
   analyzer->SetCountMode(2); // 0 = counter is # of physics triggers
                              // 1 = counter is # of all decode reads
                              // 2 = counter is event number
@@ -284,20 +313,21 @@ void replay_production_coin(Int_t RunNumber = 7224, Int_t MaxEvent = 50000) {
   // Define output ROOT file
   analyzer->SetOutFile(ROOTFileName.Data());
   // Define DEF-file+
-  //analyzer->SetOdefFile("UTIL_SIDIS/DEF-files/coin_production_sidis.def");
-  //analyzer->SetOdefFile("DEF-files/COIN/PRODUCTION/coin_production_hElec_pProt.def");
-  analyzer->SetOdefFile("DEF-files/COIN/PRODUCTION/coin_production_hElec_pProt.def");
+  // analyzer->SetOdefFile("UTIL_SIDIS/DEF-files/coin_production_sidis.def");
+  analyzer->SetOdefFile("DEF-files/COIN/PRODUCTION/coin_production_hElec_pPion_csv.def"); //most skimed
+  //analyzer->SetOdefFile("DEF-files/COIN/PRODUCTION/coin_production_hElec_pPion.def");  //for tracking efficiency
+  //analyzer->SetOdefFile("DEF-files/COIN/PRODUCTION/coin_production_ep.def");  //everything
   // Define cuts file
   // analyzer->SetCutFile("UTIL_SIDIS/DEF-files/coin_production_sidis_cuts.def");  // optional
   analyzer->SetCutFile("DEF-files/COIN/PRODUCTION/CUTS/coin_production_cuts.def"); // optional
   // File to record accounting information for cuts
-  analyzer->SetSummaryFile(Form("REPORT_OUTPUT/COIN/PRODUCTION/summary_production_%d_%d.report",
+  analyzer->SetSummaryFile(Form("/lcrc/project/jlab/data/hallc/csv/replay/report/COIN/summary_production_%d_%d.report",
                                 RunNumber, MaxEvent)); // optional
   // Start the actual analysis.
   analyzer->Process(run);
   // Create report file from template
   analyzer->PrintReport("TEMPLATES/COIN/PRODUCTION/coin_production.template",
-                        Form("REPORT_OUTPUT/COIN/PRODUCTION/replay_coin_production_%d_%d.report",
+                        Form("/lcrc/project/jlab/data/hallc/csv/replay/report/COIN/replay_coin_production_%d_%d.report",
                              RunNumber, MaxEvent)); // optional
 
   //ddisplay->CreateDisplayPlot(
